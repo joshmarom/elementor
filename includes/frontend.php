@@ -128,12 +128,23 @@ class Frontend {
 		);
 
 		wp_register_script(
+			'jquery-parallax',
+			ELEMENTOR_ASSETS_URL . 'lib/parallax/parallax' . $suffix . '.js',
+			[
+				'jquery',
+			],
+			'1.4.2',
+			true
+		);
+
+		wp_register_script(
 			'elementor-frontend',
 			ELEMENTOR_ASSETS_URL . 'js/frontend' . $suffix . '.js',
 			[
 				'waypoints',
 				'jquery-numerator',
 				'jquery-slick',
+				'jquery-parallax',
 			],
 			Plugin::instance()->get_version(),
 			true
