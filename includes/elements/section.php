@@ -313,7 +313,7 @@ class Element_Section extends Element_Base {
 			[
 				'name' => 'background',
 				'tab' => self::TAB_STYLE,
-				'types' => [ 'classic', 'video' ],
+				'types' => [ 'classic', 'video' , 'parallax' ],
 				'section' => 'section_background',
 			]
 		);
@@ -340,7 +340,7 @@ class Element_Section extends Element_Base {
 				'section' => 'section_background',
 				'selector' => '{{WRAPPER}} > .elementor-background-overlay',
 				'condition' => [
-					'background_background' => [ 'classic', 'video' ],
+					'background_background' => [ 'classic', 'video', 'parallax' ],
 				],
 			]
 		);
@@ -705,6 +705,8 @@ class Element_Section extends Element_Base {
 		?>
 		<# if ( 'video' === settings.background_background ) {
 			var videoLink = settings.background_video_link;
+			var parallaxImg = settings.background_parallax_image.url;
+			var parallaxSpeed = settings.background_parallax_speed.size;
 
 			if ( videoLink ) {
 				var videoID = elementor.helpers.getYoutubeIDFromURL( settings.background_video_link ); #>
@@ -754,6 +756,15 @@ class Element_Section extends Element_Base {
 
 		if ( ! empty( $instance['animation'] ) ) {
 			$this->add_render_attribute( 'wrapper', 'data-animation', $instance['animation'] );
+		}
+
+		if ( ! empty( $instance['background_parallax_image'] ) ) {
+			$this->add_render_attribute( 'wrapper', 'data-parallax', 'scroll' );
+			$this->add_render_attribute( 'wrapper', 'data-image-src', $instance['background_parallax_image']['url'] );
+			$this->add_render_attribute( 'wrapper', 'data-speed', $instance['background_parallax_speed']['size'] );
+			$this->add_render_attribute( 'wrapper', 'data-z-index', '1' );
+			$this->add_render_attribute( 'wrapper', 'data-bleed', '10' );
+			$this->add_render_attribute( 'wrapper', 'class', 'elementor-parallax-window' );
 		}
 
 		$this->add_render_attribute( 'wrapper', 'data-element_type', $this->get_id() );

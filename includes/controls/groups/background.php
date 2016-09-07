@@ -25,6 +25,10 @@ class Group_Control_Background extends Group_Control_Base {
 				'title' => _x( 'Background Video', 'Background Control', 'elementor' ),
 				'icon' => 'video-camera',
 			],
+			'parallax' => [
+				'title' => _x( 'Parallax', 'Background Control', 'elementor' ),
+				'icon' => 'arrows-v',
+			],
 		];
 
 		$choose_types = [
@@ -163,6 +167,36 @@ class Group_Control_Background extends Group_Control_Base {
 					'image[url]!' => '',
 				],
 			];
+
+			$controls['parallax_image'] = [
+				'label' => _x( 'Image', 'Background Control', 'elementor' ),
+				'type' => Controls_Manager::MEDIA,
+				'title' => _x( 'Parallax Image', 'Background Control', 'elementor' ),
+				'condition' => [
+					'background' => [ 'parallax' ],
+				],
+			];
+
+			$controls['parallax_speed'] = [
+				'label' => _x( 'Parallax Speed', 'Background Control', 'elementor' ),
+				'type' => Controls_Manager::SLIDER,
+				'default' => [
+					'size' => .5,
+				],
+				'range' => [
+					'px' => [
+						'max' => 1,
+						'step' => 0.1,
+					],
+				],
+				'title' => _x( 'Parallax Speed', 'Background Control', 'elementor' ),
+				'condition' => [
+					'background' => [ 'parallax' ],
+				],
+			];
+
+
+
 		}
 		// End Background:image
 
