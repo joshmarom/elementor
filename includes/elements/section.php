@@ -758,12 +758,12 @@ class Element_Section extends Element_Base {
 			$this->add_render_attribute( 'wrapper', 'data-animation', $instance['animation'] );
 		}
 
-		if ( ! empty( $instance['background_parallax_image'] ) ) {
+		if ( 'parallax' === $instance['background_background'] ) {
 			$this->add_render_attribute( 'wrapper', 'data-parallax', 'scroll' );
 			$this->add_render_attribute( 'wrapper', 'data-image-src', $instance['background_parallax_image']['url'] );
 			$this->add_render_attribute( 'wrapper', 'data-speed', $instance['background_parallax_speed']['size'] );
-			$this->add_render_attribute( 'wrapper', 'data-z-index', '1' );
-			$this->add_render_attribute( 'wrapper', 'data-bleed', '10' );
+			$this->add_render_attribute( 'wrapper', 'data-z-index', '0' );
+			$this->add_render_attribute( 'wrapper', 'data-bleed', '30' ); /* Fixes jitters at the edges, but causes issues as it makes bg-image exceeds div boundries */
 			$this->add_render_attribute( 'wrapper', 'class', 'elementor-parallax-window' );
 		}
 

@@ -9,6 +9,10 @@
     height: 100%;
     width: 100%; }
 
+.elementor-parallax-window {
+  position: relative;
+  z-index: 1; }
+
 .elementor-screen-only,
 .screen-reader-text,
 .screen-reader-text span,

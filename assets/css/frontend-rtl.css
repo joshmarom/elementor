@@ -9,6 +9,10 @@
     height: 100%;
     width: 100%; }
 
+.elementor-parallax-window {
+  position: relative;
+  z-index: 1; }
+
 #wpadminbar #wp-admin-bar-elementor_edit_page > .ab-item::before {
   content: "\e800";
   font-family: eicon;
