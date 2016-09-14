@@ -20,6 +20,7 @@ class Widgets_Manager {
 			'text-editor',
 			'video',
 			'button',
+			'form',
 			'divider',
 			'spacer',
 			'image-box',
