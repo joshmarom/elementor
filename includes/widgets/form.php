@@ -19,49 +19,91 @@ class Widget_Form extends Widget_Base {
 
 	protected function _register_controls() {
 		$this->add_control(
-			'section_title',
+			'section_form_fields',
 			[
 				'label' => __( 'Form Fields', 'elementor' ),
 				'type' => Controls_Manager::SECTION,
 			]
 		);
-
 		$this->add_control(
 			'form_fields',
 			[
 				'label' => __( 'Form Fields', 'elementor' ),
 				'type' => Controls_Manager::REPEATER,
-				'section' => 'section_title',
+				'section' => 'section_form_fields',
 				'show_label' => false,
 				'default' => [
 					[
-						'tab_title' => __( 'Tab #1', 'elementor' ),
-						'tab_content' => __( 'I am tab content. Click edit button to change this text. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.', 'elementor' ),
-					],
-					[
-						'tab_title' => __( 'Tab #2', 'elementor' ),
-						'tab_content' => __( 'I am tab content. Click edit button to change this text. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.', 'elementor' ),
+						'tab_title' => __( 'Form field', 'elementor' ),
+						//'tab_content' => __( 'I am tab content. Click edit button to change this text. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.', 'elementor' ),
 					],
 				],
 				'fields' => [
 					[
-						'name' => 'tab_title',
-						'label' => __( 'Title & Content', 'elementor' ),
-						'type' => Controls_Manager::TEXT,
-						'default' => __( 'Tab Title', 'elementor' ),
-						'placeholder' => __( 'Tab Title', 'elementor' ),
-						'label_block' => true,
+						'name' => 'field_type',
+						'label' => __( 'Field Type', 'elementor' ),
+						'type' => Controls_Manager::SELECT,
+						'options' => [
+							'text' => __( 'Text', 'elementor' ),
+							'tel' => __( 'Tel', 'elementor' ),
+							'email' => __( 'Email', 'elementor' ),
+							'textarea' => __( 'Textarea', 'elementor' ),
+							'number' => __( 'Number', 'elementor' ),
+							'select' => __( 'Select', 'elementor' ),
+							'url' => __( 'URL', 'elementor' ),
+							'upload' => __( 'File Upload', 'elementor' ),
+							'checkbox' => __( 'Checkbox', 'elementor' ),
+							'radio' => __( 'Radio', 'elementor' ),
+						],
+						'default' => 'text',
 					],
 					[
-						'name' => 'tab_content',
-						'label' => __( 'Content', 'elementor' ),
-						'default' => __( 'Tab Content', 'elementor' ),
-						'placeholder' => __( 'Tab Content', 'elementor' ),
-						'type' => Controls_Manager::TEXTAREA,
-						'show_label' => false,
+						'name' => 'field_label',
+						'label' => __( 'Field Label', 'elementor' ),
+						'type' => Controls_Manager::TEXT,
+						'default' => '',
+					],
+					[
+						'name' => 'placeholder',
+						'label' => __( 'Placeholder', 'elementor' ),
+						'type' => Controls_Manager::TEXT,
+						'default' => '',
+					],
+					[
+						'name' => 'css_classes',
+						'label' => __( 'CSS Classes', 'elementor' ),
+						'type' => Controls_Manager::TEXT,
+						'default' => '',
+					],
+					[
+						'name' => 'width',
+						'label' => __( 'Width', 'elementor' ),
+						'type' => Controls_Manager::SELECT,
+						'options' => [
+							'100' => '100%',
+							'90' => '90%',
+							'83' => '83%',
+							'80' => '80%',
+							'75' => '75%',
+							'70' => '70%',
+							'66' => '66%',
+							'60' => '60%',
+							'50' => '50%',
+							'40' => '40%',
+							'33' => '33%',
+							'30' => '30%',
+							'25' => '25%',
+							'20' => '20%',
+							'16' => '16%',
+							'14' => '14%',
+							'12' => '12%',
+							'11' => '11%',
+							'10' => '10%',
+						],
+						'default' => '100',
 					],
 				],
-				'title_field' => 'tab_title',
+				'title_field' => 'field_label',
 			]
 		);
 
@@ -71,7 +113,28 @@ class Widget_Form extends Widget_Base {
 				'label' => __( 'View', 'elementor' ),
 				'type' => Controls_Manager::HIDDEN,
 				'default' => 'traditional',
-				'section' => 'section_title',
+				'section' => 'section_form_fields',
+			]
+		);
+
+		$this->add_control(
+			'section_submit_button',
+			[
+				'label' => __( 'Submit Button', 'elementor' ),
+				'type' => Controls_Manager::SECTION,
+			]
+		);
+
+		$this->add_control(
+			'button_text',
+			[
+				'label' => __( 'Button Text', 'elementor' ),
+				'type' => Controls_Manager::TEXT,
+				'section' => 'section_submit_button',
+				'default' => __( 'Send', 'elementor' ),
+				'placeholder' => __( 'Send', 'elementor' ),
+				'prefix_class' => '',
+				'label_block' => true,
 			]
 		);
 
@@ -225,54 +288,20 @@ class Widget_Form extends Widget_Base {
 
 	protected function render( $instance = [] ) {
 		?>
-		<div class="elementor-tabs">
+		<form class="elementor-form">
 			<?php $counter = 1; ?>
-			<div class="elementor-tabs-wrapper">
-				<?php foreach ( $instance['tabs'] as $item ) : ?>
-					<div class="elementor-tab-title" data-tab="<?php echo $counter; ?>"><span><?php echo $item['tab_title']; ?></span></div>
+			<div class="elementor-form-fields-wrapper">
+				<?php foreach ( $instance['form_fields'] as $item ) : ?>
+					<label for="form_field_<?php echo $counter; ?>"><?php echo $item['field_label']; ?></label><input type="<?php echo $item['field_type']; ?>" id="form_field_<?php echo $counter; ?>" name="form_field_<?php echo $counter; ?>" placeholder="<?php echo $item['placeholder']; ?>" class="elementor-tab-title <?php echo $item['css_classes']; ?>" tabindex="">
 				<?php
 					$counter++;
 				endforeach; ?>
 			</div>
-
-			<?php $counter = 1; ?>
-			<div class="elementor-tabs-content-wrapper">
-				<?php foreach ( $instance['tabs'] as $item ) : ?>
-					<div class="elementor-tab-content" data-tab="<?php echo $counter; ?>"><?php echo $this->parse_text_editor( $item['tab_content'], $item ); ?></div>
-				<?php
-					$counter++;
-				endforeach; ?>
-			</div>
-		</div>
+		</form>
 		<?php
 	}
 
 	protected function content_template() {
-		?>
-		<div class="elementor-tabs" data-active-tab="{{ editSettings.activeItemIndex ? editSettings.activeItemIndex : 0 }}">
-			<#
-			if ( settings.tabs ) {
-				var counter = 1; #>
-				<div class="elementor-tabs-wrapper">
-					<#
-					_.each( settings.tabs, function( item ) { #>
-						<div class="elementor-tab-title" data-tab="{{ counter }}"><span>{{{ item.tab_title }}}</span></div>
-					<#
-						counter++;
-					} ); #>
-				</div>
-
-				<# counter = 1; #>
-				<div class="elementor-tabs-content-wrapper">
-					<#
-					_.each( settings.tabs, function( item ) { #>
-						<div class="elementor-tab-content" data-tab="{{ counter }}">{{{ item.tab_content }}}</div>
-					<#
-					counter++;
-					} ); #>
-				</div>
-			<# } #>
-		</div>
-		<?php
+		return;
 	}
 }
