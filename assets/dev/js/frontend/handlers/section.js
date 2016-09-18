@@ -3,9 +3,8 @@ module.exports = function( $ ) {
 	/*
 	 * Force section full-width for non full-width templates
 	 */
-	// Clear any previously existing html/css associated with this script
+	// Clear any previously existing css associated with this script
 	this.removeAttr( 'style' );
-	this.prev( 'hr.elementor-section-stretched-placeholder' ).remove();
 
 	if ( this.hasClass( 'elementor-section-stretched' ) ) {
 		var $section = this,
@@ -13,58 +12,36 @@ module.exports = function( $ ) {
 			$scopeWindow = $( scopeWindow ),
 			sectionContainerSelector = elementorFrontend.config.stretchedSectionContainer, // User-defined parent container selector
 			$sectionContainer = $( scopeWindow.document ).find( sectionContainerSelector ),
-			$offsetParent = $section.offsetParent(),
-			existingMarginTop = $section.css( 'margin-top' ),
-			existingMarginBottom = $section.css( 'margin-bottom' ),
-			$placeHolder = $( '<hr class="elementor-section-stretched-placeholder">' ),
-			sectionOffset = '0';
-
-		if ( $offsetParent.is( 'html' ) ) {
-			$offsetParent = null;
-		}
-
-		$section.before( $placeHolder );
-
-		var fixWidth = function() {
-			if ( $offsetParent || sectionContainerSelector ) {
-				var sectionWidth = scopeWindow.innerWidth,
-					parentOffset;
-				if ( $offsetParent ) {
-					parentOffset = $offsetParent.offset().left;
-				}
-				sectionOffset = '-' + parentOffset;
-				if ( sectionContainerSelector ) {
-					var containerOffset = $sectionContainer.offset().left;
-					sectionWidth = $sectionContainer.innerWidth();
-					sectionOffset = containerOffset;
-					if ( $offsetParent && ( parentOffset >= containerOffset ) ) {
-						sectionOffset = '-' + ( parentOffset - containerOffset );
-					}
-				}
-				$section.css( {
-					'width': sectionWidth + 'px',
-					'left': sectionOffset + 'px'
-				} );
+			$offsetParent = $section.offsetParent();
+			if ( $section.offsetParent().is( 'html' ) ) {
+				$offsetParent = $section.parent();
 			}
-		};
 
-		var fixHeight = function() {
-			var sectionHeight = $section.css( 'height' );
-			$placeHolder.css( {
-				'padding-top': sectionHeight,
-				'margin-top': existingMarginTop,
-				'margin-bottom': existingMarginBottom
+		var stretchSection = function() {
+			var sectionWidth = $scopeWindow.width(),
+				parentPadding = parseInt( $offsetParent.css( 'padding-left' ).replace( 'px', '' ), 10 ),
+				parentOffset = $offsetParent.offset().left +  parentPadding,
+				sectionOffset = '-' + parentOffset;
+
+			if ( 0 < $sectionContainer.length ) {
+				var containerOffset = $sectionContainer.offset().left;
+				sectionWidth = $sectionContainer.width();
+				sectionOffset = containerOffset;
+				if ( $offsetParent && ( parentOffset >= containerOffset ) ) {
+					sectionOffset = '-' + ( parentOffset - containerOffset );
+				}
+			}
+			$section.css( {
+				'width': sectionWidth,
+				'left': sectionOffset + 'px'
 			} );
-			$section.css( 'margin-top', 'calc( -' + sectionHeight + ' - ' + existingMarginBottom + ')' );
 		};
 
 		$scopeWindow.on( 'resize', function() {
-			fixWidth();
-			fixHeight();
+			stretchSection();
 		} );
 
-		fixWidth();
-		fixHeight();
+		stretchSection();
 	}
 
 	var player,
