@@ -76,6 +76,13 @@ class Widget_Form extends Widget_Base {
 						'default' => '',
 					],
 					[
+						'name' => 'field_options',
+						'label' => __( 'Options', 'elementor' ),
+						'type' => Controls_Manager::TEXTAREA,
+						'default' => '',
+						'description' => 'Enter each option in a separate line',
+					],
+					[
 						'name' => 'width',
 						'label' => __( 'Width', 'elementor' ),
 						'type' => Controls_Manager::SELECT,
@@ -287,18 +294,71 @@ class Widget_Form extends Widget_Base {
 	}
 
 	protected function render( $instance = [] ) {
+
+		function make_select_field( $item, $counter ) {
+			$options = preg_split( "/\\r\\n|\\r|\\n/", $item['field_options'] );
+			$html = '';
+			if ( $options ) {
+				$html = '<select ';
+				$html .= 'id="form_field_' . $counter . '" ';
+				$html .= 'name="form_field_' . $counter . '" ';
+				$html .= '>';
+				foreach ( $options as $option ) {
+					$html .= '<option value="' . esc_attr( $option ) . '">' . $option . '</option>';
+				}
+				$html .= '</select>';
+			}
+			return $html;
+		}
+
+		function make_radio_checkbox_field( $item, $counter, $type ) {
+			$options = preg_split( "/\\r\\n|\\r|\\n/", $item['field_options'] );
+			$html    = '';
+			if ( $options ) {
+				foreach ( $options as $key => $option ) {
+					$html .= '<input type="' . $type . '"';
+					$html .= 'value="' . esc_attr( $option ) . '"';
+					$html .= 'id="form_field_' . $counter . '-' . $key . '"';
+					$html .= 'name="form_field_' . $counter . ( ( 'checkbox' === $type && count( $options ) > 1 ) ? '[]"' : '"' );
+					$html .= '><label for="form_field_' . $counter . '-' . $key . '">' . $option . '</label>';
+				}
+			}
+			return $html;
+		}
+
 		?>
 		<form class="elementor-form">
 			<?php $counter = 1; ?>
 			<div class="elementor-form-fields-wrapper">
 				<?php foreach ( $instance['form_fields'] as $item ) : ?>
-					<label for="form_field_<?php echo $counter; ?>"><?php echo $item['field_label']; ?></label><input type="<?php echo $item['field_type']; ?>" id="form_field_<?php echo $counter; ?>" name="form_field_<?php echo $counter; ?>" placeholder="<?php echo $item['placeholder']; ?>" class="elementor-tab-title <?php echo $item['css_classes']; ?>" tabindex="">
-				<?php
-					$counter++;
-				endforeach; ?>
+				<div class="elementor-field-group elementor-field-type-<?php echo $item['field_type']; ?> elementor-column" data-col="<?php echo $item['width']; ?>">
+					<label for="form_field_<?php echo $counter; ?>"><?php echo $item['field_label']; ?></label>
+					<?php
+					switch ( $item['field_type'] ) {
+
+						case 'select':
+							echo make_select_field( $item, $counter );
+							$counter ++;
+							break;
+
+						case 'radio':
+						case 'checkbox':
+							echo make_radio_checkbox_field( $item, $counter, $item['field_type'] );
+							$counter ++;
+							break;
+
+						default:
+						?>
+						<input type="<?php echo $item['field_type']; ?>" id="form_field_<?php echo $counter; ?>"
+								name="form_field_<?php echo $counter; ?>"
+								placeholder="<?php echo $item['placeholder']; ?>"
+								class="elementor-tab-title <?php echo $item['css_classes']; ?>">
+					<?php $counter ++; }?>
+				</div>
+				<?php	endforeach; ?>
 			</div>
 		</form>
-		<?php
+	<?php
 	}
 
 	protected function content_template() {

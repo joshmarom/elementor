@@ -1,0 +1,32 @@
+.elementor-form-fields-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+
+  input{
+
+    &[type="radio"]{
+      -webkit-appearance: radio;
+      -moz-appearance: radio;
+      appearance: radio;
+      &+label{
+        @include margin-start(5px);
+      }
+    }
+
+    &[type="checkbox"]{
+      -webkit-appearance: checkbox;
+      -moz-appearance: checkbox;
+      appearance: checkbox;
+      &+label{
+        @include margin-start(5px);
+      }
+    }
+  }
+
+  .elementor-field-group{
+    label{
+      @include margin-end(5px);
+    }
+  }
+
+}

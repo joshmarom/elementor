@@ -1045,6 +1045,29 @@
 body.elementor-page .elementor-widget-menu-anchor {
   margin-bottom: 0; }
 
+.elementor-form-fields-wrapper {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+      -ms-flex-wrap: wrap;
+          flex-wrap: wrap; }
+  .elementor-form-fields-wrapper input[type="radio"] {
+    -webkit-appearance: radio;
+    -moz-appearance: radio;
+    appearance: radio; }
+    .elementor-form-fields-wrapper input[type="radio"] + label {
+      margin-left: 5px; }
+  .elementor-form-fields-wrapper input[type="checkbox"] {
+    -webkit-appearance: checkbox;
+    -moz-appearance: checkbox;
+    appearance: checkbox; }
+    .elementor-form-fields-wrapper input[type="checkbox"] + label {
+      margin-left: 5px; }
+  .elementor-form-fields-wrapper .elementor-field-group label {
+    margin-right: 5px; }
+
 .slick-slider {
   position: relative;
   display: block;
