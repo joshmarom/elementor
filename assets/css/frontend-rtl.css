@@ -1052,20 +1052,115 @@ body.elementor-page .elementor-widget-menu-anchor {
   -webkit-flex-wrap: wrap;
       -ms-flex-wrap: wrap;
           flex-wrap: wrap; }
-  .elementor-form-fields-wrapper input[type="radio"] {
+  .elementor-form-fields-wrapper.elementor-labels-above > .elementor-field-group > input[type=text], .elementor-form-fields-wrapper.elementor-labels-above > .elementor-field-group > input[type=email], .elementor-form-fields-wrapper.elementor-labels-above > .elementor-field-group > input[type=url], .elementor-form-fields-wrapper.elementor-labels-above > .elementor-field-group > input[type=password], .elementor-form-fields-wrapper.elementor-labels-above > .elementor-field-group > input[type=tel], .elementor-form-fields-wrapper.elementor-labels-above > .elementor-field-group > input[type=search] {
+    -webkit-flex-basis: 100%;
+        -ms-flex-preferred-size: 100%;
+            flex-basis: 100%; }
+  .elementor-form-fields-wrapper.elementor-labels-above > .elementor-field-group > textarea, .elementor-form-fields-wrapper.elementor-labels-above > .elementor-field-group > .elementor-select-wrapper, .elementor-form-fields-wrapper.elementor-labels-above > .elementor-field-group .elementor-field-subgroup {
+    -webkit-flex-basis: 100%;
+        -ms-flex-preferred-size: 100%;
+            flex-basis: 100%; }
+  .elementor-form-fields-wrapper.elementor-labels-inline > .elementor-field-group > label {
+    -webkit-flex-basis: 25%;
+        -ms-flex-preferred-size: 25%;
+            flex-basis: 25%; }
+  .elementor-form-fields-wrapper.elementor-labels-inline > .elementor-field-group > input[type=text], .elementor-form-fields-wrapper.elementor-labels-inline > .elementor-field-group > input[type=email], .elementor-form-fields-wrapper.elementor-labels-inline > .elementor-field-group > input[type=url], .elementor-form-fields-wrapper.elementor-labels-inline > .elementor-field-group > input[type=password], .elementor-form-fields-wrapper.elementor-labels-inline > .elementor-field-group > input[type=tel], .elementor-form-fields-wrapper.elementor-labels-inline > .elementor-field-group > input[type=search] {
+    -webkit-flex-basis: 75%;
+        -ms-flex-preferred-size: 75%;
+            flex-basis: 75%; }
+  .elementor-form-fields-wrapper.elementor-labels-inline > .elementor-field-group > .elementor-select-wrapper {
+    -webkit-flex-basis: 75%;
+        -ms-flex-preferred-size: 75%;
+            flex-basis: 75%; }
+
+.elementor-select-wrapper {
+  border: 1px solid #818a91;
+  background-color: #f7f7f7;
+  padding: 5px;
+  color: #373a3c;
+  border-radius: 3px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+  padding: 0; }
+  .elementor-select-wrapper select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background: transparent;
+    padding: 5px;
+    border-radius: 2px;
+    border: 0;
+    font-size: inherit;
+    color: inherit;
+    -webkit-flex-basis: 100%;
+        -ms-flex-preferred-size: 100%;
+            flex-basis: 100%;
+    padding-left: 20px;
+    position: relative;
+    z-index: 1; }
+    .elementor-select-wrapper select:focus {
+      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.3) inset;
+      outline-width: 0;
+      outline-style: hidden; }
+  .elementor-select-wrapper:before {
+    content: '\f0d7';
+    font-family: 'FontAwesome';
+    color: #818a91;
+    font-size: 15px;
+    position: absolute;
+    z-index: 0;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+            transform: translateY(-50%);
+    left: 10px; }
+
+.elementor-field-group {
+  -webkit-flex-wrap: wrap;
+      -ms-flex-wrap: wrap;
+          flex-wrap: wrap; }
+  .elementor-field-group > label {
+    color: #818a91; }
+  .elementor-field-group textarea {
+    border: 1px solid #818a91;
+    background-color: #f7f7f7;
+    padding: 5px;
+    color: #373a3c;
+    border-radius: 3px; }
+    .elementor-field-group textarea:focus {
+      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.3) inset;
+      outline-width: 0;
+      outline-style: hidden; }
+  .elementor-field-group input[type=text], .elementor-field-group input[type=email], .elementor-field-group input[type=url], .elementor-field-group input[type=password], .elementor-field-group input[type=tel], .elementor-field-group input[type=search] {
+    border: 1px solid #818a91;
+    background-color: #f7f7f7;
+    padding: 5px;
+    color: #373a3c;
+    border-radius: 3px; }
+    .elementor-field-group input[type=text]:focus, .elementor-field-group input[type=email]:focus, .elementor-field-group input[type=url]:focus, .elementor-field-group input[type=password]:focus, .elementor-field-group input[type=tel]:focus, .elementor-field-group input[type=search]:focus {
+      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.3) inset;
+      outline-width: 0;
+      outline-style: hidden; }
+  .elementor-field-group input[type=radio] {
     -webkit-appearance: radio;
     -moz-appearance: radio;
     appearance: radio; }
-    .elementor-form-fields-wrapper input[type="radio"] + label {
-      margin-right: 5px; }
-  .elementor-form-fields-wrapper input[type="checkbox"] {
+  .elementor-field-group input[type=checkbox] {
     -webkit-appearance: checkbox;
     -moz-appearance: checkbox;
     appearance: checkbox; }
-    .elementor-form-fields-wrapper input[type="checkbox"] + label {
-      margin-right: 5px; }
-  .elementor-form-fields-wrapper .elementor-field-group label {
-    margin-left: 5px; }
+  .elementor-field-group label {
+    padding-left: 5px; }
+  .elementor-field-group.elementor-field-required > label {
+    position: relative; }
+    .elementor-field-group.elementor-field-required > label:after {
+      content: '*';
+      position: absolute;
+      font-size: 0.75em;
+      top: 0;
+      left: -4px; }
 
 .slick-slider {
   position: relative;

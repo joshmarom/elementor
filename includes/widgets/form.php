@@ -70,6 +70,15 @@ class Widget_Form extends Widget_Base {
 						'default' => '',
 					],
 					[
+						'name' => 'required',
+						'label' => __( 'Required', 'elementor' ),
+						'type' => Controls_Manager::SWITCHER,
+						'label_on' => __( 'Yes', 'elementor' ),
+						'label_off' => __( 'No', 'elementor' ),
+						'return_value' => true,
+						'default' => '',
+					],
+					[
 						'name' => 'css_classes',
 						'label' => __( 'CSS Classes', 'elementor' ),
 						'type' => Controls_Manager::TEXT,
@@ -109,6 +118,12 @@ class Widget_Form extends Widget_Base {
 						],
 						'default' => '100',
 					],
+					[
+						'name' => 'rows',
+						'label' => __( 'Rows', 'elementor' ),
+						'type' => Controls_Manager::NUMBER,
+						'default' => 4,
+					],
 				],
 				'title_field' => 'field_label',
 			]
@@ -146,100 +161,55 @@ class Widget_Form extends Widget_Base {
 		);
 
 		$this->add_control(
-			'section_title_style',
+			'section_form_style',
 			[
-				'label' => __( 'Tabs Style', 'elementor' ),
+				'label' => __( 'Form Style', 'elementor' ),
 				'type' => Controls_Manager::SECTION,
 				'tab' => self::TAB_STYLE,
 			]
 		);
 
 		$this->add_control(
-			'border_width',
+			'column_gap',
 			[
-				'label' => __( 'Border Width', 'elementor' ),
+				'label' => __( 'Column gap', 'elementor' ),
 				'type' => Controls_Manager::SLIDER,
 				'default' => [
-					'size' => 1,
+					'size' => 10,
 				],
 				'range' => [
 					'px' => [
 						'min' => 0,
-						'max' => 10,
+						'max' => 60,
 					],
 				],
 				'tab' => self::TAB_STYLE,
-				'section' => 'section_title_style',
+				'section' => 'section_form_style',
 				'selectors' => [
-					'{{WRAPPER}} .elementor-tabs .elementor-tabs-wrapper .elementor-tab-title.active > span:before' => 'border-width: {{SIZE}}{{UNIT}};',
-					'{{WRAPPER}} .elementor-tabs .elementor-tabs-wrapper .elementor-tab-title.active > span:after' => 'border-width: {{SIZE}}{{UNIT}};',
-					'{{WRAPPER}} .elementor-tabs .elementor-tabs-wrapper .elementor-tab-title.active > span' => 'border-width: {{SIZE}}{{UNIT}};',
-					'{{WRAPPER}} .elementor-tabs .elementor-tab-content' => 'border-width: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .elementor-field-group' => 'padding-right: calc( {{SIZE}}{{UNIT}}/2 ); padding-left: calc( {{SIZE}}{{UNIT}}/2 );',
+					'{{WRAPPER}} .elementor-form-fields-wrapper' => 'margin-left: calc( -{{SIZE}}{{UNIT}}/2 ); margin-right: calc( -{{SIZE}}{{UNIT}}/2 );',
 				],
 			]
 		);
 
 		$this->add_control(
-			'border_color',
+			'row_gap',
 			[
-				'label' => __( 'Border Color', 'elementor' ),
-				'type' => Controls_Manager::COLOR,
+				'label' => __( 'Row gap', 'elementor' ),
+				'type' => Controls_Manager::SLIDER,
+				'default' => [
+					'size' => 10,
+				],
+				'range' => [
+					'px' => [
+						'min' => 0,
+						'max' => 60,
+					],
+				],
 				'tab' => self::TAB_STYLE,
-				'section' => 'section_title_style',
+				'section' => 'section_form_style',
 				'selectors' => [
-					'{{WRAPPER}} .elementor-tabs .elementor-tabs-wrapper .elementor-tab-title.active > span:before' => 'border-color: {{VALUE}};',
-					'{{WRAPPER}} .elementor-tabs .elementor-tabs-wrapper .elementor-tab-title.active > span:after' => 'border-color: {{VALUE}};',
-					'{{WRAPPER}} .elementor-tabs .elementor-tabs-wrapper .elementor-tab-title.active > span' => 'border-color: {{VALUE}};',
-					'{{WRAPPER}} .elementor-tabs .elementor-tab-content' => 'border-color: {{VALUE}};',
-				],
-			]
-		);
-
-		$this->add_control(
-			'background_color',
-			[
-				'label' => __( 'Background Color', 'elementor' ),
-				'type' => Controls_Manager::COLOR,
-				'tab' => self::TAB_STYLE,
-				'section' => 'section_title_style',
-				'selectors' => [
-					'{{WRAPPER}} .elementor-tab-title.active' => 'background-color: {{VALUE}};',
-					'{{WRAPPER}} .elementor-tabs .elementor-tab-content' => 'background-color: {{VALUE}};',
-				],
-			]
-		);
-
-		$this->add_control(
-			'tab_color',
-			[
-				'label' => __( 'Title Color', 'elementor' ),
-				'type' => Controls_Manager::COLOR,
-				'tab' => self::TAB_STYLE,
-				'section' => 'section_title_style',
-				'selectors' => [
-					'{{WRAPPER}} .elementor-tab-title' => 'color: {{VALUE}};',
-				],
-				'scheme' => [
-					'type' => Scheme_Color::get_type(),
-					'value' => Scheme_Color::COLOR_1,
-				],
-				'separator' => 'before',
-			]
-		);
-
-		$this->add_control(
-			'tab_active_color',
-			[
-				'label' => __( 'Active Color', 'elementor' ),
-				'type' => Controls_Manager::COLOR,
-				'tab' => self::TAB_STYLE,
-				'section' => 'section_title_style',
-				'selectors' => [
-					'{{WRAPPER}} .elementor-tabs .elementor-tabs-wrapper .elementor-tab-title.active' => 'color: {{VALUE}};',
-				],
-				'scheme' => [
-					'type' => Scheme_Color::get_type(),
-					'value' => Scheme_Color::COLOR_4,
+					'{{WRAPPER}} .elementor-field-group:not(.elementor-field-type-submit)' => 'margin-bottom: {{SIZE}}{{UNIT}};',
 				],
 			]
 		);
@@ -249,7 +219,7 @@ class Widget_Form extends Widget_Base {
 			[
 				'name' => 'tab_typography',
 				'tab' => self::TAB_STYLE,
-				'section' => 'section_title_style',
+				'section' => 'section_form_style',
 				'selector' => '{{WRAPPER}} .elementor-tab-title > span',
 				'scheme' => Scheme_Typography::TYPOGRAPHY_1,
 			]
@@ -295,18 +265,27 @@ class Widget_Form extends Widget_Base {
 
 	protected function render( $instance = [] ) {
 
+		function make_textarea_field( $item, $counter ) {
+			$html = '<textarea id="form_field_' . $counter . '"
+					name="form_field_' . $counter . '"
+			        placeholder="' . $item['placeholder'] . '"
+			        rows="' . $item['rows'] . '"
+			        class="' . $item['css_classes'] . '"
+			        ></textarea>';
+			return $html;
+		}
+
 		function make_select_field( $item, $counter ) {
 			$options = preg_split( "/\\r\\n|\\r|\\n/", $item['field_options'] );
 			$html = '';
 			if ( $options ) {
-				$html = '<select ';
-				$html .= 'id="form_field_' . $counter . '" ';
-				$html .= 'name="form_field_' . $counter . '" ';
-				$html .= '>';
+				$html = '<div class="elementor-select-wrapper ' . $item['css_classes'] . '">
+						<select id="form_field_' . $counter . '"
+						name="form_field_' . $counter . '">';
 				foreach ( $options as $option ) {
 					$html .= '<option value="' . esc_attr( $option ) . '">' . $option . '</option>';
 				}
-				$html .= '</select>';
+				$html .= '</select></div>';
 			}
 			return $html;
 		}
@@ -315,13 +294,15 @@ class Widget_Form extends Widget_Base {
 			$options = preg_split( "/\\r\\n|\\r|\\n/", $item['field_options'] );
 			$html    = '';
 			if ( $options ) {
+				$html .= '<div class="elementor-field-subgroup ' . $item['css_classes'] . '">';
 				foreach ( $options as $key => $option ) {
-					$html .= '<input type="' . $type . '"';
-					$html .= 'value="' . esc_attr( $option ) . '"';
-					$html .= 'id="form_field_' . $counter . '-' . $key . '"';
-					$html .= 'name="form_field_' . $counter . ( ( 'checkbox' === $type && count( $options ) > 1 ) ? '[]"' : '"' );
-					$html .= '><label for="form_field_' . $counter . '-' . $key . '">' . $option . '</label>';
+					$html .= '<input type="' . $type . '"
+							value="' . esc_attr( $option ) . '"
+							id="form_field_' . $counter . '-' . $key . '"
+							name="form_field_' . $counter . ( ( 'checkbox' === $type && count( $options ) > 1 ) ? '[]"' : '"' ) . '>
+							<label for="form_field_' . $counter . '-' . $key . '">' . $option . '</label> ';
 				}
+				$html .= '</div>';
 			}
 			return $html;
 		}
@@ -329,12 +310,20 @@ class Widget_Form extends Widget_Base {
 		?>
 		<form class="elementor-form">
 			<?php $counter = 1; ?>
-			<div class="elementor-form-fields-wrapper">
+			<div class="elementor-form-fields-wrapper elementor-labels-above">
 				<?php foreach ( $instance['form_fields'] as $item ) : ?>
-				<div class="elementor-field-group elementor-field-type-<?php echo $item['field_type']; ?> elementor-column" data-col="<?php echo $item['width']; ?>">
+				<div class="elementor-field-group elementor-column <?php
+					echo 'elementor-field-type-' . $item['field_type'];
+					if ( $item['required'] ) echo ' elementor-field-required' ?>"
+				     data-col="<?php echo $item['width']; ?>">
 					<label for="form_field_<?php echo $counter; ?>"><?php echo $item['field_label']; ?></label>
 					<?php
 					switch ( $item['field_type'] ) {
+
+						case 'textarea':
+							echo make_textarea_field( $item, $counter );
+							$counter ++;
+							break;
 
 						case 'select':
 							echo make_select_field( $item, $counter );
@@ -349,13 +338,19 @@ class Widget_Form extends Widget_Base {
 
 						default:
 						?>
-						<input type="<?php echo $item['field_type']; ?>" id="form_field_<?php echo $counter; ?>"
+						<input size="1"
+								type="<?php echo $item['field_type']; ?>" id="form_field_<?php echo $counter; ?>"
 								name="form_field_<?php echo $counter; ?>"
 								placeholder="<?php echo $item['placeholder']; ?>"
-								class="elementor-tab-title <?php echo $item['css_classes']; ?>">
+								class="<?php echo $item['css_classes']; ?>"
+						        <?php if ( $item['required'] ) echo 'required'; ?>
+						>
 					<?php $counter ++; }?>
 				</div>
 				<?php	endforeach; ?>
+				<div class="elementor-field-group elementor-field-type-submit">
+					<button type="submit" class="elementor-button elementor-form-submit"><?php echo $instance['button_text']; ?></button>
+				</div>
 			</div>
 		</form>
 	<?php

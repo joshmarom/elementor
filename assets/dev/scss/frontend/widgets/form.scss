@@ -1,32 +1,149 @@
+$form-accent-color: $gray;
+@mixin input-style() {
+  border: 1px solid $form-accent-color;
+  background-color: $gray-lightest;
+  padding: 5px;
+  color: $gray-darker;
+  border-radius: 3px;
+}
+@mixin input-focus() {
+  &:focus{
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.3) inset;
+    outline-width: 0;
+    outline-style: hidden;
+  }
+}
+
 .elementor-form-fields-wrapper {
   display: flex;
   flex-wrap: wrap;
+  &.elementor-labels-above {
+    > .elementor-field-group {
+      > input {
+        &[type=text],
+        &[type=email],
+        &[type=url],
+        &[type=password],
+        &[type=tel],
+        &[type=search] {
+          flex-basis: 100%;
+        }
+      }
+      > textarea, > .elementor-select-wrapper, .elementor-field-subgroup {
+        flex-basis: 100%;
+      }
+    }
+  }
+  &.elementor-labels-inline {
+    > .elementor-field-group {
+      > label{
+        flex-basis: 25%;
+      }
+      > input {
+        &[type=text],
+        &[type=email],
+        &[type=url],
+        &[type=password],
+        &[type=tel],
+        &[type=search] {
+          flex-basis: 75%;
+        }
+      }
+      > .elementor-select-wrapper {
+        flex-basis: 75%;
+      }
+    }
+  }
+}
 
-  input{
+.elementor-select-wrapper {
+  @include input-style();
+  display: flex;
+  position: relative;
+  padding: 0;
 
-    &[type="radio"]{
+  select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background: transparent;
+    padding: 5px;
+    border-radius: 2px;
+    border: 0;
+    font-size: inherit;
+    color: inherit;
+    flex-basis: 100%;
+    @include input-focus();
+    @include padding-end( 20px );
+    position: relative;
+    z-index: 1;
+  }
+
+  &:before {
+    content: '\f0d7';
+    font-family: 'FontAwesome';
+    color: $form-accent-color;
+    font-size: 15px;
+    position: absolute;
+    z-index: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    @include end( 10px );
+  }
+
+}
+
+
+.elementor-field-group {
+  flex-wrap: wrap;
+
+  > label {
+    color: $form-accent-color;
+  }
+  textarea {
+    @include input-style();
+    @include input-focus();
+  }
+
+  input {
+    &[type=text],
+    &[type=email],
+    &[type=url],
+    &[type=password],
+    &[type=tel],
+    &[type=search] {
+      @include input-style();
+      @include input-focus();
+    }
+
+    &[type=radio] {
       -webkit-appearance: radio;
       -moz-appearance: radio;
       appearance: radio;
-      &+label{
-        @include margin-start(5px);
-      }
     }
 
-    &[type="checkbox"]{
+    &[type=checkbox] {
       -webkit-appearance: checkbox;
       -moz-appearance: checkbox;
       appearance: checkbox;
-      &+label{
-        @include margin-start(5px);
+    }
+  }
+
+  label {
+    @include padding-end(5px);
+  }
+
+  &.elementor-field-required {
+    > label {
+      position: relative;
+      &:after{
+        content: '*';
+        position: absolute;
+        font-size: 0.75em;
+        top:0;
+        @include end(-4px);
+
       }
     }
   }
-
-  .elementor-field-group{
-    label{
-      @include margin-end(5px);
-    }
-  }
-
 }
