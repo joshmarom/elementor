@@ -36,9 +36,12 @@ $form-accent-color: $gray;
   }
   &.elementor-labels-inline {
     > .elementor-field-group {
+/*
       > label{
         flex-basis: 25%;
       }
+*/
+
       > input {
         &[type=text],
         &[type=email],
@@ -46,11 +49,11 @@ $form-accent-color: $gray;
         &[type=password],
         &[type=tel],
         &[type=search] {
-          flex-basis: 75%;
+          flex-grow: 1;
         }
       }
       > .elementor-select-wrapper {
-        flex-basis: 75%;
+        flex-grow: 1;
       }
     }
   }
@@ -96,6 +99,7 @@ $form-accent-color: $gray;
 
 .elementor-field-group {
   flex-wrap: wrap;
+  align-items: center;
 
   > label {
     color: $form-accent-color;
@@ -141,9 +145,39 @@ $form-accent-color: $gray;
         position: absolute;
         font-size: 0.75em;
         top:0;
-        @include end(-4px);
+        @include end(2px);
 
       }
     }
+  }
+}
+.elementor-button-align- {
+  &start {
+    justify-content: flex-start;
+  }
+  &end {
+    justify-content: flex-end;
+  }
+  &center {
+    justify-content: center;
+  }
+  &stretch {
+    button{
+      flex-basis: 100%;
+    }
+  }
+}
+.elementor-button-vertical-align- {
+  &start {
+    align-items: flex-start;
+  }
+  &end {
+    align-items: flex-end;
+  }
+  &center {
+    align-items: center;
+  }
+  &stretch {
+    align-items: stretch;
   }
 }

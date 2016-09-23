@@ -64,6 +64,15 @@ class Widget_Form extends Widget_Base {
 						'default' => '',
 					],
 					[
+						'name' => 'show_label',
+						'label' => __( 'Show Label', 'elementor' ),
+						'type' => Controls_Manager::SWITCHER,
+						'label_on' => __( 'Show', 'elementor' ),
+						'label_off' => __( 'Hide', 'elementor' ),
+						'return_value' => true,
+						'default' => true,
+					],
+					[
 						'name' => 'placeholder',
 						'label' => __( 'Placeholder', 'elementor' ),
 						'type' => Controls_Manager::TEXT,
@@ -140,6 +149,41 @@ class Widget_Form extends Widget_Base {
 		);
 
 		$this->add_control(
+			'section_form_layout',
+			[
+				'label' => __( 'Form Layout', 'elementor' ),
+				'type' => Controls_Manager::SECTION,
+			]
+		);
+
+		$this->add_control(
+			'show_labels',
+			[
+				'label' => __( 'Show Labels', 'elementor' ),
+				'type' => Controls_Manager::SWITCHER,
+				'section' => 'section_form_layout',
+				'label_on' => __( 'Show', 'elementor' ),
+				'label_off' => __( 'Hide', 'elementor' ),
+				'return_value' => true,
+				'default' => true,
+			]
+		);
+
+		$this->add_control(
+			'label_position',
+			[
+				'label' => __( 'Label Position', 'elementor' ),
+				'type' => Controls_Manager::SELECT,
+				'section' => 'section_form_layout',
+				'options' => [
+					'above' => __( 'Above', 'elementor' ),
+					'inline' => __( 'Before', 'elementor' ),
+				],
+				'default' => 'above',
+			]
+		);
+
+		$this->add_control(
 			'section_submit_button',
 			[
 				'label' => __( 'Submit Button', 'elementor' ),
@@ -157,6 +201,69 @@ class Widget_Form extends Widget_Base {
 				'placeholder' => __( 'Send', 'elementor' ),
 				'prefix_class' => '',
 				'label_block' => true,
+			]
+		);
+
+		$this->add_control(
+			'button_width',
+			[
+				'label' => __( 'Button Area Width', 'elementor' ),
+				'type' => Controls_Manager::SELECT,
+				'section' => 'section_submit_button',
+				'options' => [
+					'100' => '100%',
+					'90' => '90%',
+					'83' => '83%',
+					'80' => '80%',
+					'75' => '75%',
+					'70' => '70%',
+					'66' => '66%',
+					'60' => '60%',
+					'50' => '50%',
+					'40' => '40%',
+					'33' => '33%',
+					'30' => '30%',
+					'25' => '25%',
+					'20' => '20%',
+					'16' => '16%',
+					'14' => '14%',
+					'12' => '12%',
+					'11' => '11%',
+					'10' => '10%',
+				],
+				'default' => '100',
+			]
+		);
+
+		$this->add_control(
+			'button_align',
+			[
+				'label' => __( 'Button Align', 'elementor' ),
+				'type' => Controls_Manager::SELECT,
+				'section' => 'section_submit_button',
+				'options' => [
+					'start' => __( 'Start', 'elementor' ),
+					'end' => __( 'End', 'elementor' ),
+					'center' => __( 'Center', 'elementor' ),
+					'stretch' => __( 'Stretch', 'elementor' ),
+				],
+				'default' => 'stretch',
+			]
+		);
+
+		$this->add_control(
+			'button_vertical_align',
+			[
+				'label' => __( 'Button Vertical Align', 'elementor' ),
+				'type' => Controls_Manager::SELECT,
+				'section' => 'section_submit_button',
+				'options' => [
+					'start' => __( 'Top', 'elementor' ),
+					'end' => __( 'Bottom', 'elementor' ),
+					'center' => __( 'Center', 'elementor' ),
+					'stretch' => __( 'Stretch', 'elementor' ),
+				],
+				'default' => 'stretch',
 			]
 		);
 
@@ -209,7 +316,8 @@ class Widget_Form extends Widget_Base {
 				'tab' => self::TAB_STYLE,
 				'section' => 'section_form_style',
 				'selectors' => [
-					'{{WRAPPER}} .elementor-field-group:not(.elementor-field-type-submit)' => 'margin-bottom: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .elementor-field-group' => 'margin-bottom: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .elementor-form-fields-wrapper' => 'margin-bottom: -{{SIZE}}{{UNIT}};',
 				],
 			]
 		);
@@ -270,8 +378,8 @@ class Widget_Form extends Widget_Base {
 					name="form_field_' . $counter . '"
 			        placeholder="' . $item['placeholder'] . '"
 			        rows="' . $item['rows'] . '"
-			        class="' . $item['css_classes'] . '"
-			        ></textarea>';
+			        class="' . $item['css_classes'] . '"' .
+			        ( $item['required'] ? ' required' : '' ) . '></textarea>';
 			return $html;
 		}
 
@@ -281,7 +389,8 @@ class Widget_Form extends Widget_Base {
 			if ( $options ) {
 				$html = '<div class="elementor-select-wrapper ' . $item['css_classes'] . '">
 						<select id="form_field_' . $counter . '"
-						name="form_field_' . $counter . '">';
+						name="form_field_' . $counter . '"' .
+				        ( $item['required'] ? ' required' : '' ) . '>';
 				foreach ( $options as $option ) {
 					$html .= '<option value="' . esc_attr( $option ) . '">' . $option . '</option>';
 				}
@@ -299,7 +408,8 @@ class Widget_Form extends Widget_Base {
 					$html .= '<input type="' . $type . '"
 							value="' . esc_attr( $option ) . '"
 							id="form_field_' . $counter . '-' . $key . '"
-							name="form_field_' . $counter . ( ( 'checkbox' === $type && count( $options ) > 1 ) ? '[]"' : '"' ) . '>
+							name="form_field_' . $counter . ( ( 'checkbox' === $type && count( $options ) > 1 ) ? '[]"' : '"' ) .
+							( $item['required'] ? ' required' : '' ) . '>
 							<label for="form_field_' . $counter . '-' . $key . '">' . $option . '</label> ';
 				}
 				$html .= '</div>';
@@ -310,13 +420,17 @@ class Widget_Form extends Widget_Base {
 		?>
 		<form class="elementor-form">
 			<?php $counter = 1; ?>
-			<div class="elementor-form-fields-wrapper elementor-labels-above">
+			<div class="elementor-form-fields-wrapper <?php
+				echo 'elementor-labels-' . $instance['label_position'];
+			?>">
 				<?php foreach ( $instance['form_fields'] as $item ) : ?>
 				<div class="elementor-field-group elementor-column <?php
 					echo 'elementor-field-type-' . $item['field_type'];
 					if ( $item['required'] ) echo ' elementor-field-required' ?>"
 				     data-col="<?php echo $item['width']; ?>">
-					<label for="form_field_<?php echo $counter; ?>"><?php echo $item['field_label']; ?></label>
+					<label for="form_field_<?php echo $counter; ?>" <?php if ( ! $item['show_label'] || ! $instance['show_labels'] ) echo 'class="elementor-screen-only"'; ?>>
+						<?php echo $item['field_label']; ?>
+					</label>
 					<?php
 					switch ( $item['field_type'] ) {
 
@@ -348,7 +462,10 @@ class Widget_Form extends Widget_Base {
 					<?php $counter ++; }?>
 				</div>
 				<?php	endforeach; ?>
-				<div class="elementor-field-group elementor-field-type-submit">
+				<div class="elementor-field-group elementor-column elementor-field-type-submit <?php
+							echo 'elementor-button-align-' . $instance['button_align'];
+							echo ' elementor-button-vertical-align-' . $instance['button_vertical_align']; ?>"
+				     data-col="<?php echo $instance['button_width']; ?>">
 					<button type="submit" class="elementor-button elementor-form-submit"><?php echo $instance['button_text']; ?></button>
 				</div>
 			</div>

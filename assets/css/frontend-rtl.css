@@ -1062,18 +1062,22 @@ body.elementor-page .elementor-widget-menu-anchor {
     -webkit-flex-basis: 100%;
         -ms-flex-preferred-size: 100%;
             flex-basis: 100%; }
-  .elementor-form-fields-wrapper.elementor-labels-inline > .elementor-field-group > label {
-    -webkit-flex-basis: 25%;
-        -ms-flex-preferred-size: 25%;
-            flex-basis: 25%; }
-  .elementor-form-fields-wrapper.elementor-labels-inline > .elementor-field-group > input[type=text], .elementor-form-fields-wrapper.elementor-labels-inline > .elementor-field-group > input[type=email], .elementor-form-fields-wrapper.elementor-labels-inline > .elementor-field-group > input[type=url], .elementor-form-fields-wrapper.elementor-labels-inline > .elementor-field-group > input[type=password], .elementor-form-fields-wrapper.elementor-labels-inline > .elementor-field-group > input[type=tel], .elementor-form-fields-wrapper.elementor-labels-inline > .elementor-field-group > input[type=search] {
-    -webkit-flex-basis: 75%;
-        -ms-flex-preferred-size: 75%;
-            flex-basis: 75%; }
-  .elementor-form-fields-wrapper.elementor-labels-inline > .elementor-field-group > .elementor-select-wrapper {
-    -webkit-flex-basis: 75%;
-        -ms-flex-preferred-size: 75%;
-            flex-basis: 75%; }
+  .elementor-form-fields-wrapper.elementor-labels-inline > .elementor-field-group {
+    /*
+          > label{
+            flex-basis: 25%;
+          }
+    */ }
+    .elementor-form-fields-wrapper.elementor-labels-inline > .elementor-field-group > input[type=text], .elementor-form-fields-wrapper.elementor-labels-inline > .elementor-field-group > input[type=email], .elementor-form-fields-wrapper.elementor-labels-inline > .elementor-field-group > input[type=url], .elementor-form-fields-wrapper.elementor-labels-inline > .elementor-field-group > input[type=password], .elementor-form-fields-wrapper.elementor-labels-inline > .elementor-field-group > input[type=tel], .elementor-form-fields-wrapper.elementor-labels-inline > .elementor-field-group > input[type=search] {
+      -webkit-box-flex: 1;
+      -webkit-flex-grow: 1;
+          -ms-flex-positive: 1;
+              flex-grow: 1; }
+    .elementor-form-fields-wrapper.elementor-labels-inline > .elementor-field-group > .elementor-select-wrapper {
+      -webkit-box-flex: 1;
+      -webkit-flex-grow: 1;
+          -ms-flex-positive: 1;
+              flex-grow: 1; }
 
 .elementor-select-wrapper {
   border: 1px solid #818a91;
@@ -1122,7 +1126,12 @@ body.elementor-page .elementor-widget-menu-anchor {
 .elementor-field-group {
   -webkit-flex-wrap: wrap;
       -ms-flex-wrap: wrap;
-          flex-wrap: wrap; }
+          flex-wrap: wrap;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+              -ms-grid-row-align: center;
+          align-items: center; }
   .elementor-field-group > label {
     color: #818a91; }
   .elementor-field-group textarea {
@@ -1162,7 +1171,52 @@ body.elementor-page .elementor-widget-menu-anchor {
       position: absolute;
       font-size: 0.75em;
       top: 0;
-      left: -4px; }
+      left: 2px; }
+
+.elementor-button-align-start {
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+      -ms-flex-pack: start;
+          justify-content: flex-start; }
+.elementor-button-align-end {
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+      -ms-flex-pack: end;
+          justify-content: flex-end; }
+.elementor-button-align-center {
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center; }
+.elementor-button-align-stretch button {
+  -webkit-flex-basis: 100%;
+      -ms-flex-preferred-size: 100%;
+          flex-basis: 100%; }
+
+.elementor-button-vertical-align-start {
+  -webkit-box-align: start;
+  -webkit-align-items: flex-start;
+      -ms-flex-align: start;
+              -ms-grid-row-align: flex-start;
+          align-items: flex-start; }
+.elementor-button-vertical-align-end {
+  -webkit-box-align: end;
+  -webkit-align-items: flex-end;
+      -ms-flex-align: end;
+              -ms-grid-row-align: flex-end;
+          align-items: flex-end; }
+.elementor-button-vertical-align-center {
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+              -ms-grid-row-align: center;
+          align-items: center; }
+.elementor-button-vertical-align-stretch {
+  -webkit-box-align: stretch;
+  -webkit-align-items: stretch;
+      -ms-flex-align: stretch;
+              -ms-grid-row-align: stretch;
+          align-items: stretch; }
 
 .slick-slider {
   position: relative;
