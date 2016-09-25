@@ -20,14 +20,7 @@ $form-accent-color: $gray;
   &.elementor-labels-above {
     > .elementor-field-group {
       > input {
-        &[type=text],
-        &[type=email],
-        &[type=url],
-        &[type=password],
-        &[type=tel],
-        &[type=search] {
-          flex-basis: 100%;
-        }
+        flex-basis: 100%;
       }
       > textarea, > .elementor-select-wrapper, .elementor-field-subgroup {
         flex-basis: 100%;
@@ -36,23 +29,7 @@ $form-accent-color: $gray;
   }
   &.elementor-labels-inline {
     > .elementor-field-group {
-/*
-      > label{
-        flex-basis: 25%;
-      }
-*/
-
-      > input {
-        &[type=text],
-        &[type=email],
-        &[type=url],
-        &[type=password],
-        &[type=tel],
-        &[type=search] {
-          flex-grow: 1;
-        }
-      }
-      > .elementor-select-wrapper {
+      > input, .elementor-select-wrapper {
         flex-grow: 1;
       }
     }
@@ -140,12 +117,12 @@ $form-accent-color: $gray;
   &.elementor-field-required {
     > label {
       position: relative;
-      &:after{
+      &:after {
         content: '*';
         position: absolute;
         font-size: 0.75em;
         top:0;
-        @include end(2px);
+        @include end(0);
 
       }
     }

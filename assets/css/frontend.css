@@ -1056,7 +1056,7 @@ body.elementor-page .elementor-widget-menu-anchor {
   -webkit-flex-wrap: wrap;
       -ms-flex-wrap: wrap;
           flex-wrap: wrap; }
-  .elementor-form-fields-wrapper.elementor-labels-above > .elementor-field-group > input[type=text], .elementor-form-fields-wrapper.elementor-labels-above > .elementor-field-group > input[type=email], .elementor-form-fields-wrapper.elementor-labels-above > .elementor-field-group > input[type=url], .elementor-form-fields-wrapper.elementor-labels-above > .elementor-field-group > input[type=password], .elementor-form-fields-wrapper.elementor-labels-above > .elementor-field-group > input[type=tel], .elementor-form-fields-wrapper.elementor-labels-above > .elementor-field-group > input[type=search] {
+  .elementor-form-fields-wrapper.elementor-labels-above > .elementor-field-group > input {
     -webkit-flex-basis: 100%;
         -ms-flex-preferred-size: 100%;
             flex-basis: 100%; }
@@ -1064,22 +1064,11 @@ body.elementor-page .elementor-widget-menu-anchor {
     -webkit-flex-basis: 100%;
         -ms-flex-preferred-size: 100%;
             flex-basis: 100%; }
-  .elementor-form-fields-wrapper.elementor-labels-inline > .elementor-field-group {
-    /*
-          > label{
-            flex-basis: 25%;
-          }
-    */ }
-    .elementor-form-fields-wrapper.elementor-labels-inline > .elementor-field-group > input[type=text], .elementor-form-fields-wrapper.elementor-labels-inline > .elementor-field-group > input[type=email], .elementor-form-fields-wrapper.elementor-labels-inline > .elementor-field-group > input[type=url], .elementor-form-fields-wrapper.elementor-labels-inline > .elementor-field-group > input[type=password], .elementor-form-fields-wrapper.elementor-labels-inline > .elementor-field-group > input[type=tel], .elementor-form-fields-wrapper.elementor-labels-inline > .elementor-field-group > input[type=search] {
-      -webkit-box-flex: 1;
-      -webkit-flex-grow: 1;
-          -ms-flex-positive: 1;
-              flex-grow: 1; }
-    .elementor-form-fields-wrapper.elementor-labels-inline > .elementor-field-group > .elementor-select-wrapper {
-      -webkit-box-flex: 1;
-      -webkit-flex-grow: 1;
-          -ms-flex-positive: 1;
-              flex-grow: 1; }
+  .elementor-form-fields-wrapper.elementor-labels-inline > .elementor-field-group > input, .elementor-form-fields-wrapper.elementor-labels-inline > .elementor-field-group .elementor-select-wrapper {
+    -webkit-box-flex: 1;
+    -webkit-flex-grow: 1;
+        -ms-flex-positive: 1;
+            flex-grow: 1; }
 
 .elementor-select-wrapper {
   border: 1px solid #818a91;
@@ -1173,7 +1162,7 @@ body.elementor-page .elementor-widget-menu-anchor {
       position: absolute;
       font-size: 0.75em;
       top: 0;
-      right: 2px; }
+      right: 0; }
 
 .elementor-button-align-start {
   -webkit-box-pack: start;

@@ -334,23 +334,23 @@ class Widget_Form extends Widget_Base {
 		);
 
 		$this->add_control(
-			'section_tab_content',
+			'section_label_style',
 			[
-				'label' => __( 'Tab Content', 'elementor' ),
+				'label' => __( 'Label Style', 'elementor' ),
 				'type' => Controls_Manager::SECTION,
 				'tab' => self::TAB_STYLE,
 			]
 		);
 
 		$this->add_control(
-			'content_color',
+			'label_color',
 			[
 				'label' => __( 'Text Color', 'elementor' ),
 				'type' => Controls_Manager::COLOR,
 				'tab' => self::TAB_STYLE,
-				'section' => 'section_tab_content',
+				'section' => 'section_label_style',
 				'selectors' => [
-					'{{WRAPPER}} .elementor-tab-content' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .elementor-field-group > label' => 'color: {{VALUE}};',
 				],
 				'scheme' => [
 					'type' => Scheme_Color::get_type(),
@@ -362,13 +362,95 @@ class Widget_Form extends Widget_Base {
 		$this->add_group_control(
 			Group_Control_Typography::get_type(),
 			[
-				'name' => 'content_typography',
+				'name' => 'label_typography',
 				'tab' => self::TAB_STYLE,
-				'section' => 'section_tab_content',
+				'section' => 'section_label_style',
+				'selector' => '{{WRAPPER}} .elementor-field-group > label',
+				'scheme' => Scheme_Typography::TYPOGRAPHY_3,
+			]
+		);
+
+		$this->add_control(
+			'section_field_style',
+			[
+				'label' => __( 'Field Style', 'elementor' ),
+				'type' => Controls_Manager::SECTION,
+				'tab' => self::TAB_STYLE,
+			]
+		);
+
+		$this->add_control(
+			'field_text_color',
+			[
+				'label' => __( 'Field Text Color', 'elementor' ),
+				'type' => Controls_Manager::COLOR,
+				'tab' => self::TAB_STYLE,
+				'section' => 'section_field_style',
+				'selectors' => [
+					'{{WRAPPER}} .elementor-field-group .elementor-field, {{WRAPPER}} .elementor-field-subgroup' => 'color: {{VALUE}};',
+				],
+				'scheme' => [
+					'type' => Scheme_Color::get_type(),
+					'value' => Scheme_Color::COLOR_3,
+				],
+			]
+		);
+
+		$this->add_control(
+			'field_background_color',
+			[
+				'label' => __( 'Field Background Color', 'elementor' ),
+				'type' => Controls_Manager::COLOR,
+				'tab' => self::TAB_STYLE,
+				'section' => 'section_field_style',
+				'selectors' => [
+					'{{WRAPPER}} .elementor-field-group .elementor-field' => 'background-color: {{VALUE}};',
+				],
+				'scheme' => [
+					'type' => Scheme_Color::get_type(),
+					'value' => Scheme_Color::COLOR_3,
+				],
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			[
+				'name' => 'field_typography',
+				'tab' => self::TAB_STYLE,
+				'section' => 'section_field_style',
 				'selector' => '{{WRAPPER}} .elementor-tab-content',
 				'scheme' => Scheme_Typography::TYPOGRAPHY_3,
 			]
 		);
+
+		$this->add_group_control(
+			Group_Control_Border::get_type(),
+			[
+				'name' => 'border_width',
+				'label' => __( 'Border', 'elementor' ),
+				'tab' => self::TAB_STYLE,
+				'placeholder' => '1px',
+				'default' => '1px',
+				'section' => 'section_field_style',
+				'selector' => '{{WRAPPER}} .elementor-field-group .elementor-field',
+			]
+		);
+
+		$this->add_control(
+			'field_border_radius',
+			[
+				'label' => __( 'Border Radius', 'elementor' ),
+				'type' => Controls_Manager::DIMENSIONS,
+				'size_units' => [ 'px', '%' ],
+				'tab' => self::TAB_STYLE,
+				'section' => 'section_field_style',
+				'selectors' => [
+					'{{WRAPPER}} .elementor-field-group .elementor-field' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
+		);
+
 	}
 
 	protected function render( $instance = [] ) {
@@ -378,7 +460,7 @@ class Widget_Form extends Widget_Base {
 					name="form_field_' . $counter . '"
 			        placeholder="' . $item['placeholder'] . '"
 			        rows="' . $item['rows'] . '"
-			        class="' . $item['css_classes'] . '"' .
+			        class="elementor-field ' . $item['css_classes'] . '"' .
 			        ( $item['required'] ? ' required' : '' ) . '></textarea>';
 			return $html;
 		}
@@ -387,7 +469,7 @@ class Widget_Form extends Widget_Base {
 			$options = preg_split( "/\\r\\n|\\r|\\n/", $item['field_options'] );
 			$html = '';
 			if ( $options ) {
-				$html = '<div class="elementor-select-wrapper ' . $item['css_classes'] . '">
+				$html = '<div class="elementor-field elementor-select-wrapper ' . $item['css_classes'] . '">
 						<select id="form_field_' . $counter . '"
 						name="form_field_' . $counter . '"' .
 				        ( $item['required'] ? ' required' : '' ) . '>';
@@ -456,7 +538,7 @@ class Widget_Form extends Widget_Base {
 								type="<?php echo $item['field_type']; ?>" id="form_field_<?php echo $counter; ?>"
 								name="form_field_<?php echo $counter; ?>"
 								placeholder="<?php echo $item['placeholder']; ?>"
-								class="<?php echo $item['css_classes']; ?>"
+								class="elementor-field <?php echo $item['css_classes']; ?>"
 						        <?php if ( $item['required'] ) echo 'required'; ?>
 						>
 					<?php $counter ++; }?>
