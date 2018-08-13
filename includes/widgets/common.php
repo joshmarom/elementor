@@ -98,6 +98,69 @@ class Widget_Common extends Widget_Base {
 		);
 
 		$this->add_control(
+			'_is_absolute',
+			[
+				'label' => __( 'Absolute', 'elementor' ),
+				'type' => Controls_Manager::SWITCHER,
+				'default' => '',
+				'prefix_class' => 'elementor-',
+				'label_on' => 'Hide',
+				'label_off' => 'Show',
+				'return_value' => 'is-absolute',
+			]
+		);
+
+		$this->add_control(
+			'_offset_x',
+			[
+				'label' => __( 'Horizontal Offset', 'elementor' ),
+				'type' => Controls_Manager::SLIDER,
+				'range' => [
+					'px' => [
+						'min' => -1000,
+						'max' => 1000,
+					],
+				],
+				'default' => [
+					'size' => '0',
+				],
+				'required' => true,
+				'size_units' => [ 'px' ],
+				'selectors' => [
+					'{{WRAPPER}}' => 'transform: translate3d({{SIZE}}{{UNIT}}, {{_offset_y.SIZE}}{{_offset_y.UNIT}}, 0)',
+				],
+				'condition' => [
+					'_is_absolute!' => '',
+				],
+			]
+		);
+
+		$this->add_control(
+			'_offset_y',
+			[
+				'label' => __( 'Vertical Offset', 'elementor' ),
+				'type' => Controls_Manager::SLIDER,
+				'range' => [
+					'px' => [
+						'min' => -1000,
+						'max' => 1000,
+					],
+				],
+				'size_units' => [ 'px' ],
+				'default' => [
+					'size' => '0',
+				],
+				'required' => true,
+				'selectors' => [
+					'{{WRAPPER}}' => 'transform: translate3d({{_offset_x.SIZE}}{{_offset_x.UNIT}}, {{SIZE}}{{UNIT}}, 0)',
+				],
+				'condition' => [
+					'_is_absolute!' => '',
+				],
+			]
+		);
+
+		$this->add_control(
 			'_animation',
 			[
 				'label' => __( 'Entrance Animation', 'elementor' ),
@@ -391,119 +454,6 @@ class Widget_Common extends Widget_Base {
 				'label_on' => 'Hide',
 				'label_off' => 'Show',
 				'return_value' => 'hidden-phone',
-			]
-		);
-
-		$this->end_controls_section();
-
-		$this->start_controls_section(
-			'_section_absolute_position',
-			[
-				'label' => __( 'Absolute Position', 'elementor' ),
-				'tab' => Controls_Manager::TAB_ADVANCED,
-			]
-		);
-
-		$this->add_control(
-			'_is_absolute',
-			[
-				'label' => __( 'Absolute', 'elementor' ),
-				'type' => Controls_Manager::SWITCHER,
-				'default' => '',
-				'prefix_class' => 'elementor-',
-				'label_on' => 'Hide',
-				'label_off' => 'Show',
-				'return_value' => 'is-absolute',
-			]
-		);
-
-		$this->add_responsive_control(
-			'_position_x',
-			[
-				'label' => __( 'Horizontal Position', 'elementor-pro' ),
-				'type' => Controls_Manager::CHOOSE,
-				'label_block' => false,
-				'default' => 'left',
-				'options' => [
-					'left' => [
-						'title' => __( 'Left', 'elementor-pro' ),
-						'icon' => 'eicon-h-align-left',
-					],
-					'right' => [
-						'title' => __( 'Right', 'elementor-pro' ),
-						'icon' => 'eicon-h-align-right',
-					],
-				],
-				'render_type' => 'ui',
-				'condition' => [
-					'_is_absolute!' => '',
-				],
-			]
-		);
-
-		$this->add_control(
-			'_offset_x',
-			[
-				'label' => __( 'Horizontal Offset', 'elementor' ),
-				'type' => Controls_Manager::SLIDER,
-				'range' => [
-					'px' => [
-						'min' => -1000,
-						'max' => 1000,
-					],
-				],
-				'size_units' => [ 'px', '%' ],
-				'selectors' => [
-					'{{WRAPPER}}' => '{{_position_x.VALUE}}: {{SIZE}}{{UNIT}}',
-				],
-				'condition' => [
-					'_is_absolute!' => '',
-				],
-			]
-		);
-
-		$this->add_responsive_control(
-			'_position_y',
-			[
-				'label' => __( 'Vertical Position', 'elementor-pro' ),
-				'type' => Controls_Manager::CHOOSE,
-				'label_block' => false,
-				'default' => 'top',
-				'options' => [
-					'top' => [
-						'title' => __( 'Top', 'elementor-pro' ),
-						'icon' => 'eicon-v-align-top',
-					],
-					'bottom' => [
-						'title' => __( 'Bottom', 'elementor-pro' ),
-						'icon' => 'eicon-v-align-bottom',
-					],
-				],
-				'render_type' => 'ui',
-				'condition' => [
-					'_is_absolute!' => '',
-				],
-			]
-		);
-
-		$this->add_control(
-			'_offset_y',
-			[
-				'label' => __( 'Vertical Offset', 'elementor' ),
-				'type' => Controls_Manager::SLIDER,
-				'range' => [
-					'px' => [
-						'min' => -1000,
-						'max' => 1000,
-					],
-				],
-				'size_units' => [ 'px', '%' ],
-				'selectors' => [
-					'{{WRAPPER}}' => '{{_position_y.VALUE}}: {{SIZE}}{{UNIT}}',
-				],
-				'condition' => [
-					'_is_absolute!' => '',
-				],
 			]
 		);
 
