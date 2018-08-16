@@ -285,6 +285,14 @@ class Frontend {
 		);
 
 		wp_register_script(
+			'rellax',
+			ELEMENTOR_ASSETS_URL . 'lib/rellax/rellax' . $suffix . '.js',
+			[],
+			'1',
+			false
+		);
+
+		wp_register_script(
 			'jquery-slick',
 			ELEMENTOR_ASSETS_URL . 'lib/slick/slick' . $suffix . '.js',
 			[
@@ -432,6 +440,7 @@ class Frontend {
 		do_action( 'elementor/frontend/before_enqueue_scripts' );
 
 		wp_enqueue_script( 'elementor-frontend' );
+		wp_enqueue_script( 'rellax' );
 
 		$is_preview_mode = Plugin::$instance->preview->is_preview_mode( Plugin::$instance->preview->get_post_id() );
 

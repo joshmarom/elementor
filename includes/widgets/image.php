@@ -530,7 +530,8 @@ class Widget_Image extends Widget_Base {
 
 		$has_caption = ! empty( $settings['caption'] );
 
-		$this->add_render_attribute( 'wrapper', 'class', 'elementor-image' );
+		$this->add_render_attribute( 'wrapper', 'class', 'elementor-image rellax' );
+		$this->add_render_attribute( 'wrapper', 'data-rellax-speed', '7' );
 
 		if ( ! empty( $settings['shape'] ) ) {
 			$this->add_render_attribute( 'wrapper', 'class', 'elementor-image-shape-' . $settings['shape'] );
@@ -614,7 +615,7 @@ class Widget_Image extends Widget_Base {
 				link_url = settings.image.url;
 			}
 
-			#><div class="elementor-image{{ settings.shape ? ' elementor-image-shape-' + settings.shape : '' }}"><#
+			#><div class="elementor-image{{ settings.shape ? ' elementor-image-shape-' + settings.shape : '' }} rellax" data-rellax-speed="7"><#
 			var imgClass = '',
 				hasCaption = '' !== settings.caption;
 
