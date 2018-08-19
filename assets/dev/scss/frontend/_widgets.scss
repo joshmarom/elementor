@@ -10,7 +10,12 @@
 	}
 
 	.elementor-is-absolute {
+		width: auto;
 		position: absolute;
+
+		.elementor-image img, img {
+			max-width: none;
+		}
 	}
 
 }

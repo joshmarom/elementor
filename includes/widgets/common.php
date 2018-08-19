@@ -127,7 +127,7 @@ class Widget_Common extends Widget_Base {
 				'required' => true,
 				'size_units' => [ 'px' ],
 				'selectors' => [
-					'{{WRAPPER}}' => 'transform: translate3d({{SIZE}}{{UNIT}}, {{_offset_y.SIZE}}{{_offset_y.UNIT}}, 0)',
+					'{{WRAPPER}}' => 'left: {{SIZE}}{{UNIT}}; top: {{_offset_y.SIZE}}{{_offset_y.UNIT}}',
 				],
 				'condition' => [
 					'_is_absolute!' => '',
@@ -152,7 +152,7 @@ class Widget_Common extends Widget_Base {
 				],
 				'required' => true,
 				'selectors' => [
-					'{{WRAPPER}}' => 'transform: translate3d({{_offset_x.SIZE}}{{_offset_x.UNIT}}, {{SIZE}}{{UNIT}}, 0)',
+					'{{WRAPPER}}' => 'left: {{_offset_x.SIZE}}{{_offset_x.UNIT}}; top: {{SIZE}}{{UNIT}}',
 				],
 				'condition' => [
 					'_is_absolute!' => '',
