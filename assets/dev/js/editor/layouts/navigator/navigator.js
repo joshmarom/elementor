@@ -3,8 +3,6 @@ module.exports = Marionette.Region.extend( {
 
 	isDocked: false,
 
-	isDraggingNeedsStop: false,
-
 	opened: false,
 
 	storage: {
@@ -16,9 +14,6 @@ module.exports = Marionette.Region.extend( {
 			bottom: '',
 			right: '',
 			left: ''
-		},
-		dockedSize: {
-			width: 250
 		}
 	},
 
@@ -33,6 +28,8 @@ module.exports = Marionette.Region.extend( {
 			this.storage = savedStorage;
 		}
 
+		this.listenTo( elementor.channels.dataEditMode, 'switch', this.onEditModeSwitched );
+
 		if ( this.storage.visible ) {
 			this.open();
 		}
@@ -46,8 +43,6 @@ module.exports = Marionette.Region.extend( {
 		return {
 			iframeFix: true,
 			handle: '#elementor-navigator__header',
-			snap: 'body',
-			snapMode: 'inner',
 			drag: this.onDrag.bind( this ),
 			stop: this.onDragStop.bind( this )
 		};
@@ -69,7 +64,9 @@ module.exports = Marionette.Region.extend( {
 				elementor.$previewWrapper.removeClass( 'ui-resizable-resizing' );
 
 				if ( self.isDocked ) {
-					self.saveDockedSize();
+					self.storage.size.width = elementor.helpers.getElementInlineStyle( self.$el, [ 'width' ] ).width;
+
+					elementor.setStorage( 'navigator', self.storage );
 				} else {
 					self.saveSize();
 				}
@@ -98,6 +95,8 @@ module.exports = Marionette.Region.extend( {
 
 		if ( this.storage.docked ) {
 			this.dock();
+
+			this.setDockedSize();
 		} else {
 			this.setSize();
 		}
@@ -113,36 +112,27 @@ module.exports = Marionette.Region.extend( {
 		elementor.$window.on( 'resize', this.ensurePosition );
 	},
 
-	close: function() {
+	close: function( silent ) {
 		this.$el.hide();
 
 		if ( this.isDocked ) {
 			this.undock( true );
 		}
 
-		this.saveStorage( 'visible', false );
+		if ( ! silent ) {
+			this.saveStorage( 'visible', false );
+		}
 
 		elementor.$window.off( 'resize', this.ensurePosition );
-	},
-
-	isSnapping: function() {
-		var draggableInstance = this.$el.draggable( 'instance' ),
-			snapElements = draggableInstance.snapElements;
-
-		return snapElements.some( function( element ) {
-			return element.snapping;
-		} );
 	},
 
 	dock: function() {
 		elementor.$body.addClass( 'elementor-navigator-docked' );
 
 		var side = elementor.config.is_rtl ? 'left' : 'right',
-			dockedWidth = this.storage.dockedSize.width,
 			resizableOptions = this.getResizableOptions();
 
 		this.$el.css( {
-			width: dockedWidth,
 			height: '',
 			top: '',
 			bottom: '',
@@ -150,7 +140,7 @@ module.exports = Marionette.Region.extend( {
 			right: ''
 		} );
 
-		elementor.$previewWrapper.css( side, dockedWidth );
+		elementor.$previewWrapper.css( side, this.storage.size.width );
 
 		this.$el.resizable( 'destroy' );
 
@@ -195,14 +185,14 @@ module.exports = Marionette.Region.extend( {
 		this.saveStorage( 'size', elementor.helpers.getElementInlineStyle( this.$el, [ 'width', 'height', 'top', 'bottom', 'right', 'left' ] ) );
 	},
 
-	saveDockedSize: function() {
-		this.saveStorage( 'dockedSize', elementor.helpers.getElementInlineStyle( this.$el, [ 'width' ] ) );
-	},
-
 	setSize: function() {
 		if ( this.storage.size ) {
 			this.$el.css( this.storage.size );
 		}
+	},
+
+	setDockedSize: function() {
+		this.$el.css( 'width', this.storage.size.width );
 	},
 
 	ensurePosition: function() {
@@ -228,10 +218,6 @@ module.exports = Marionette.Region.extend( {
 	},
 
 	onDrag: function( event, ui ) {
-		if ( this.isDraggingNeedsStop ) {
-			return false;
-		}
-
 		if ( this.isDocked ) {
 			if ( ui.position.left === ui.originalPosition.left ) {
 				if ( ui.position.top !== ui.originalPosition.top ) {
@@ -244,24 +230,40 @@ module.exports = Marionette.Region.extend( {
 			return;
 		}
 
-		if ( this.isSnapping() ) {
-			var elementRight = ui.position.left + this.$el.outerWidth();
-
-			if ( elementRight >= innerWidth ) {
-				this.dock();
-
-				this.isDraggingNeedsStop = true;
-
-				return false;
-			}
+		if ( 0 > ui.position.top ) {
+			ui.position.top = 0;
 		}
+
+		if ( 0 > ui.position.left ) {
+			ui.position.left = 0;
+		}
+
+		elementor.$body.toggleClass( 'elementor-navigator--dock-hint', ui.position.left + this.el.offsetWidth > innerWidth );
 	},
 
-	onDragStop: function() {
-		this.isDraggingNeedsStop = false;
+	onDragStop: function( event, ui ) {
+		if ( this.isDocked ) {
+			return;
+		}
 
-		if ( ! this.isDocked ) {
-			this.saveSize();
+		this.saveSize();
+
+		var elementRight = ui.position.left + this.el.offsetWidth;
+
+		if ( elementRight >= innerWidth ) {
+			this.dock();
+		}
+
+		elementor.$body.removeClass( 'elementor-navigator--dock-hint' );
+	},
+
+	onEditModeSwitched: function() {
+		var activeMode = elementor.channels.dataEditMode.request( 'activeMode' );
+
+		if ( 'edit' === activeMode && this.storage.visible ) {
+			this.open();
+		} else {
+			this.close( true );
 		}
 	}
 } );
