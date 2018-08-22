@@ -101,6 +101,18 @@
 	visibility: hidden;
 }
 
+.elementor-absolute {
+	position: absolute;
+	z-index: 1;
+	top: 0;
+	left: 0;
+	width: auto;
+
+	.elementor-image img {
+		width: auto;
+	}
+}
+
 // Alignment Classes
 .elementor-align- {
 
