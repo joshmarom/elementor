@@ -19,7 +19,7 @@ class Module extends BaseModule {
 	}
 
 	public static function is_active() {
-		return function_exists( 'the_gutenberg_project' );
+		return function_exists( 'register_block_type' );
 	}
 
 	public function register_elementor_rest_field() {
@@ -80,7 +80,7 @@ class Module extends BaseModule {
 		<script id="elementor-gutenberg-panel" type="text/html">
 			<div id="elementor-editor"><a id="elementor-go-to-edit-page-link" href="#">
 					<div id="elementor-editor-button" class="button button-primary button-hero">
-						<i class="eicon-elementor" aria-hidden="true"></i>
+						<i class="eicon-elementor-square" aria-hidden="true"></i>
 						<?php echo __( 'Edit with Elementor', 'elementor' ); ?>
 					</div>
 					<div class="elementor-loader-wrapper">

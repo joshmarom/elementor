@@ -10,8 +10,8 @@ module.exports = BaseRegion.extend( {
 	getDefaultStorage: function() {
 		return {
 			size: {
-				width: ''
-			}
+				width: '',
+			},
 		};
 	},
 
@@ -31,7 +31,7 @@ module.exports = BaseRegion.extend( {
 
 	setSize: function() {
 		var width = this.storage.size.width,
-			side = elementor.config.is_rtl ? 'right' : 'left';
+			side = elementorCommon.config.isRTL ? 'right' : 'left';
 
 		this.$el.css( 'width', width );
 
@@ -40,10 +40,10 @@ module.exports = BaseRegion.extend( {
 
 	resizable: function() {
 		var self = this,
-			side = elementor.config.is_rtl ? 'right' : 'left';
+			side = elementorCommon.config.isRTL ? 'right' : 'left';
 
 		self.$el.resizable( {
-			handles: elementor.config.is_rtl ? 'w' : 'e',
+			handles: elementorCommon.config.isRTL ? 'w' : 'e',
 			minWidth: 200,
 			maxWidth: 680,
 			start: function() {
@@ -58,7 +58,7 @@ module.exports = BaseRegion.extend( {
 			},
 			resize: function( event, ui ) {
 				elementor.$previewWrapper.css( side, ui.size.width );
-			}
+			},
 		} );
 	},
 
@@ -68,5 +68,5 @@ module.exports = BaseRegion.extend( {
 		}
 
 		this.setSize();
-	}
+	},
 } );

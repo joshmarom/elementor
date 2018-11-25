@@ -8,7 +8,7 @@ ElementModel = Backbone.Model.extend( {
 		elType: '',
 		isInner: false,
 		settings: {},
-		defaultEditSettings: {}
+		defaultEditSettings: {},
 	},
 
 	remoteRender: false,
@@ -43,7 +43,7 @@ ElementModel = Backbone.Model.extend( {
 
 		this.on( {
 			destroy: this.onDestroy,
-			'editor:close': this.onCloseEditor
+			'editor:close': this.onCloseEditor,
 		} );
 	},
 
@@ -51,12 +51,12 @@ ElementModel = Backbone.Model.extend( {
 		var elType = this.get( 'elType' ),
 			settings = this.get( 'settings' ),
 			settingModels = {
-				column: ColumnSettingsModel
+				column: ColumnSettingsModel,
 			},
 			SettingsModel = settingModels[ elType ] || BaseSettingsModel;
 
 		if ( jQuery.isEmptyObject( settings ) ) {
-			settings = elementor.helpers.cloneObject( settings );
+			settings = elementorCommon.helpers.cloneObject( settings );
 		}
 
 		if ( 'widget' === elType ) {
@@ -67,7 +67,7 @@ ElementModel = Backbone.Model.extend( {
 		settings.isInner = this.get( 'isInner' );
 
 		settings = new SettingsModel( settings, {
-			controls: elementor.getElementControls( this )
+			controls: elementor.getElementControls( this ),
 		} );
 
 		this.set( 'settings', settings );
@@ -90,12 +90,12 @@ ElementModel = Backbone.Model.extend( {
 			var keyParts = key.split( '.' ),
 				isRepeaterKey = 3 === keyParts.length;
 
-			key = keyParts[0];
+			key = keyParts[ 0 ];
 
 			if ( isRepeaterKey ) {
-				settings = settings.get( key ).models[ keyParts[1] ];
+				settings = settings.get( key ).models[ keyParts[ 1 ] ];
 
-				key = keyParts[2];
+				key = keyParts[ 2 ];
 			}
 		}
 
@@ -107,7 +107,7 @@ ElementModel = Backbone.Model.extend( {
 			isRepeaterKey = 3 === keyParts.length,
 			settings = this.get( 'settings' );
 
-		key = keyParts[0];
+		key = keyParts[ 0 ];
 
 		var value = settings.get( key );
 
@@ -116,7 +116,7 @@ ElementModel = Backbone.Model.extend( {
 		}
 
 		if ( isRepeaterKey ) {
-			value = value.models[ keyParts[1] ].get( keyParts[2] );
+			value = value.models[ keyParts[ 1 ] ].get( keyParts[ 2 ] );
 		}
 
 		return value;
@@ -135,7 +135,7 @@ ElementModel = Backbone.Model.extend( {
 	},
 
 	getTitle: function() {
-		var title = this.getSetting( '_title' );
+		let title = this.getSetting( '_title' );
 
 		if ( ! title ) {
 			title = this.getDefaultTitle();
@@ -151,12 +151,12 @@ ElementModel = Backbone.Model.extend( {
 	createRemoteRenderRequest: function() {
 		var data = this.toJSON();
 
-		return elementor.ajax.addRequest( 'render_widget', {
+		return elementorCommon.ajax.addRequest( 'render_widget', {
 			unique_id: this.cid,
 			data: {
-				data: data
+				data: data,
 			},
-			success: this.onRemoteGetHtml.bind( this )
+			success: this.onRemoteGetHtml.bind( this ),
 		}, true ).jqXhr;
 	},
 
@@ -186,7 +186,7 @@ ElementModel = Backbone.Model.extend( {
 	},
 
 	clone: function() {
-		var newModel = new this.constructor( elementor.helpers.cloneObject( this.attributes ) );
+		var newModel = new this.constructor( elementorCommon.helpers.cloneObject( this.attributes ) );
 
 		newModel.set( 'id', elementor.helpers.getUniqueID() );
 
@@ -240,7 +240,7 @@ ElementModel = Backbone.Model.extend( {
 		}
 
 		settings.destroy();
-	}
+	},
 
 } );
 

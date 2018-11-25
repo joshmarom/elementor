@@ -129,7 +129,7 @@ class Group_Control_Background extends Group_Control_Base {
 			'default' => '',
 			'title' => _x( 'Background Color', 'Background Control', 'elementor' ),
 			'selectors' => [
-				'{{SELECTOR}}' => 'background-color: {{VALUE}};',
+				'{{SELECTOR}}:not(.elementor-section), {{SELECTOR}}.elementor-section > .elementor-background-holder .elementor-background' => 'background-color: {{VALUE}};',
 			],
 			'condition' => [
 				'background' => [ 'classic', 'gradient' ],
@@ -206,7 +206,7 @@ class Group_Control_Background extends Group_Control_Base {
 				],
 			],
 			'selectors' => [
-				'{{SELECTOR}}' => 'background-color: transparent; background-image: linear-gradient({{SIZE}}{{UNIT}}, {{color.VALUE}} {{color_stop.SIZE}}{{color_stop.UNIT}}, {{color_b.VALUE}} {{color_b_stop.SIZE}}{{color_b_stop.UNIT}})',
+				'{{SELECTOR}}:not(.elementor-section), {{SELECTOR}}.elementor-section > .elementor-background-holder .elementor-background' => 'background-color: transparent; background-image: linear-gradient({{SIZE}}{{UNIT}}, {{color.VALUE}} {{color_stop.SIZE}}{{color_stop.UNIT}}, {{color_b.VALUE}} {{color_b_stop.SIZE}}{{color_b_stop.UNIT}})',
 			],
 			'condition' => [
 				'background' => [ 'gradient' ],
@@ -231,7 +231,7 @@ class Group_Control_Background extends Group_Control_Base {
 			],
 			'default' => 'center center',
 			'selectors' => [
-				'{{SELECTOR}}' => 'background-color: transparent; background-image: radial-gradient(at {{VALUE}}, {{color.VALUE}} {{color_stop.SIZE}}{{color_stop.UNIT}}, {{color_b.VALUE}} {{color_b_stop.SIZE}}{{color_b_stop.UNIT}})',
+				'{{SELECTOR}}:not(.elementor-section), {{SELECTOR}}.elementor-section > .elementor-background-holder .elementor-background' => 'background-color: transparent; background-image: radial-gradient(at {{VALUE}}, {{color.VALUE}} {{color_stop.SIZE}}{{color_stop.UNIT}}, {{color_b.VALUE}} {{color_b_stop.SIZE}}{{color_b_stop.UNIT}})',
 			],
 			'condition' => [
 				'background' => [ 'gradient' ],
@@ -246,9 +246,10 @@ class Group_Control_Background extends Group_Control_Base {
 			'dynamic' => [
 				'active' => true,
 			],
+			'responsive' => true,
 			'title' => _x( 'Background Image', 'Background Control', 'elementor' ),
 			'selectors' => [
-				'{{SELECTOR}}' => 'background-image: url("{{URL}}");',
+				'{{SELECTOR}}:not(.elementor-section), {{SELECTOR}}.elementor-section > .elementor-background-holder .elementor-background' => 'background-image: url("{{URL}}");',
 			],
 			'condition' => [
 				'background' => [ 'classic' ],
@@ -270,14 +271,99 @@ class Group_Control_Background extends Group_Control_Base {
 				'bottom left' => _x( 'Bottom Left', 'Background Control', 'elementor' ),
 				'bottom center' => _x( 'Bottom Center', 'Background Control', 'elementor' ),
 				'bottom right' => _x( 'Bottom Right', 'Background Control', 'elementor' ),
+				'initial' => _x( 'Custom', 'Background Control', 'elementor' ),
+
 			],
 			'selectors' => [
-				'{{SELECTOR}}' => 'background-position: {{VALUE}};',
+				'{{SELECTOR}}:not(.elementor-section), {{SELECTOR}}.elementor-section > .elementor-background-holder .elementor-background' => 'background-position: {{VALUE}};',
 			],
 			'condition' => [
 				'background' => [ 'classic' ],
 				'image[url]!' => '',
 			],
+		];
+
+		$fields['xpos'] = [
+			'label' => _x( 'X Position', 'Background Control', 'elementor' ),
+			'type' => Controls_Manager::SLIDER,
+			'size_units' => [ 'px', 'em', '%', 'vw', 'vh' ],
+			'default' => [
+				'unit' => 'px',
+				'size' => 0,
+			],
+			'range' => [
+				'px' => [
+					'min' => -800,
+					'max' => 800,
+				],
+				'em' => [
+					'min' => -100,
+					'max' => 100,
+				],
+				'%' => [
+					'min' => -100,
+					'max' => 100,
+				],
+				'vh' => [
+					'min' => -100,
+					'max' => 100,
+				],
+				'vw' => [
+					'min' => -100,
+					'max' => 100,
+				],
+			],
+			'selectors' => [
+				'{{SELECTOR}}:not(.elementor-section), {{SELECTOR}}.elementor-section > .elementor-background-holder .elementor-background' => 'background-position: {{SIZE}}{{UNIT}} {{ypos.SIZE}}{{ypos.UNIT}}',
+			],
+			'condition' => [
+				'background' => [ 'classic' ],
+				'position' => [ 'initial' ],
+				'image[url]!' => '',
+			],
+			'required' => true,
+		];
+
+		$fields['ypos'] = [
+			'label' => _x( 'Y Position', 'Background Control', 'elementor' ),
+			'type' => Controls_Manager::SLIDER,
+			'size_units' => [ 'px', 'em', '%', 'vw', 'vh' ],
+			'default' => [
+				'unit' => 'px',
+				'size' => 0,
+			],
+			'range' => [
+				'px' => [
+					'min' => -800,
+					'max' => 800,
+				],
+				'em' => [
+					'min' => -100,
+					'max' => 100,
+				],
+				'%' => [
+					'min' => -100,
+					'max' => 100,
+				],
+				'vh' => [
+					'min' => -100,
+					'max' => 100,
+				],
+				'vw' => [
+					'min' => -100,
+					'max' => 100,
+				],
+			],
+			'selectors' => [
+				'{{SELECTOR}}:not(.elementor-section), {{SELECTOR}}.elementor-section > .elementor-background-holder .elementor-background' => 'background-position: {{xpos.SIZE}}{{xpos.UNIT}} {{SIZE}}{{UNIT}}',
+			],
+			'condition' => [
+				'background' => [ 'classic' ],
+				'position' => [ 'initial' ],
+				'image[url]!' => '',
+			],
+			'required' => true,
+			'separator' => 'after',
 		];
 
 		$fields['attachment'] = [
@@ -290,7 +376,7 @@ class Group_Control_Background extends Group_Control_Base {
 				'fixed' => _x( 'Fixed', 'Background Control', 'elementor' ),
 			],
 			'selectors' => [
-				'(desktop+){{SELECTOR}}' => 'background-attachment: {{VALUE}};',
+				'(desktop+){{SELECTOR}}:not(.elementor-section), {{SELECTOR}}.elementor-section > .elementor-background-holder .elementor-background' => 'background-attachment: {{VALUE}};',
 			],
 			'condition' => [
 				'background' => [ 'classic' ],
@@ -322,7 +408,7 @@ class Group_Control_Background extends Group_Control_Base {
 				'repeat-y' => _x( 'Repeat-y', 'Background Control', 'elementor' ),
 			],
 			'selectors' => [
-				'{{SELECTOR}}' => 'background-repeat: {{VALUE}};',
+				'{{SELECTOR}}:not(.elementor-section), {{SELECTOR}}.elementor-section > .elementor-background-holder .elementor-background' => 'background-repeat: {{VALUE}};',
 			],
 			'condition' => [
 				'background' => [ 'classic' ],
@@ -339,9 +425,10 @@ class Group_Control_Background extends Group_Control_Base {
 				'auto' => _x( 'Auto', 'Background Control', 'elementor' ),
 				'cover' => _x( 'Cover', 'Background Control', 'elementor' ),
 				'contain' => _x( 'Contain', 'Background Control', 'elementor' ),
+				'initial' => _x( 'Custom', 'Background Control', 'elementor' ),
 			],
 			'selectors' => [
-				'{{SELECTOR}}' => 'background-size: {{VALUE}};',
+				'{{SELECTOR}}:not(.elementor-section), {{SELECTOR}}.elementor-section > .elementor-background-holder .elementor-background' => 'background-size: {{VALUE}};',
 			],
 			'condition' => [
 				'background' => [ 'classic' ],
@@ -349,6 +436,89 @@ class Group_Control_Background extends Group_Control_Base {
 			],
 		];
 
+		$fields['bg_width'] = [
+			'label' => _x( 'Width', 'Background Control', 'elementor' ),
+			'type' => Controls_Manager::SLIDER,
+			'size_units' => [ 'px', 'em', '%', 'vw', 'vh' ],
+			'default' => [
+				'unit' => '%',
+				'size' => 100,
+			],
+			'range' => [
+				'px' => [
+					'min' => 0,
+					'max' => 800,
+				],
+				'em' => [
+					'min' => -100,
+					'max' => 100,
+				],
+				'%' => [
+					'min' => 0,
+					'max' => 100,
+				],
+				'vh' => [
+					'min' => 0,
+					'max' => 100,
+				],
+				'vw' => [
+					'min' => 0,
+					'max' => 100,
+				],
+			],
+			'selectors' => [
+				'{{SELECTOR}}:not(.elementor-section), {{SELECTOR}}.elementor-section > .elementor-background-holder .elementor-background' => 'background-size: {{SIZE}}{{UNIT}} auto',
+			],
+			'condition' => [
+				'background' => [ 'classic' ],
+				'size' => [ 'initial' ],
+				'image[url]!' => '',
+			],
+			'required' => true,
+		];
+/*
+		$fields['bg_height'] = [
+			'label' => _x( 'Height', 'Background Control', 'elementor' ),
+			'type' => Controls_Manager::SLIDER,
+			'size_units' => [ 'px', 'em', '%', 'vw', 'vh' ],
+			'default' => [
+				'unit' => '%',
+				'size' => 100,
+			],
+			'range' => [
+				'px' => [
+					'min' => 0,
+					'max' => 800,
+				],
+				'em' => [
+					'min' => -100,
+					'max' => 100,
+				],
+				'%' => [
+					'min' => 0,
+					'max' => 100,
+				],
+				'vh' => [
+					'min' => 0,
+					'max' => 100,
+				],
+				'vw' => [
+					'min' => 0,
+					'max' => 100,
+				],
+			],
+			'selectors' => [
+				'{{SELECTOR}}:not(.elementor-section), {{SELECTOR}}.elementor-section > .elementor-background-holder .elementor-background' => 'background-size: {{bg_width.SIZE}}{{bg_width.UNIT}} {{SIZE}}{{UNIT}}',
+			],
+			'condition' => [
+				'background' => [ 'classic' ],
+				'size' => [ 'initial' ],
+				'image[url]!' => '',
+			],
+			'required' => true,
+			'separator' => 'after',
+		];
+*/
 		$fields['video_link'] = [
 			'label' => _x( 'Video Link', 'Background Control', 'elementor' ),
 			'type' => Controls_Manager::TEXT,

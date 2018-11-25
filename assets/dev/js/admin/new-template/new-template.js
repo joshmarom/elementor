@@ -4,11 +4,10 @@ var ViewModule = require( 'elementor-utils/view-module' ),
 var NewTemplateModule = ViewModule.extend( {
 
 	getDefaultSettings: function() {
-
 		return {
 			selectors: {
-				addButton: '.page-title-action:first, #elementor-template-library-add-new'
-			}
+				addButton: '.page-title-action:first, #elementor-template-library-add-new',
+			},
 		};
 	},
 
@@ -16,7 +15,7 @@ var NewTemplateModule = ViewModule.extend( {
 		var selectors = this.getSettings( 'selectors' );
 
 		return {
-			$addButton: jQuery( selectors.addButton )
+			$addButton: jQuery( selectors.addButton ),
 		};
 	},
 
@@ -28,15 +27,19 @@ var NewTemplateModule = ViewModule.extend( {
 		ViewModule.prototype.onInit.apply( this, arguments );
 
 		this.layout = new NewTemplateLayout();
+
+		if ( '#add_new' === location.hash ) {
+			this.layout.showModal();
+		}
 	},
 
 	onAddButtonClick: function( event ) {
 		event.preventDefault();
 
 		this.layout.showModal();
-	}
+	},
 } );
 
 jQuery( function() {
-	new NewTemplateModule();
+	window.elementorNewTemplate = new NewTemplateModule();
 } );

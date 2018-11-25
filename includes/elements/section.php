@@ -290,6 +290,15 @@ class Element_Section extends Element_Base {
 		);
 
 		$this->add_control(
+			'_title',
+			[
+				'label' => __( 'Title', 'elementor' ),
+				'type' => Controls_Manager::HIDDEN,
+				'render_type' => 'none',
+			]
+		);
+
+		$this->add_control(
 			'stretch_section',
 			[
 				'label' => __( 'Stretch Section', 'elementor' ),
@@ -1382,6 +1391,11 @@ class Element_Section extends Element_Base {
 	 */
 	protected function _content_template() {
 		?>
+		<# if ( 'classic' === settings.background_background ) { #>
+			<div class="elementor-background-holder">
+				<div class="elementor-background"></div>
+			</div>
+		<# } #>
 		<# if ( settings.background_video_link ) { #>
 			<div class="elementor-background-video-container elementor-hidden-phone">
 				<div class="elementor-background-video-embed"></div>
@@ -1411,6 +1425,13 @@ class Element_Section extends Element_Base {
 		?>
 		<<?php echo esc_html( $this->get_html_tag() ); ?> <?php $this->print_render_attribute_string( '_wrapper' ); ?>>
 			<?php
+			if ( 'classic' === $settings['background_background'] ) :
+				?>
+				<div class="elementor-background-holder">
+					<div class="elementor-background"></div>
+				</div>
+			<?php endif;
+
 			if ( 'video' === $settings['background_background'] ) :
 				if ( $settings['background_video_link'] ) :
 					$video_properties = Embed::get_video_properties( $settings['background_video_link'] );

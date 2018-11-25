@@ -5,6 +5,14 @@ GlobalHandler = HandlerModule.extend( {
 	getElementName: function() {
 		return 'global';
 	},
+	makeRellax: function() {
+		var $element = this.$element;
+
+		if ( $element.hasClass( '.elementor-parallax' ) ) {
+			var rellax = new Rellax( $element );
+			console.log( $element );
+		}
+	},
 	animate: function() {
 		var $element = this.$element,
 			animation = this.getAnimation(),
@@ -39,7 +47,7 @@ GlobalHandler = HandlerModule.extend( {
 		if ( /^_?animation/.test( propertyName ) ) {
 			this.animate();
 		}
-	}
+	},
 } );
 
 module.exports = function( $scope ) {

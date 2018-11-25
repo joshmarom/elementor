@@ -201,7 +201,7 @@ class Settings extends Settings_Page {
 						</div>
 
 						<div class="e-getting-started__video">
-							<iframe width="620" height="350" src="https://www.youtube-nocookie.com/embed/-TPpwuB6dnI?rel=0&amp;controls=1&amp;showinfo=0&amp;modestbranding=1" frameborder="0" allowfullscreen></iframe>
+							<iframe width="620" height="350" src="https://www.youtube-nocookie.com/embed/-TPpwuB6dnI?rel=0&amp;controls=1&amp;modestbranding=1" frameborder="0" allowfullscreen></iframe>
 						</div>
 
 						<div class="e-getting-started__actions e-getting-started__content--narrow">
@@ -229,7 +229,7 @@ class Settings extends Settings_Page {
 	public function elementor_custom_fonts() {
 		?>
 		<div class="wrap">
-			<div class="elementor-blank_stateז">
+			<div class="elementor-blank_state">
 				<i class="eicon-nerd-chuckle"></i>
 				<h2><?php echo __( 'Add Your Custom Fonts', 'elementor' ); ?></h2>
 				<p><?php echo __( 'Custom Fonts allows you to add your self-hosted fonts and use them on your Elementor projects to create a unique brand language.', 'elementor' ); ?></p>
@@ -390,6 +390,7 @@ class Settings extends Settings_Page {
 								'field_args' => [
 									'type' => 'number',
 									'attributes' => [
+										'min' => 300,
 										'placeholder' => '1140',
 										'class' => 'medium-text',
 									],

@@ -1,16 +1,14 @@
 ( function( $ ) {
-	'use strict';
+	var ViewModule = require( 'elementor-utils/view-module' );
 
-	var ElementorAdminApp = {
+	var ElementorAdmin = ViewModule.extend( {
 
 		maintenanceMode: null,
 
-		config: ElementorAdminConfig,
+		config: elementorAdminConfig,
 
-		cacheElements: function() {
-			this.cache = {
-				$window: $( window ),
-				$body: $( 'body' ),
+		getDefaultElements: function() {
+			var elements = {
 				$switchMode: $( '#elementor-switch-mode' ),
 				$goToEditLink: $( '#elementor-go-to-edit-page-link' ),
 				$switchModeInput: $( '#elementor-switch-mode-input' ),
@@ -20,36 +18,38 @@
 				$importButton: $( '#elementor-import-template-trigger' ),
 				$importArea: $( '#elementor-import-template-area' ),
 				$settingsForm: $( '#elementor-settings-form' ),
-				$settingsTabsWrapper: $( '#elementor-settings-tabs-wrapper' )
+				$settingsTabsWrapper: $( '#elementor-settings-tabs-wrapper' ),
 			};
 
-			this.cache.$settingsFormPages = this.cache.$settingsForm.find( '.elementor-settings-form-page' );
+			elements.$settingsFormPages = elements.$settingsForm.find( '.elementor-settings-form-page' );
 
-			this.cache.$activeSettingsPage = this.cache.$settingsFormPages.filter( '.elementor-active' );
+			elements.$activeSettingsPage = elements.$settingsFormPages.filter( '.elementor-active' );
 
-			this.cache.$settingsTabs = this.cache.$settingsTabsWrapper.children();
+			elements.$settingsTabs = elements.$settingsTabsWrapper.children();
 
-			this.cache.$activeSettingsTab = this.cache.$settingsTabs.filter( '.nav-tab-active' );
+			elements.$activeSettingsTab = elements.$settingsTabs.filter( '.nav-tab-active' );
+
+			return elements;
 		},
 
 		toggleStatus: function() {
 			var isElementorMode = this.isElementorMode();
 
-			this.cache.$body
-			    .toggleClass( 'elementor-editor-active', isElementorMode )
-			    .toggleClass( 'elementor-editor-inactive', ! isElementorMode );
+			elementorCommon.elements.$body
+				.toggleClass( 'elementor-editor-active', isElementorMode )
+				.toggleClass( 'elementor-editor-inactive', ! isElementorMode );
 		},
 
 		bindEvents: function() {
 			var self = this;
 
-			self.cache.$switchModeButton.on( 'click', function( event ) {
+			self.elements.$switchModeButton.on( 'click', function( event ) {
 				event.preventDefault();
 
 				if ( self.isElementorMode() ) {
-					self.cache.$switchModeInput.val( '' );
+					self.elements.$switchModeInput.val( '' );
 				} else {
-					self.cache.$switchModeInput.val( true );
+					self.elements.$switchModeInput.val( true );
 
 					var $wpTitle = $( '#title' );
 
@@ -64,25 +64,32 @@
 					self.animateLoader();
 
 					$( document ).on( 'heartbeat-tick.autosave', function() {
-						self.cache.$window.off( 'beforeunload.edit-post' );
+						elementorCommon.elements.$window.off( 'beforeunload.edit-post' );
 
-						location.href = self.cache.$goToEditLink.attr( 'href' );
+						location.href = self.elements.$goToEditLink.attr( 'href' );
 					} );
 				}
 
 				self.toggleStatus();
 			} );
 
-			self.cache.$goToEditLink.on( 'click', function() {
+			self.elements.$goToEditLink.on( 'click', function() {
 				self.animateLoader();
 			} );
 
-			$( 'div.notice.elementor-message-dismissed' ).on( 'click', 'button.notice-dismiss', function( event ) {
+			$( 'div.notice.elementor-message-dismissed' ).on( 'click', 'button.notice-dismiss, .elementor-button-notice-dismiss', function( event ) {
 				event.preventDefault();
 
 				$.post( ajaxurl, {
 					action: 'elementor_set_admin_notice_viewed',
-					notice_id: $( this ).closest( '.elementor-message-dismissed' ).data( 'notice_id' )
+					notice_id: $( this ).closest( '.elementor-message-dismissed' ).data( 'notice_id' ),
+				} );
+
+				var $wrapperElm = $( this ).closest( '.elementor-message-dismissed' );
+				$wrapperElm.fadeTo( 100, 0, function() {
+					$wrapperElm.slideUp( 100, function() {
+						$wrapperElm.remove();
+					} );
 				} );
 			} );
 
@@ -94,7 +101,7 @@
 
 				$.post( ajaxurl, {
 					action: 'elementor_clear_cache',
-					_nonce: $thisButton.data( 'nonce' )
+					_nonce: $thisButton.data( 'nonce' ),
 				} )
 					.done( function() {
 						$thisButton.removeClass( 'loading' ).addClass( 'success' );
@@ -109,7 +116,7 @@
 
 				$.post( ajaxurl, {
 					action: 'elementor_reset_library',
-					_nonce: $thisButton.data( 'nonce' )
+					_nonce: $thisButton.data( 'nonce' ),
 				} )
 					.done( function() {
 						$thisButton.removeClass( 'loading' ).addClass( 'success' );
@@ -129,7 +136,7 @@
 					action: 'elementor_replace_url',
 					from: $from.val(),
 					to: $to.val(),
-					_nonce: $this.data( 'nonce' )
+					_nonce: $this.data( 'nonce' ),
 				} )
 					.done( function( response ) {
 						$this.removeClass( 'loading' );
@@ -138,13 +145,13 @@
 							$this.addClass( 'success' );
 						}
 
-						self.getDialogsManager().createWidget( 'alert', {
-								message: response.data
+						elementorCommon.dialogsManager.createWidget( 'alert', {
+								message: response.data,
 							} ).show();
 					} );
 			} );
 
-			self.cache.$settingsTabs.on( {
+			self.elements.$settingsTabs.on( {
 				click: function( event ) {
 					event.preventDefault();
 
@@ -156,7 +163,7 @@
 					history.pushState( {}, '', hrefWithoutHash + this.hash );
 
 					self.goToSettingsTabFromHash();
-				}
+				},
 			} );
 
 			$( '.elementor-rollback-button' ).on( 'click', function( event ) {
@@ -164,18 +171,18 @@
 
 				var $this = $( this );
 
-				self.getDialogsManager().createWidget( 'confirm', {
-					headerMessage: self.config.i18n.rollback_to_previous_version,
-					message:  self.config.i18n.rollback_confirm,
+				elementorCommon.dialogsManager.createWidget( 'confirm', {
+					headerMessage: self.translate( 'rollback_to_previous_version' ),
+					message: self.translate( 'rollback_confirm' ),
 					strings: {
-						confirm:  self.config.i18n.yes,
-						cancel:  self.config.i18n.cancel
+						confirm: self.translate( 'yes' ),
+						cancel: self.translate( 'cancel' ),
 					},
 					onConfirm: function() {
 						$this.addClass( 'loading' );
 
 						location.href = $this.attr( 'href' );
-					}
+					},
 				} ).show();
 			} );
 
@@ -187,28 +194,8 @@
 			} ).trigger( 'change' );
 		},
 
-		setMarionetteTemplateCompiler: function() {
-			if ( 'undefined' !== typeof Marionette ) {
-				Marionette.TemplateCache.prototype.compileTemplate = function( rawTemplate, options ) {
-					options = {
-						evaluate: /<#([\s\S]+?)#>/g,
-						interpolate: /{{{([\s\S]+?)}}}/g,
-						escape: /{{([^}]+?)}}(?!})/g
-					};
-
-					return _.template( rawTemplate, options );
-				};
-			}
-		},
-
-		init: function() {
-			this.setMarionetteTemplateCompiler();
-
-			this.cacheElements();
-
-			this.bindEvents();
-
-			this.initDialogsManager();
+		onInit: function() {
+			ViewModule.prototype.onInit.apply( this, arguments );
 
 			this.initTemplatesImport();
 
@@ -219,32 +206,20 @@
 			this.roleManager.init();
 		},
 
-		initDialogsManager: function() {
-			var dialogsManager;
-
-			this.getDialogsManager = function() {
-				if ( ! dialogsManager ) {
-					dialogsManager = new DialogsManager.Instance();
-				}
-
-				return dialogsManager;
-			};
-		},
-
 		initTemplatesImport: function() {
-			if ( ! this.cache.$body.hasClass( 'post-type-elementor_library' ) ) {
+			if ( ! elementorCommon.elements.$body.hasClass( 'post-type-elementor_library' ) ) {
 				return;
 			}
 
 			var self = this,
-				$importButton = self.cache.$importButton,
-				$importArea = self.cache.$importArea;
+				$importButton = self.elements.$importButton,
+				$importArea = self.elements.$importArea;
 
-			self.cache.$formAnchor = $( 'h1' );
+			self.elements.$formAnchor = $( 'h1' );
 
 			$( '#wpbody-content' ).find( '.page-title-action:last' ).after( $importButton );
 
-			self.cache.$formAnchor.after( $importArea );
+			self.elements.$formAnchor.after( $importArea );
 
 			$importButton.on( 'click', function() {
 				$( '#elementor-import-template-area' ).toggle();
@@ -258,11 +233,11 @@
 		},
 
 		isElementorMode: function() {
-			return !! this.cache.$switchModeInput.val();
+			return !! this.elements.$switchModeInput.val();
 		},
 
 		animateLoader: function() {
-			this.cache.$goToEditLink.addClass( 'elementor-animate' );
+			this.elements.$goToEditLink.addClass( 'elementor-animate' );
 		},
 
 		goToSettingsTabFromHash: function() {
@@ -274,27 +249,31 @@
 		},
 
 		goToSettingsTab: function( tabName ) {
-			var $activePage = this.cache.$settingsFormPages.filter( '#' + tabName );
+			var $activePage = this.elements.$settingsFormPages.filter( '#' + tabName );
 
 			if ( ! $activePage.length ) {
 				return;
 			}
 
-			this.cache.$activeSettingsPage.removeClass( 'elementor-active' );
+			this.elements.$activeSettingsPage.removeClass( 'elementor-active' );
 
-			this.cache.$activeSettingsTab.removeClass( 'nav-tab-active' );
+			this.elements.$activeSettingsTab.removeClass( 'nav-tab-active' );
 
-			var $activeTab = this.cache.$settingsTabs.filter( '#elementor-settings-' + tabName );
+			var $activeTab = this.elements.$settingsTabs.filter( '#elementor-settings-' + tabName );
 
 			$activePage.addClass( 'elementor-active' );
 
 			$activeTab.addClass( 'nav-tab-active' );
 
-			this.cache.$settingsForm.attr( 'action', 'options.php#' + tabName  );
+			this.elements.$settingsForm.attr( 'action', 'options.php#' + tabName );
 
-			this.cache.$activeSettingsPage = $activePage;
+			this.elements.$activeSettingsPage = $activePage;
 
-			this.cache.$activeSettingsTab = $activeTab;
+			this.elements.$activeSettingsTab = $activeTab;
+		},
+
+		translate: function( stringKey, templateArgs ) {
+			return elementorCommon.translate( stringKey, null, templateArgs, this.config.i18n );
 		},
 
 		roleManager: {
@@ -307,7 +286,7 @@
 				controlsContainer: '.elementor-role-controls',
 				toggleHandle: '.elementor-role-toggle',
 				arrowUp: 'dashicons-arrow-up',
-				arrowDown: 'dashicons-arrow-down'
+				arrowDown: 'dashicons-arrow-down',
 			},
 			toggle: function( $trigger ) {
 				var self = this,
@@ -340,7 +319,7 @@
 
 				$controls.each( function( index, input ) {
 					$( input ).prop( 'disabled', state );
-				});
+				} );
 			},
 			bind: function() {
 				var self = this;
@@ -350,8 +329,7 @@
 					self.toggle( $( this ) );
 				} ).on( 'change', self.selectors.excludedField, function() {
 					self.updateLabel( $( this ).closest( self.selectors.row ) );
-				});
-
+				} );
 			},
 			init: function() {
 				var self = this;
@@ -361,14 +339,14 @@
 				self.bind();
 				$( self.selectors.row ).each( function( index, row ) {
 					self.updateLabel( $( row ) );
-				});
-			}
-		}
-	};
-
-	$( function() {
-		ElementorAdminApp.init();
+				} );
+			},
+		},
 	} );
 
-	window.elementorAdmin = ElementorAdminApp;
+	$( function() {
+		window.elementorAdmin = new ElementorAdmin();
+
+		elementorCommon.elements.$window.trigger( 'elementor/admin/init' );
+	} );
 }( jQuery ) );

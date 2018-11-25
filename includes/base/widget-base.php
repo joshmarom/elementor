@@ -367,6 +367,10 @@ abstract class Widget_Base extends Element_Base {
 		return array_merge( parent::_get_initial_config(), $config );
 	}
 
+	protected function should_print_empty() {
+		return false;
+	}
+
 	/**
 	 * Print widget content template.
 	 *
@@ -476,6 +480,22 @@ abstract class Widget_Base extends Element_Base {
 		 */
 		do_action( 'elementor/widget/before_render_content', $this );
 
+		ob_start();
+
+		$skin = $this->get_current_skin();
+		if ( $skin ) {
+			$skin->set_parent( $this );
+			$skin->render();
+		} else {
+			$this->render();
+		}
+
+		$widget_content = ob_get_clean();
+
+		if ( empty( $widget_content ) ) {
+			return;
+		}
+
 		if ( Plugin::$instance->editor->is_edit_mode() ) {
 			$this->render_edit_tools();
 		}
@@ -483,17 +503,6 @@ abstract class Widget_Base extends Element_Base {
 		?>
 		<div class="elementor-widget-container">
 			<?php
-			ob_start();
-
-			$skin = $this->get_current_skin();
-			if ( $skin ) {
-				$skin->set_parent( $this );
-				$skin->render();
-			} else {
-				$this->render();
-			}
-
-			$widget_content = ob_get_clean();
 
 			/**
 			 * Render widget content.

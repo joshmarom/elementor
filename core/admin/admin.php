@@ -2,6 +2,7 @@
 namespace Elementor\Core\Admin;
 
 use Elementor\Api;
+use Elementor\Core\Base\App;
 use Elementor\Plugin;
 use Elementor\Settings;
 use Elementor\User;
@@ -11,15 +12,28 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-class Admin {
+class Admin extends App {
 
 	/**
-	 * @var \Elementor\Core\Admin\Feedback
+	 * Get module name.
+	 *
+	 * Retrieve the module name.
+	 *
+	 * @since  2.3.0
+	 * @access public
+	 *
+	 * @return string Module name.
 	 */
-	private $feedback;
+	public function get_name() {
+		return 'admin';
+	}
 
 	public function maybe_redirect_to_getting_started() {
 		if ( ! get_transient( 'elementor_activation_redirect' ) ) {
+			return;
+		}
+
+		if ( Utils::is_ajax() ) {
 			return;
 		}
 
@@ -38,6 +52,7 @@ class Admin {
 		}
 
 		wp_safe_redirect( admin_url( 'admin.php?page=elementor-getting-started' ) );
+
 		exit;
 	}
 
@@ -52,54 +67,19 @@ class Admin {
 	 * @access public
 	 */
 	public function enqueue_scripts() {
-		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-
 		wp_register_script(
-			'backbone-marionette',
-			ELEMENTOR_ASSETS_URL . 'lib/backbone/backbone.marionette' . $suffix . '.js',
+			'elementor-admin',
+			$this->get_js_assets_url( 'admin' ),
 			[
-				'backbone',
-			],
-			'2.4.5',
-			true
-		);
-
-		wp_register_script(
-			'elementor-dialog',
-			ELEMENTOR_ASSETS_URL . 'lib/dialog/dialog' . $suffix . '.js',
-			[
-				'jquery-ui-position',
-			],
-			'4.4.1',
-			true
-		);
-
-		wp_register_script(
-			'elementor-admin-app',
-			ELEMENTOR_ASSETS_URL . 'js/admin' . $suffix . '.js',
-			[
-				'jquery',
+				'elementor-common',
 			],
 			ELEMENTOR_VERSION,
 			true
 		);
 
-		wp_localize_script(
-			'elementor-admin-app',
-			'ElementorAdminConfig',
-			[
-				'home_url' => home_url(),
-				'i18n' => [
-					'rollback_confirm' => __( 'Are you sure you want to reinstall previous version?', 'elementor' ),
-					'rollback_to_previous_version' => __( 'Rollback to Previous Version', 'elementor' ),
-					'yes' => __( 'Yes', 'elementor' ),
-					'cancel' => __( 'Cancel', 'elementor' ),
-					'new_template' => __( 'New Template', 'elementor' ),
-				],
-			]
-		);
+		wp_enqueue_script( 'elementor-admin' );
 
-		wp_enqueue_script( 'elementor-admin-app' );
+		$this->print_config();
 	}
 
 	/**
@@ -113,27 +93,18 @@ class Admin {
 	 * @access public
 	 */
 	public function enqueue_styles() {
-		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-
 		$direction_suffix = is_rtl() ? '-rtl' : '';
 
 		wp_register_style(
-			'elementor-icons',
-			ELEMENTOR_ASSETS_URL . 'lib/eicons/css/elementor-icons' . $suffix . '.css',
-			[],
-			'3.8.0'
-		);
-
-		wp_register_style(
-			'elementor-admin-app',
-			ELEMENTOR_ASSETS_URL . 'css/admin' . $direction_suffix . $suffix . '.css',
+			'elementor-admin',
+			$this->get_css_assets_url( 'admin' . $direction_suffix ),
 			[
-				'elementor-icons',
+				'elementor-common',
 			],
 			ELEMENTOR_VERSION
 		);
 
-		wp_enqueue_style( 'elementor-admin-app' );
+		wp_enqueue_style( 'elementor-admin' );
 
 		// It's for upgrade notice.
 		// TODO: enqueue this just if needed.
@@ -168,7 +139,7 @@ class Admin {
 					<?php echo __( 'Back to WordPress Editor', 'elementor' ); ?>
 				</span>
 				<span class="elementor-switch-mode-off">
-					<i class="eicon-elementor" aria-hidden="true"></i>
+					<i class="eicon-elementor-square" aria-hidden="true"></i>
 					<?php echo __( 'Edit with Elementor', 'elementor' ); ?>
 				</span>
 			</button>
@@ -176,7 +147,7 @@ class Admin {
 		<div id="elementor-editor">
 			<a id="elementor-go-to-edit-page-link" href="<?php echo Utils::get_edit_link( $post->ID ); ?>">
 				<div id="elementor-editor-button" class="button button-primary button-hero">
-					<i class="eicon-elementor" aria-hidden="true"></i>
+					<i class="eicon-elementor-square" aria-hidden="true"></i>
 					<?php echo __( 'Edit with Elementor', 'elementor' ); ?>
 				</div>
 				<div class="elementor-loader-wrapper">
@@ -409,7 +380,9 @@ class Admin {
 		<div class="notice updated is-dismissible elementor-message elementor-message-dismissed" data-notice_id="<?php echo esc_attr( $notice_id ); ?>">
 			<div class="elementor-message-inner">
 				<div class="elementor-message-icon">
-					<i class="eicon-elementor-square" aria-hidden="true"></i>
+					<div class="e-logo-wrapper">
+						<i class="eicon-elementor" aria-hidden="true"></i>
+					</div>
 				</div>
 				<div class="elementor-message-content">
 					<strong><?php echo __( 'Update Notification', 'elementor' ); ?></strong>
@@ -465,7 +438,7 @@ class Admin {
 				/* translators: 1: Elementor, 2: Link to plugin review */
 				__( 'Enjoyed %1$s? Please leave us a %2$s rating. We really appreciate your support!', 'elementor' ),
 				'<strong>' . __( 'Elementor', 'elementor' ) . '</strong>',
-				'<a href="https://wordpress.org/support/plugin/elementor/reviews/?filter=5#new-post" target="_blank">&#9733;&#9733;&#9733;&#9733;&#9733;</a>'
+				'<a href="https://go.elementor.com/admin-review/" target="_blank">&#9733;&#9733;&#9733;&#9733;&#9733;</a>'
 			);
 		}
 
@@ -691,13 +664,12 @@ class Admin {
 		$document = Plugin::$instance->documents->create( $type, $post_data, $meta );
 
 		wp_redirect( $document->get_edit_url() );
+
 		die;
 	}
 
-	public function print_new_template_template() {
-		$this->print_library_layout_template();
-
-		include ELEMENTOR_PATH . 'includes/admin-templates/new-template.php';
+	public function add_new_template_template() {
+		Plugin::$instance->common->add_template( ELEMENTOR_PATH . 'includes/admin-templates/new-template.php' );
 	}
 
 	public function enqueue_new_template_scripts() {
@@ -706,10 +678,7 @@ class Admin {
 		wp_enqueue_script(
 			'elementor-new-template',
 			ELEMENTOR_ASSETS_URL . 'js/new-template' . $suffix . '.js',
-			[
-				'backbone-marionette',
-				'elementor-dialog',
-			],
+			[],
 			ELEMENTOR_VERSION,
 			true
 		);
@@ -720,7 +689,8 @@ class Admin {
 			return;
 		}
 
-		add_action( 'admin_footer', [ $this, 'print_new_template_template' ] );
+		// Allow plugins to add their templates on admin_head.
+		add_action( 'admin_head', [ $this, 'add_new_template_template' ] );
 
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_new_template_scripts' ] );
 	}
@@ -734,7 +704,9 @@ class Admin {
 	 * @access public
 	 */
 	public function __construct() {
-		$this->feedback = new Feedback();
+		Plugin::$instance->init_common();
+
+		$this->add_component( 'feedback', new Feedback() );
 
 		add_action( 'admin_init', [ $this, 'maybe_redirect_to_getting_started' ] );
 
@@ -765,7 +737,18 @@ class Admin {
 		add_action( 'current_screen', [ $this, 'init_new_template' ] );
 	}
 
-	private function print_library_layout_template() {
-		include ELEMENTOR_PATH . 'includes/editor-templates/library-layout.php';
+	protected function get_init_settings() {
+		$settings = [
+			'home_url' => home_url(),
+			'i18n' => [
+				'rollback_confirm' => __( 'Are you sure you want to reinstall previous version?', 'elementor' ),
+				'rollback_to_previous_version' => __( 'Rollback to Previous Version', 'elementor' ),
+				'yes' => __( 'Yes', 'elementor' ),
+				'cancel' => __( 'Cancel', 'elementor' ),
+				'new_template' => __( 'New Template', 'elementor' ),
+			],
+		];
+
+		return apply_filters( 'elementor/admin/localize_settings', $settings );
 	}
 }
