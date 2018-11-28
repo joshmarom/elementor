@@ -1,6 +1,6 @@
-var HandlerModule = require( 'elementor-frontend/handler-module' );
+import HandlerModule from '../handler-module';
 
-var BackgroundVideo = HandlerModule.extend( {
+const BackgroundVideo = HandlerModule.extend( {
 	player: null,
 
 	isYTVideo: null,
@@ -16,7 +16,7 @@ var BackgroundVideo = HandlerModule.extend( {
 	},
 
 	getDefaultElements: function() {
-		var selectors = this.getSettings( 'selectors' ),
+		const selectors = this.getSettings( 'selectors' ),
 			elements = {
 				$backgroundVideoContainer: this.$element.find( selectors.backgroundVideoContainer ),
 			};
@@ -29,7 +29,7 @@ var BackgroundVideo = HandlerModule.extend( {
 	},
 
 	calcVideosSize: function() {
-		var containerWidth = this.elements.$backgroundVideoContainer.outerWidth(),
+		const containerWidth = this.elements.$backgroundVideoContainer.outerWidth(),
 			containerHeight = this.elements.$backgroundVideoContainer.outerHeight(),
 			aspectRatioSetting = '16:9', //TEMP
 			aspectRatioArray = aspectRatioSetting.split( ':' ),
@@ -45,28 +45,28 @@ var BackgroundVideo = HandlerModule.extend( {
 	},
 
 	changeVideoSize: function() {
-		var $video = this.isYTVideo ? jQuery( this.player.getIframe() ) : this.elements.$backgroundVideoHosted,
+		const $video = this.isYTVideo ? jQuery( this.player.getIframe() ) : this.elements.$backgroundVideoHosted,
 			size = this.calcVideosSize();
 
 		$video.width( size.width ).height( size.height );
 	},
 
 	startVideoLoop: function() {
-		var self = this;
+		const self = this;
 
 		// If the section has been removed
 		if ( ! self.player.getIframe().contentWindow ) {
 			return;
 		}
 
-		var elementSettings = self.getElementSettings(),
+		const elementSettings = self.getElementSettings(),
 			startPoint = elementSettings.background_video_start || 0,
 			endPoint = elementSettings.background_video_end;
 
 		self.player.seekTo( startPoint );
 
 		if ( endPoint ) {
-			var durationToEnd = endPoint - startPoint + 1;
+			const durationToEnd = endPoint - startPoint + 1;
 
 			setTimeout( function() {
 				self.startVideoLoop();
@@ -75,10 +75,11 @@ var BackgroundVideo = HandlerModule.extend( {
 	},
 
 	prepareYTVideo: function( YT, videoID ) {
-		var self = this,
+		const self = this,
 			$backgroundVideoContainer = self.elements.$backgroundVideoContainer,
-			elementSettings = self.getElementSettings(),
-			startStateCode = YT.PlayerState.PLAYING;
+			elementSettings = self.getElementSettings();
+
+		let startStateCode = YT.PlayerState.PLAYING;
 
 		// Since version 67, Chrome doesn't fire the `PLAYING` state at start time
 		if ( window.chrome ) {
@@ -120,7 +121,7 @@ var BackgroundVideo = HandlerModule.extend( {
 	},
 
 	activate: function() {
-		var self = this,
+		const self = this,
 			videoLink = self.getElementSettings( 'background_video_link' ),
 			videoID = elementorFrontend.utils.youtube.getYoutubeIDFromURL( videoLink );
 
@@ -146,7 +147,7 @@ var BackgroundVideo = HandlerModule.extend( {
 	},
 
 	run: function() {
-		var elementSettings = this.getElementSettings();
+		const elementSettings = this.getElementSettings();
 
 		if ( 'video' === elementSettings.background_background && elementSettings.background_video_link ) {
 			this.activate();
@@ -168,12 +169,12 @@ var BackgroundVideo = HandlerModule.extend( {
 	},
 } );
 
-var StretchedSection = HandlerModule.extend( {
+const StretchedSection = HandlerModule.extend( {
 
 	stretchElement: null,
 
 	bindEvents: function() {
-		var handlerID = this.getUniqueHandlerID();
+		const handlerID = this.getUniqueHandlerID();
 
 		elementorFrontend.addListenerOnce( handlerID, 'resize', this.stretch );
 
@@ -234,7 +235,7 @@ var StretchedSection = HandlerModule.extend( {
 	},
 } );
 
-var Shapes = HandlerModule.extend( {
+const Shapes = HandlerModule.extend( {
 
 	getDefaultSettings: function() {
 		return {
@@ -246,7 +247,7 @@ var Shapes = HandlerModule.extend( {
 	},
 
 	getDefaultElements: function() {
-		var elements = {},
+		const elements = {},
 			selectors = this.getSettings( 'selectors' );
 
 		elements.$topContainer = this.$element.find( selectors.container.replace( '%s', 'top' ) );
@@ -257,9 +258,8 @@ var Shapes = HandlerModule.extend( {
 	},
 
 	buildSVG: function( side ) {
-		var self = this,
-			baseSettingKey = 'shape_divider_' + side,
-			shapeType = self.getElementSettings( baseSettingKey ),
+		const baseSettingKey = 'shape_divider_' + side,
+			shapeType = this.getElementSettings( baseSettingKey ),
 			$svgContainer = this.elements[ '$' + side + 'Container' ];
 
 		$svgContainer.empty().attr( 'data-shape', shapeType );
@@ -268,13 +268,13 @@ var Shapes = HandlerModule.extend( {
 			return;
 		}
 
-		var fileName = shapeType;
+		let fileName = shapeType;
 
-		if ( self.getElementSettings( baseSettingKey + '_negative' ) ) {
+		if ( this.getElementSettings( baseSettingKey + '_negative' ) ) {
 			fileName += '-negative';
 		}
 
-		var svgURL = self.getSettings( 'svgURL' ) + fileName + '.svg';
+		const svgURL = this.getSettings( 'svgURL' ) + fileName + '.svg';
 
 		jQuery.get( svgURL, function( data ) {
 			$svgContainer.append( data.childNodes[ 0 ] );
@@ -288,7 +288,7 @@ var Shapes = HandlerModule.extend( {
 	},
 
 	onInit: function() {
-		var self = this;
+		const self = this;
 
 		HandlerModule.prototype.onInit.apply( self, arguments );
 
@@ -300,7 +300,7 @@ var Shapes = HandlerModule.extend( {
 	},
 
 	onElementChange: function( propertyName ) {
-		var shapeChange = propertyName.match( /^shape_divider_(top|bottom)$/ );
+		const shapeChange = propertyName.match( /^shape_divider_(top|bottom)$/ );
 
 		if ( shapeChange ) {
 			this.buildSVG( shapeChange[ 1 ] );
@@ -308,7 +308,7 @@ var Shapes = HandlerModule.extend( {
 			return;
 		}
 
-		var negativeChange = propertyName.match( /^shape_divider_(top|bottom)_negative$/ );
+		const negativeChange = propertyName.match( /^shape_divider_(top|bottom)_negative$/ );
 
 		if ( negativeChange ) {
 			this.buildSVG( negativeChange[ 1 ] );
@@ -318,7 +318,7 @@ var Shapes = HandlerModule.extend( {
 	},
 } );
 
-var HandlesPosition = HandlerModule.extend( {
+const HandlesPosition = HandlerModule.extend( {
 
     isFirst: function() {
         return this.$element.is( '.elementor-edit-mode .elementor-top-section:first' );
@@ -329,10 +329,10 @@ var HandlesPosition = HandlerModule.extend( {
     },
 
     setHandlesPosition: function() {
-        var self = this;
+        const self = this;
 
         if ( self.isFirst() ) {
-            var offset = self.getOffset(),
+            const offset = self.getOffset(),
                 $handlesElement = self.$element.find( '> .elementor-element-overlay > .elementor-editor-section-settings' ),
                 insideHandleClass = 'elementor-section--handles-inside';
 

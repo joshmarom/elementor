@@ -1,20 +1,11 @@
-var HandlerModule = require( 'elementor-frontend/handler-module' ),
-	GlobalHandler;
+import HandlerModule from '../handler-module';
 
-GlobalHandler = HandlerModule.extend( {
+const GlobalHandler = HandlerModule.extend( {
 	getElementName: function() {
 		return 'global';
 	},
-	makeRellax: function() {
-		var $element = this.$element;
-
-		if ( $element.hasClass( '.elementor-parallax' ) ) {
-			var rellax = new Rellax( $element );
-			console.log( $element );
-		}
-	},
 	animate: function() {
-		var $element = this.$element,
+		const $element = this.$element,
 			animation = this.getAnimation(),
 			elementSettings = this.getElementSettings(),
 			animationDelay = elementSettings._animation_delay || elementSettings.animation_delay || 0;
@@ -26,14 +17,14 @@ GlobalHandler = HandlerModule.extend( {
 		}, animationDelay );
 	},
 	getAnimation: function() {
-		var elementSettings = this.getElementSettings();
+		const elementSettings = this.getElementSettings();
 
 		return elementSettings.animation || elementSettings._animation;
 	},
 	onInit: function() {
 		HandlerModule.prototype.onInit.apply( this, arguments );
 
-		var animation = this.getAnimation();
+		const animation = this.getAnimation();
 
 		if ( ! animation ) {
 			return;
