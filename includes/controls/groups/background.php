@@ -129,7 +129,7 @@ class Group_Control_Background extends Group_Control_Base {
 			'default' => '',
 			'title' => _x( 'Background Color', 'Background Control', 'elementor' ),
 			'selectors' => [
-				'{{SELECTOR}}:not(.elementor-section), {{SELECTOR}}.elementor-section > .elementor-background-holder .elementor-background' => 'background-color: {{VALUE}};',
+				'{{SELECTOR}}' => 'background-color: {{VALUE}};',
 			],
 			'condition' => [
 				'background' => [ 'classic', 'gradient' ],
@@ -251,6 +251,7 @@ class Group_Control_Background extends Group_Control_Base {
 			'selectors' => [
 				'{{SELECTOR}}:not(.elementor-section), {{SELECTOR}}.elementor-section > .elementor-background-holder .elementor-background' => 'background-image: url("{{URL}}");',
 			],
+			'render_type' => 'template',
 			'condition' => [
 				'background' => [ 'classic' ],
 			],
@@ -260,6 +261,7 @@ class Group_Control_Background extends Group_Control_Base {
 			'label' => _x( 'Position', 'Background Control', 'elementor' ),
 			'type' => Controls_Manager::SELECT,
 			'default' => '',
+			'responsive' => true,
 			'options' => [
 				'' => _x( 'Default', 'Background Control', 'elementor' ),
 				'top left' => _x( 'Top Left', 'Background Control', 'elementor' ),
@@ -286,6 +288,7 @@ class Group_Control_Background extends Group_Control_Base {
 		$fields['xpos'] = [
 			'label' => _x( 'X Position', 'Background Control', 'elementor' ),
 			'type' => Controls_Manager::SLIDER,
+			'responsive' => true,
 			'size_units' => [ 'px', 'em', '%', 'vw', 'vh' ],
 			'default' => [
 				'unit' => 'px',
@@ -327,6 +330,7 @@ class Group_Control_Background extends Group_Control_Base {
 		$fields['ypos'] = [
 			'label' => _x( 'Y Position', 'Background Control', 'elementor' ),
 			'type' => Controls_Manager::SLIDER,
+			'responsive' => true,
 			'size_units' => [ 'px', 'em', '%', 'vw', 'vh' ],
 			'default' => [
 				'unit' => 'px',
@@ -419,6 +423,7 @@ class Group_Control_Background extends Group_Control_Base {
 		$fields['size'] = [
 			'label' => _x( 'Size', 'Background Control', 'elementor' ),
 			'type' => Controls_Manager::SELECT,
+			'responsive' => true,
 			'default' => '',
 			'options' => [
 				'' => _x( 'Default', 'Background Control', 'elementor' ),
@@ -439,6 +444,7 @@ class Group_Control_Background extends Group_Control_Base {
 		$fields['bg_width'] = [
 			'label' => _x( 'Width', 'Background Control', 'elementor' ),
 			'type' => Controls_Manager::SLIDER,
+			'responsive' => true,
 			'size_units' => [ 'px', 'em', '%', 'vw', 'vh' ],
 			'default' => [
 				'unit' => '%',
@@ -467,19 +473,19 @@ class Group_Control_Background extends Group_Control_Base {
 				],
 			],
 			'selectors' => [
-				'{{SELECTOR}}:not(.elementor-section), {{SELECTOR}}.elementor-section > .elementor-background-holder .elementor-background' => 'background-size: {{SIZE}}{{UNIT}} auto',
+				'{{SELECTOR}}:not(.elementor-section), {{SELECTOR}}.elementor-section > .elementor-background-holder .elementor-background' => 'background-size: {{SIZE}}{{UNIT}} {{bg_height.SIZE || auto}}{{bg_height.UNIT || ""}}',
 			],
 			'condition' => [
 				'background' => [ 'classic' ],
 				'size' => [ 'initial' ],
 				'image[url]!' => '',
 			],
-			'required' => true,
 		];
-/*
+
 		$fields['bg_height'] = [
 			'label' => _x( 'Height', 'Background Control', 'elementor' ),
 			'type' => Controls_Manager::SLIDER,
+			'responsive' => true,
 			'size_units' => [ 'px', 'em', '%', 'vw', 'vh' ],
 			'default' => [
 				'unit' => '%',
@@ -508,17 +514,16 @@ class Group_Control_Background extends Group_Control_Base {
 				],
 			],
 			'selectors' => [
-				'{{SELECTOR}}:not(.elementor-section), {{SELECTOR}}.elementor-section > .elementor-background-holder .elementor-background' => 'background-size: {{bg_width.SIZE}}{{bg_width.UNIT}} {{SIZE}}{{UNIT}}',
+				'{{SELECTOR}}:not(.elementor-section), {{SELECTOR}}.elementor-section > .elementor-background-holder .elementor-background' => 'background-size: {{bg_width.SIZE || auto}}{{bg_width.UNIT || ""}} {{SIZE}}{{UNIT}}',
 			],
 			'condition' => [
 				'background' => [ 'classic' ],
 				'size' => [ 'initial' ],
 				'image[url]!' => '',
 			],
-			'required' => true,
 			'separator' => 'after',
 		];
-*/
+
 		$fields['video_link'] = [
 			'label' => _x( 'Video Link', 'Background Control', 'elementor' ),
 			'type' => Controls_Manager::TEXT,

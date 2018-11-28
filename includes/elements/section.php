@@ -1425,7 +1425,7 @@ class Element_Section extends Element_Base {
 		?>
 		<<?php echo esc_html( $this->get_html_tag() ); ?> <?php $this->print_render_attribute_string( '_wrapper' ); ?>>
 			<?php
-			if ( 'classic' === $settings['background_background'] ) :
+			if ( 'classic' === $settings['background_background'] && !empty( $settings['background_image']['id'] ) ) :
 				?>
 				<div class="elementor-background-holder">
 					<div class="elementor-background"></div>
