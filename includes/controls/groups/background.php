@@ -446,10 +446,6 @@ class Group_Control_Background extends Group_Control_Base {
 			'type' => Controls_Manager::SLIDER,
 			'responsive' => true,
 			'size_units' => [ 'px', 'em', '%', 'vw', 'vh' ],
-			'default' => [
-				'unit' => '%',
-				'size' => 100,
-			],
 			'range' => [
 				'px' => [
 					'min' => 0,
@@ -473,7 +469,7 @@ class Group_Control_Background extends Group_Control_Base {
 				],
 			],
 			'selectors' => [
-				'{{SELECTOR}}:not(.elementor-section), {{SELECTOR}}.elementor-section > .elementor-background-holder .elementor-background' => 'background-size: {{SIZE}}{{UNIT}} {{bg_height.SIZE || auto}}{{bg_height.UNIT || ""}}',
+				'{{SELECTOR}}:not(.elementor-section), {{SELECTOR}}.elementor-section > .elementor-background-holder .elementor-background' => 'background-size: {{SIZE}}{{UNIT}} {{bg_height.SIZE || "auto"}}{{bg_height.UNIT || " "}}',
 			],
 			'condition' => [
 				'background' => [ 'classic' ],
@@ -487,10 +483,6 @@ class Group_Control_Background extends Group_Control_Base {
 			'type' => Controls_Manager::SLIDER,
 			'responsive' => true,
 			'size_units' => [ 'px', 'em', '%', 'vw', 'vh' ],
-			'default' => [
-				'unit' => '%',
-				'size' => 100,
-			],
 			'range' => [
 				'px' => [
 					'min' => 0,
@@ -514,7 +506,7 @@ class Group_Control_Background extends Group_Control_Base {
 				],
 			],
 			'selectors' => [
-				'{{SELECTOR}}:not(.elementor-section), {{SELECTOR}}.elementor-section > .elementor-background-holder .elementor-background' => 'background-size: {{bg_width.SIZE || auto}}{{bg_width.UNIT || ""}} {{SIZE}}{{UNIT}}',
+				'{{SELECTOR}}:not(.elementor-section), {{SELECTOR}}.elementor-section > .elementor-background-holder .elementor-background' => 'background-size: {{bg_width.SIZE || "auto"}}{{bg_width.UNIT || " "}} {{SIZE}}{{UNIT}}',
 			],
 			'condition' => [
 				'background' => [ 'classic' ],
