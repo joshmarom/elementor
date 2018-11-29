@@ -563,6 +563,18 @@ class Element_Section extends Element_Base {
 			]
 		);
 
+		$this->add_group_control(
+			Group_Control_Css_Filter::get_type(),
+			[
+				'name' => 'background_css_filters',
+				'selector' => '{{WRAPPER}} > .elementor-background-holder .elementor-background',
+				'condition' => [
+					'background_background' => [ 'classic' ],
+					'background_image[url]!' => '',
+				],
+			]
+		);
+
 		$this->end_controls_tab();
 
 		$this->start_controls_tab(
@@ -596,6 +608,18 @@ class Element_Section extends Element_Base {
 				],
 				'render_type' => 'ui',
 				'separator' => 'before',
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Css_Filter::get_type(),
+			[
+				'name' => 'background_hover_css_filters',
+				'selector' => '{{WRAPPER}}.hover > .elementor-background-holder .elementor-background',
+				'condition' => [
+					'background_background_hover' => [ 'classic' ],
+					'background_hover_image[url]!' => '',
+				],
 			]
 		);
 
