@@ -110,16 +110,16 @@ class Widget_Common extends Widget_Base {
 			'_is_absolute',
 			[
 				'label' => __( 'Absolute', 'elementor' ),
-				'type' => Controls_Manager::SWITCHER,
+				'type' => Controls_Manager::POPOVER_TOGGLE,
 				'default' => '',
 				'prefix_class' => 'elementor-',
-				'label_on' => 'Hide',
-				'label_off' => 'Show',
 				'return_value' => 'absolute',
 			]
 		);
 
-		$this->add_control(
+		$this->start_popover();
+
+		$this->add_responsive_control(
 			'_offset_x',
 			[
 				'label' => __( 'Horizontal Offset', 'elementor' ),
@@ -129,14 +129,22 @@ class Widget_Common extends Widget_Base {
 						'min' => -1000,
 						'max' => 1000,
 					],
+					'%' => [
+						'min' => -200,
+						'max' => 200,
+					],
+					'vw' => [
+						'min' => -200,
+						'max' => 200,
+					],
 				],
 				'default' => [
 					'size' => '0',
 				],
 				'required' => true,
-				'size_units' => [ 'px' ],
+				'size_units' => [ 'px', '%', 'vw' ],
 				'selectors' => [
-					'{{WRAPPER}}' => 'left: {{SIZE}}{{UNIT}}; top: {{_offset_y.SIZE}}{{_offset_y.UNIT}}',
+					'{{WRAPPER}}' => 'left: {{SIZE}}{{UNIT}}',
 				],
 				'condition' => [
 					'_is_absolute!' => '',
@@ -144,7 +152,7 @@ class Widget_Common extends Widget_Base {
 			]
 		);
 
-		$this->add_control(
+		$this->add_responsive_control(
 			'_offset_y',
 			[
 				'label' => __( 'Vertical Offset', 'elementor' ),
@@ -154,20 +162,85 @@ class Widget_Common extends Widget_Base {
 						'min' => -1000,
 						'max' => 1000,
 					],
+					'%' => [
+						'min' => -200,
+						'max' => 200,
+					],
+					'vh' => [
+						'min' => -200,
+						'max' => 200,
+					],
 				],
-				'size_units' => [ 'px' ],
+				'size_units' => [ 'px', '%', 'vh' ],
 				'default' => [
 					'size' => '0',
 				],
 				'required' => true,
 				'selectors' => [
-					'{{WRAPPER}}' => 'left: {{_offset_x.SIZE}}{{_offset_x.UNIT}}; top: {{SIZE}}{{UNIT}}',
+					'{{WRAPPER}}' => 'top: {{SIZE}}{{UNIT}}',
 				],
 				'condition' => [
 					'_is_absolute!' => '',
 				],
 			]
 		);
+
+		$this->add_control(
+			'widget_width',
+			[
+				'label' => __( 'Width', 'elementor' ),
+				'type' => Controls_Manager::SELECT,
+				'default' => 'auto',
+				'options' => [
+					'auto' => __( 'Auto', 'elementor' ),
+					'inherit' => __( 'Inherit', 'elementor' ),
+					'' => __( 'Custom', 'elementor' ),
+				],
+				'selectors' => [
+					'{{WRAPPER}}' => 'width: {{VALUE}}',
+				],
+				'condition' => [
+					'_is_absolute!' => '',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'widget_width_custom',
+			[
+				'label' => __( 'Width', 'elementor' ),
+				'type' => Controls_Manager::SLIDER,
+				'range' => [
+					'px' => [
+						'min' => -1000,
+						'max' => 1000,
+					],
+					'%' => [
+						'min' => -200,
+						'max' => 200,
+					],
+					'vw' => [
+						'min' => -200,
+						'max' => 200,
+					],
+				],
+				'size_units' => [ 'px', '%', 'vw' ],
+				'default' => [
+					'size' => '100',
+					'unit' => '%',
+				],
+				'required' => true,
+				'selectors' => [
+					'{{WRAPPER}}' => 'width: {{SIZE}}{{UNIT}}',
+				],
+				'condition' => [
+					'_is_absolute!' => '',
+					'widget_width' => '',
+				],
+			]
+		);
+
+		$this->end_popover();
 
 		$this->add_control(
 			'_animation',
