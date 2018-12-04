@@ -206,7 +206,7 @@ class Group_Control_Background extends Group_Control_Base {
 				],
 			],
 			'selectors' => [
-				'{{SELECTOR}}:not(.elementor-section), {{SELECTOR}}.elementor-section > .elementor-background-holder .elementor-background' => 'background-color: transparent; background-image: linear-gradient({{SIZE}}{{UNIT}}, {{color.VALUE}} {{color_stop.SIZE}}{{color_stop.UNIT}}, {{color_b.VALUE}} {{color_b_stop.SIZE}}{{color_b_stop.UNIT}})',
+				'{{SELECTOR}}' => 'background-color: transparent; background-image: linear-gradient({{SIZE}}{{UNIT}}, {{color.VALUE}} {{color_stop.SIZE}}{{color_stop.UNIT}}, {{color_b.VALUE}} {{color_b_stop.SIZE}}{{color_b_stop.UNIT}})',
 			],
 			'condition' => [
 				'background' => [ 'gradient' ],
@@ -231,7 +231,7 @@ class Group_Control_Background extends Group_Control_Base {
 			],
 			'default' => 'center center',
 			'selectors' => [
-				'{{SELECTOR}}:not(.elementor-section), {{SELECTOR}}.elementor-section > .elementor-background-holder .elementor-background' => 'background-color: transparent; background-image: radial-gradient(at {{VALUE}}, {{color.VALUE}} {{color_stop.SIZE}}{{color_stop.UNIT}}, {{color_b.VALUE}} {{color_b_stop.SIZE}}{{color_b_stop.UNIT}})',
+				'{{SELECTOR}}' => 'background-color: transparent; background-image: radial-gradient(at {{VALUE}}, {{color.VALUE}} {{color_stop.SIZE}}{{color_stop.UNIT}}, {{color_b.VALUE}} {{color_b_stop.SIZE}}{{color_b_stop.UNIT}})',
 			],
 			'condition' => [
 				'background' => [ 'gradient' ],
@@ -469,7 +469,8 @@ class Group_Control_Background extends Group_Control_Base {
 				],
 			],
 			'selectors' => [
-				'{{SELECTOR}}:not(.elementor-section), {{SELECTOR}}.elementor-section > .elementor-background-holder .elementor-background' => 'background-size: {{SIZE}}{{UNIT}} {{bg_height.SIZE || "auto"}}{{bg_height.UNIT || " "}}',
+				'{{SELECTOR}}:not(.elementor-section), {{SELECTOR}}.elementor-section > .elementor-background-holder .elementor-background' => 'background-size: {{SIZE}}{{UNIT}} auto}}',
+
 			],
 			'condition' => [
 				'background' => [ 'classic' ],
