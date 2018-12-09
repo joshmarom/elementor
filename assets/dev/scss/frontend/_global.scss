@@ -120,6 +120,30 @@
 	.elementor-image img {
 		width: auto;
 	}
+
+	.elementor-handle {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		width: 25px;
+		height: 25px;
+		line-height: 27px;
+		text-align: center;
+		background-color: #41c9f4;
+		color: #fff;
+		cursor: grab;
+		opacity: 0;
+		transition: opacity 0.2s;
+		&:active {
+			cursor: grabbing;
+		}
+	}
+
+	&:hover{
+		.elementor-handle {
+			opacity: 1;
+		}
+	}
 }
 
 // Alignment Classes
