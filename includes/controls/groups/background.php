@@ -379,6 +379,7 @@ class Group_Control_Background extends Group_Control_Base {
 				'scroll' => _x( 'Scroll', 'Background Control', 'elementor' ),
 				'fixed' => _x( 'Fixed', 'Background Control', 'elementor' ),
 			],
+			'responsive' => true,
 			'selectors' => [
 				'(desktop+){{SELECTOR}}:not(.elementor-section), {{SELECTOR}}.elementor-section > .elementor-background-holder .elementor-background' => 'background-attachment: {{VALUE}};',
 			],
@@ -404,6 +405,7 @@ class Group_Control_Background extends Group_Control_Base {
 			'label' => _x( 'Repeat', 'Background Control', 'elementor' ),
 			'type' => Controls_Manager::SELECT,
 			'default' => '',
+			'responsive' => true,
 			'options' => [
 				'' => _x( 'Default', 'Background Control', 'elementor' ),
 				'no-repeat' => _x( 'No-repeat', 'Background Control', 'elementor' ),

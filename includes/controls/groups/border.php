@@ -75,6 +75,7 @@ class Group_Control_Border extends Group_Control_Base {
 		$fields['width'] = [
 			'label' => _x( 'Width', 'Border Control', 'elementor' ),
 			'type' => Controls_Manager::DIMENSIONS,
+			'responsive' => true,
 			'selectors' => [
 				'{{SELECTOR}}' => 'border-width: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 			],
