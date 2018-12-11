@@ -343,7 +343,7 @@
 	}
 }
 
-.elementor-label-inline {
+.elementor-label-inline:not([class*='elementor-control-responsive']) {
 
 	> .elementor-control-content {
 
@@ -356,6 +356,21 @@
 
 			> .elementor-control-input-wrapper {
 				width: 55%;
+			}
+		}
+	}
+}
+
+.elementor-label-inline[class*='elementor-control-responsive'] {
+
+	> .elementor-control-content {
+
+		> .elementor-control-field {
+
+			> .elementor-control-input-wrapper {
+				width: 55%;
+				flex-shrink: 1;
+				@include margin-start(auto);
 			}
 		}
 	}
