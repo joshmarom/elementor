@@ -3,6 +3,9 @@ var DraggableBehavior;
 DraggableBehavior = Marionette.Behavior.extend( {
 
 	events: {
+		resizestart: 'onResizeStart',
+		resizestop: 'onResizeStop',
+		resize: 'onResize',
 		dragstart: 'onDragStart',
 		dragstop: 'onDragStop',
 	},
@@ -36,6 +39,10 @@ DraggableBehavior = Marionette.Behavior.extend( {
 			addClasses: false,
 			handle: '.elementor-handle',
 		} );
+
+		this.$el.resizable( {
+			handles: 'e, w',
+		} );
 	},
 
 	deactivate: function() {
@@ -44,8 +51,9 @@ DraggableBehavior = Marionette.Behavior.extend( {
 		}
 
 		this.$el.draggable( 'destroy' );
+		this.$el.resizable( 'destroy' );
 
-		jQuery( this.$el.find( '> .elementor-handle' ) ).remove();
+		this.$el.find( '> .elementor-handle' ).remove();
 	},
 
 	toggle: function() {
@@ -89,6 +97,29 @@ DraggableBehavior = Marionette.Behavior.extend( {
 			width: '',
 			height: '',
 		} );
+	},
+
+	onResizeStart: function( event ) {
+		event.stopPropagation();
+
+		this.view.model.trigger( 'request:edit' );
+	},
+
+	onResizeStop: function( event, ui ) {
+		event.stopPropagation();
+
+			this.view.getEditModel().get( 'settings' ).setExternalChange( {
+				widget_width_custom: { unit: 'px', size: ui.size.width },
+			} );
+
+		this.$el.css( {
+			width: '',
+			height: '',
+		} );
+	},
+
+	onResize: function( event ) {
+		event.stopPropagation();
 	},
 
 	onSettingsChanged: function( changed ) {

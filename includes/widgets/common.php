@@ -185,26 +185,6 @@ class Widget_Common extends Widget_Base {
 			]
 		);
 
-		$this->add_control(
-			'widget_width',
-			[
-				'label' => __( 'Width', 'elementor' ),
-				'type' => Controls_Manager::SELECT,
-				'default' => 'auto',
-				'options' => [
-					'auto' => __( 'Auto', 'elementor' ),
-					'inherit' => __( 'Inherit', 'elementor' ),
-					'' => __( 'Custom', 'elementor' ),
-				],
-				'selectors' => [
-					'{{WRAPPER}}' => 'width: {{VALUE}}',
-				],
-				'condition' => [
-					'_is_absolute!' => '',
-				],
-			]
-		);
-
 		$this->add_responsive_control(
 			'widget_width_custom',
 			[
@@ -225,17 +205,11 @@ class Widget_Common extends Widget_Base {
 					],
 				],
 				'size_units' => [ 'px', '%', 'vw' ],
-				'default' => [
-					'size' => '100',
-					'unit' => '%',
-				],
-				'required' => true,
 				'selectors' => [
 					'{{WRAPPER}}' => 'width: {{SIZE}}{{UNIT}}',
 				],
 				'condition' => [
 					'_is_absolute!' => '',
-					'widget_width' => '',
 				],
 			]
 		);
