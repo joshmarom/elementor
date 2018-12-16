@@ -447,21 +447,17 @@ class Group_Control_Background extends Group_Control_Base {
 			'label' => _x( 'Width', 'Background Control', 'elementor' ),
 			'type' => Controls_Manager::SLIDER,
 			'responsive' => true,
-			'size_units' => [ 'px', 'em', '%', 'vw', 'vh' ],
+			'size_units' => [ 'px', 'em', '%', 'vw' ],
 			'range' => [
 				'px' => [
 					'min' => 0,
-					'max' => 800,
+					'max' => 1000,
 				],
 				'em' => [
-					'min' => -100,
-					'max' => 100,
-				],
-				'%' => [
 					'min' => 0,
 					'max' => 100,
 				],
-				'vh' => [
+				'%' => [
 					'min' => 0,
 					'max' => 100,
 				],
@@ -470,8 +466,13 @@ class Group_Control_Background extends Group_Control_Base {
 					'max' => 100,
 				],
 			],
+			'default' => [
+				'size' => 100,
+				'unit' => '%',
+			],
+			'required' => true,
 			'selectors' => [
-				'{{SELECTOR}}:not(.elementor-section), {{SELECTOR}}.elementor-section > .elementor-background-holder .elementor-background' => 'background-size: {{SIZE}}{{UNIT}} auto}}',
+				'{{SELECTOR}}:not(.elementor-section), {{SELECTOR}}.elementor-section > .elementor-background-holder .elementor-background' => 'background-size: {{SIZE}}{{UNIT}} auto',
 
 			],
 			'condition' => [
@@ -479,44 +480,6 @@ class Group_Control_Background extends Group_Control_Base {
 				'size' => [ 'initial' ],
 				'image[url]!' => '',
 			],
-		];
-
-		$fields['bg_height'] = [
-			'label' => _x( 'Height', 'Background Control', 'elementor' ),
-			'type' => Controls_Manager::SLIDER,
-			'responsive' => true,
-			'size_units' => [ 'px', 'em', '%', 'vw', 'vh' ],
-			'range' => [
-				'px' => [
-					'min' => 0,
-					'max' => 800,
-				],
-				'em' => [
-					'min' => -100,
-					'max' => 100,
-				],
-				'%' => [
-					'min' => 0,
-					'max' => 100,
-				],
-				'vh' => [
-					'min' => 0,
-					'max' => 100,
-				],
-				'vw' => [
-					'min' => 0,
-					'max' => 100,
-				],
-			],
-			'selectors' => [
-				'{{SELECTOR}}:not(.elementor-section), {{SELECTOR}}.elementor-section > .elementor-background-holder .elementor-background' => 'background-size: {{bg_width.SIZE || "auto"}}{{bg_width.UNIT || " "}} {{SIZE}}{{UNIT}}',
-			],
-			'condition' => [
-				'background' => [ 'classic' ],
-				'size' => [ 'initial' ],
-				'image[url]!' => '',
-			],
-			'separator' => 'after',
 		];
 
 		$fields['video_link'] = [
