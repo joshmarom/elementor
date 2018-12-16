@@ -83,11 +83,14 @@ DraggableBehavior = Marionette.Behavior.extend( {
 
 	onDragStop: function( event, ui ) {
 		event.stopPropagation();
+		const currentDeviceMode = elementorFrontend.getCurrentDeviceMode(),
+			deviceSuffix = 'desktop' === currentDeviceMode ? '' : '_' + currentDeviceMode,
+			settingToChange = {};
 
-		this.view.getEditModel().get( 'settings' ).setExternalChange( {
-			_offset_x: { unit: 'px', size: ui.position.left },
-			_offset_y: { unit: 'px', size: ui.position.top },
-		} );
+		settingToChange[ '_offset_x' + deviceSuffix ] = { unit: 'px', size: ui.position.left };
+		settingToChange[ '_offset_y' + deviceSuffix ] = { unit: 'px', size: ui.position.top };
+
+		this.view.getEditModel().get( 'settings' ).setExternalChange( settingToChange );
 
 		this.$el.css( {
 			top: '',
@@ -107,10 +110,13 @@ DraggableBehavior = Marionette.Behavior.extend( {
 
 	onResizeStop: function( event, ui ) {
 		event.stopPropagation();
+		const currentDeviceMode = elementorFrontend.getCurrentDeviceMode(),
+			deviceSuffix = 'desktop' === currentDeviceMode ? '' : '_' + currentDeviceMode,
+			settingToChange = {};
 
-			this.view.getEditModel().get( 'settings' ).setExternalChange( {
-				widget_width_custom: { unit: 'px', size: ui.size.width },
-			} );
+		settingToChange[ 'widget_width_custom' + deviceSuffix ] = { unit: 'px', size: ui.size.width };
+
+		this.view.getEditModel().get( 'settings' ).setExternalChange( settingToChange );
 
 		this.$el.css( {
 			width: '',
