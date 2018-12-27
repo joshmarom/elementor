@@ -74,6 +74,7 @@ class Widget_Common extends Widget_Base {
 			[
 				'label' => __( 'Margin', 'elementor' ),
 				'type' => Controls_Manager::DIMENSIONS,
+				'layout' => 'box',
 				'size_units' => [ 'px', '%' ],
 				'selectors' => [
 					'{{WRAPPER}} > .elementor-widget-container' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
@@ -271,6 +272,7 @@ class Widget_Common extends Widget_Base {
 			[
 				'label' => __( 'Border Radius', 'elementor' ),
 				'type' => Controls_Manager::DIMENSIONS,
+				'layout' => 'corners',
 				'size_units' => [ 'px', '%' ],
 				'selectors' => [
 					'{{WRAPPER}} > .elementor-widget-container' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',

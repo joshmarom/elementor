@@ -82,6 +82,125 @@
 		.elementor-linked {
 			color: #fff;
 		}
+	}
 
+	.layout-corners, .layout-box {
+		position: relative;
+
+		.elementor-control-dimensions {
+			display: flex;
+			flex-wrap: wrap;
+			align-items: center;
+			position: relative;
+			max-width: 220px;
+			margin: 0 auto;
+			direction: ltr;
+
+			&:before {
+				content: '';
+				display: block;
+				width: calc(100% - 50px);
+				height: calc(100% - 27px);
+				left: 25px;
+				top: 13px;
+				border: 1px dotted $editor-light;
+				position: absolute;
+				border-radius: 2px;
+			}
+
+			li {
+				z-index: 1;
+				position: relative;
+				width: auto;
+
+				input {
+					border-left: 1px solid $editor-light;
+					max-width: 50px;
+					background: #fff;
+				}
+
+				button {
+					border: 0;
+					max-width: 27px;
+				}
+
+				button, input {
+					margin: 0 auto;
+					border-radius: 3px;
+				}
+
+				label {
+					display: none;
+				}
+
+				&:last-child {
+					order: 3;
+					flex-grow: 1;
+					padding-top: 10px;
+					padding-bottom: 10px;
+				}
+			}
+		}
+	}
+
+	.layout-corners {
+
+		.elementor-control-dimensions {
+
+			justify-content: space-between;
+
+			li {
+
+				&:first-child {
+					order: 1;
+				}
+
+				&:nth-child(2) {
+					order: 2;
+				}
+
+				&:nth-child(3) {
+					order: 5;
+				}
+
+				&:nth-child(4) {
+					order: 4;
+				}
+
+				&:last-child {
+					width: 100%;
+				}
+
+				&:not(:last-child) {
+					width: auto;
+				}
+			}
+		}
+	}
+
+	.layout-box {
+
+		.elementor-control-dimensions li {
+
+			&:first-child {
+				order: 1;
+				width: 100%;
+			}
+
+			&:nth-child(4) {
+				order: 2;
+				flex-grow: 0;
+			}
+
+			&:nth-child(2) {
+				order: 4;
+				flex-grow: 0;
+			}
+
+			&:nth-child(3) {
+				order: 5;
+				width: 100%;
+			}
+		}
 	}
 }

@@ -91,10 +91,15 @@ class Control_Dimensions extends Control_Base_Units {
 			'left' => __( 'Left', 'elementor' ),
 		];
 		?>
+		<#
+		var wrapperClass = 'elementor-control-input-wrapper';
+		if ( 'string' === typeof data.layout ) {
+			wrapperClass += ' layout-' + data.layout;
+		} #>
 		<div class="elementor-control-field">
 			<label class="elementor-control-title">{{{ data.label }}}</label>
 			<?php $this->print_units_template(); ?>
-			<div class="elementor-control-input-wrapper">
+			<div class="{{ wrapperClass }}">
 				<ul class="elementor-control-dimensions">
 					<?php
 					foreach ( $dimensions as $dimension_key => $dimension_title ) :
