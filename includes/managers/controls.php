@@ -137,6 +137,11 @@ class Controls_Manager {
 	const DIMENSIONS = 'dimensions';
 
 	/**
+	 * Box Model control.
+	 */
+	const BOX_MODEL = 'box_model';
+
+	/**
 	 * Choose control.
 	 */
 	const CHOOSE = 'choose';
@@ -384,6 +389,7 @@ class Controls_Manager {
 			self::CODE,
 			self::FONT,
 			self::IMAGE_DIMENSIONS,
+			self::BOX_MODEL,
 
 			self::WP_WIDGET,
 

@@ -1144,20 +1144,20 @@ class Element_Section extends Element_Base {
 		);
 
 		$this->add_responsive_control(
-			'margin',
+			'box_model',
 			[
 				'label' => __( 'Margin', 'elementor' ),
-				'type' => Controls_Manager::DIMENSIONS,
+				'type' => Controls_Manager::BOX_MODEL,
 				'size_units' => [ 'px', '%' ],
-				'allowed_dimensions' => 'vertical',
+				/*'allowed_dimensions' => 'vertical',
 				'placeholder' => [
 					'top' => '',
 					'right' => 'auto',
 					'bottom' => '',
 					'left' => 'auto',
-				],
+				],*/
 				'selectors' => [
-					'{{WRAPPER}}' => 'margin-top: {{TOP}}{{UNIT}}; margin-bottom: {{BOTTOM}}{{UNIT}};',
+					'{{WRAPPER}}' => 'margin-top: {{MARGIN_TOP_SIZE}}{{UNIT}}; margin-bottom: {{MARGIN_BOTTOM_SIZE}}{{UNIT}};',
 				],
 			]
 		);
