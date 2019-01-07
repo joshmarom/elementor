@@ -501,9 +501,11 @@ class Documents_Manager {
 
 		$return_data = [
 			'config' => [
-				'last_edited' => $document->get_last_edited(),
-				'wp_preview' => [
-					'url' => $document->get_wp_preview_url(),
+				'document' => [
+					'last_edited' => $document->get_last_edited(),
+					'urls' => [
+						'wp_preview' => $document->get_wp_preview_url(),
+					],
 				],
 			],
 		];
@@ -605,6 +607,19 @@ class Documents_Manager {
 	 */
 	public function get_current() {
 		return $this->current_doc;
+	}
+
+	/**
+	 * Get groups.
+	 *
+	 * @since 2.0.0
+	 * @deprecated 2.4.0
+	 * @access public
+	 *
+	 * @return array
+	 */
+	public function get_groups() {
+		return [];
 	}
 
 	private function register_types() {
