@@ -1,0 +1,48 @@
+$input-width: 40px;
+$input-height: 27px;
+$spacing: 5px;
+
+.elementor-control-type-box_model {
+
+	.elementor-control-content {
+		position: relative;
+
+		.elementor-control-field:not(:last-child) {
+			position: absolute;
+			width: 100%;
+			bottom: 0;
+		}
+	}
+
+	.elementor-control-dimensions {
+
+		&.elementor-margin {
+			max-width: 100%;
+
+			li:last-child {
+				padding-top: #{2 * $input-height + $spacing};
+				padding-bottom: #{2 * $input-height + $spacing};
+			}
+		}
+
+		&.elementor-border {
+			margin: #{$input-height + $spacing} auto;
+			max-width: calc(100% - #{$input-width + $spacing} * 2);
+
+			li:last-child {
+				padding-top: #{$input-height + $spacing};
+				padding-bottom: #{$input-height + $spacing};
+			}
+		}
+
+		&.elementor-padding {
+			margin: #{2 * $input-height + $spacing} auto;
+			max-width: calc(100% - #{$input-width + $spacing} * 4);
+
+			li:last-child {
+				padding-top: 0;
+				padding-bottom: 0;
+			}
+		}
+	}
+}

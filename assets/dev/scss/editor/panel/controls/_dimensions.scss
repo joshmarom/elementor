@@ -1,4 +1,4 @@
-.elementor-control-type-dimensions {
+.elementor-control-type-dimensions, .elementor-control-type-box_model {
 
 	.elementor-control-dimensions {
 		overflow: hidden;
@@ -87,7 +87,7 @@
 	.layout-corners, .layout-box {
 		position: relative;
 
-		.elementor-control-dimensions {
+		.elementor-control-dimensions, .elementor-control-box_model {
 			display: flex;
 			flex-wrap: wrap;
 			align-items: center;
@@ -99,10 +99,10 @@
 			&:before {
 				content: '';
 				display: block;
-				width: calc(100% - 50px);
-				height: calc(100% - 27px);
-				left: 25px;
-				top: 13px;
+				width: calc(100% - 40px);
+				height: calc(100% - 25px);
+				left: 20px;
+				top: 12px;
 				border: 1px dotted $editor-light;
 				position: absolute;
 				border-radius: 2px;
@@ -115,13 +115,13 @@
 
 				input {
 					border-left: 1px solid $editor-light;
-					max-width: 50px;
+					max-width: 40px;
 					background: #fff;
 				}
 
 				button {
 					border: 0;
-					max-width: 27px;
+					max-width: 25px;
 				}
 
 				button, input {
@@ -136,8 +136,8 @@
 				&:last-child {
 					order: 3;
 					flex-grow: 1;
-					padding-top: 10px;
-					padding-bottom: 10px;
+					padding-top: 5px;
+					padding-bottom: 5px;
 				}
 			}
 		}
@@ -145,7 +145,7 @@
 
 	.layout-corners {
 
-		.elementor-control-dimensions {
+		.elementor-control-dimensions, .elementor-control-box_model {
 
 			justify-content: space-between;
 
@@ -180,26 +180,28 @@
 
 	.layout-box {
 
-		.elementor-control-dimensions li {
+		.elementor-control-dimensions, .elementor-control-box_model {
+			li {
 
-			&:first-child {
-				order: 1;
-				width: 100%;
-			}
+				&:first-child {
+					order: 1;
+					width: 100%;
+				}
 
-			&:nth-child(4) {
-				order: 2;
-				flex-grow: 0;
-			}
+				&:nth-child(4) {
+					order: 2;
+					flex-grow: 0;
+				}
 
-			&:nth-child(2) {
-				order: 4;
-				flex-grow: 0;
-			}
+				&:nth-child(2) {
+					order: 4;
+					flex-grow: 0;
+				}
 
-			&:nth-child(3) {
-				order: 5;
-				width: 100%;
+				&:nth-child(3) {
+					order: 5;
+					width: 100%;
+				}
 			}
 		}
 	}

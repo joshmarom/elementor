@@ -1146,7 +1146,7 @@ class Element_Section extends Element_Base {
 		$this->add_responsive_control(
 			'box_model',
 			[
-				'label' => __( 'Margin', 'elementor' ),
+				'label' => __( 'Box', 'elementor' ),
 				'type' => Controls_Manager::BOX_MODEL,
 				'size_units' => [ 'px', '%' ],
 				/*'allowed_dimensions' => 'vertical',
@@ -1156,6 +1156,7 @@ class Element_Section extends Element_Base {
 					'bottom' => '',
 					'left' => 'auto',
 				],*/
+				'layout' => 'box',
 				'selectors' => [
 					'{{WRAPPER}}' => 'margin-top: {{MARGIN_TOP_SIZE}}{{UNIT}}; margin-bottom: {{MARGIN_BOTTOM_SIZE}}{{UNIT}};',
 				],
