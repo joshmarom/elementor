@@ -291,7 +291,7 @@ class Source_Local extends Source_Base {
 			'labels' => [
 				'name' => _x( 'Categories', 'Template Library', 'elementor' ),
 				'singular_name' => _x( 'Category', 'Template Library', 'elementor' ),
-				'all_items' => __( 'All Categories', 'Template Library', 'elementor' ),
+				'all_items' => _x( 'All Categories', 'Template Library', 'elementor' ),
 			],
 		];
 
@@ -333,8 +333,10 @@ class Source_Local extends Source_Base {
 		}
 
 		// Move the 'Categories' menu to end.
-		$library_submenu[800] = $library_submenu[15];
-		unset( $library_submenu[15] );
+		if ( isset( $library_submenu[15] ) ) {
+			$library_submenu[800] = $library_submenu[15];
+			unset( $library_submenu[15] );
+		}
 
 		if ( $this->is_current_screen() ) {
 			$library_title = $this->get_library_title();
@@ -1250,7 +1252,7 @@ class Source_Local extends Source_Base {
 			'selected' => empty( $_GET[ self::TAXONOMY_CATEGORY_SLUG ] ) ? '' : $_GET[ self::TAXONOMY_CATEGORY_SLUG ],
 		);
 
-		echo '<label class="screen-reader-text" for="cat">' . __( 'Filter by category', 'Template Library', 'elementor' ) . '</label>';
+		echo '<label class="screen-reader-text" for="cat">' . _x( 'Filter by category', 'Template Library', 'elementor' ) . '</label>';
 		wp_dropdown_categories( $dropdown_options );
 	}
 
