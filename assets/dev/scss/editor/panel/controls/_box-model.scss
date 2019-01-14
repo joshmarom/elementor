@@ -1,47 +1,82 @@
-$input-width: 40px;
-$input-height: 27px;
+$input-width: 35px;
+$input-height: 23px;
 $spacing: 5px;
 
 .elementor-control-type-box_model {
 
-	.elementor-control-content {
+	.elementor-box-fields {
 		position: relative;
+		height: 280px;
 
-		.elementor-control-field:not(:last-child) {
+		.elementor-control-field {
 			position: absolute;
 			width: 100%;
+			height: 100%;
 			bottom: 0;
+
+			.elementor-units-choices {
+				position: absolute;
+				top: 0;
+				right: getValueByDirection(0, auto);
+				left: getValueByDirection(auto, 0);
+			}
+
+			.elementor-control-input-wrapper {
+				display: flex;
+				align-items: center;
+				height: 100%;
+				width: 100%;
+			}
 		}
 	}
 
 	.elementor-control-dimensions {
+		width: 100%;
+
+		li input {
+			width: $input-width;
+			height: $input-height;
+		}
 
 		&.elementor-margin {
 			max-width: 100%;
 
+			&:before {
+				background-color: #ffc69c;
+				border: none;
+			}
+
 			li:last-child {
-				padding-top: #{2 * $input-height + $spacing};
-				padding-bottom: #{2 * $input-height + $spacing};
+				padding-top: #{ 2 * ( $input-height + $spacing * 2 ) };
+				padding-bottom: #{ 2 * ( $input-height + $spacing * 2 ) };
 			}
 		}
 
 		&.elementor-border {
-			margin: #{$input-height + $spacing} auto;
 			max-width: calc(100% - #{$input-width + $spacing} * 2);
 
+			&:before {
+				border: 2px #444 solid;
+				background-color: #f6efa1;
+			}
+
 			li:last-child {
-				padding-top: #{$input-height + $spacing};
-				padding-bottom: #{$input-height + $spacing};
+				padding-top: #{$input-height + $spacing * 3};
+				padding-bottom: #{$input-height + $spacing * 3};
 			}
 		}
 
 		&.elementor-padding {
-			margin: #{2 * $input-height + $spacing} auto;
 			max-width: calc(100% - #{$input-width + $spacing} * 4);
 
+			&:before {
+				background-color: #b1d4dd;
+				border: none;
+			}
+
 			li:last-child {
-				padding-top: 0;
-				padding-bottom: 0;
+				padding-top: #{$spacing * 2};
+				padding-bottom: #{$spacing * 2};
 			}
 		}
 	}

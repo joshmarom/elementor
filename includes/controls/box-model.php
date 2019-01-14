@@ -163,9 +163,9 @@ class Control_Box_Model extends Control_Base_Units {
 	 */
 	public function content_template() {
 		$properties = [
-			'padding' => __( 'Padding', 'elementor' ),
-			'border' => __( 'Border', 'elementor' ),
 			'margin' => __( 'Margin', 'elementor' ),
+			'border' => __( 'Border', 'elementor' ),
+			'padding' => __( 'Padding', 'elementor' ),
 		];
 		$dimensions = [
 			'top' => __( 'Top', 'elementor' ),
@@ -180,49 +180,51 @@ class Control_Box_Model extends Control_Base_Units {
 			wrapperClass += ' layout-' + data.layout;
 		} #>
 		<label class="elementor-control-title">{{{ data.label }}}</label>
-			<?php foreach ( $properties as $property_key => $property_title  ) : ?>
-			<div class="elementor-control-field">
-				<?php $this->print_units_template(); ?>
-				<div class="{{ wrapperClass }}">
-					<ul class="elementor-control-dimensions <?php echo 'elementor-' . $property_key; ?>">
-						<?php
-						foreach ( $dimensions as $dimension_key => $dimension_title ) :
-							$property_dimension_key_size = $property_key . '-' . $dimension_key . '-' . 'size';
-							$control_uid = $this->get_control_uid( $property_dimension_key_size );
-							?>
-							<li class="elementor-control-dimension">
-								<input id="<?php echo $control_uid; ?>" type="number" data-setting="<?php echo esc_attr( $property_dimension_key_size ); ?>"
-								       placeholder="<#
-								   if ( _.isObject( data.placeholder ) ) {
-									if ( ! _.isUndefined( data.placeholder.<?php echo $property_dimension_key_size; ?> ) ) {
-										print( data.placeholder.<?php echo $property_dimension_key_size; ?> );
-									}
-								   } else {
-									print( data.placeholder );
-								   } #>"
-								<# if ( -1 === _.indexOf( allowed_dimensions, '<?php echo $dimension_key; ?>' ) ) { #>
-								disabled
-								<# } #>
-								/>
-								<label for="<?php echo esc_attr( $control_uid ); ?>" class="elementor-control-dimension-label"><?php echo $property_title . ' ' . $dimension_title; ?></label>
+			<div class="elementor-box-fields">
+				<?php foreach ( $properties as $property_key => $property_title  ) : ?>
+				<div class="elementor-control-field">
+					<?php $this->print_units_template(); ?>
+					<div class="{{ wrapperClass }}">
+						<ul class="elementor-control-dimensions <?php echo 'elementor-' . $property_key; ?>">
+							<?php
+							foreach ( $dimensions as $dimension_key => $dimension_title ) :
+								$property_dimension_key_size = $property_key . '-' . $dimension_key . '-' . 'size';
+								$control_uid = $this->get_control_uid( $property_dimension_key_size );
+								?>
+								<li class="elementor-control-dimension">
+									<input id="<?php echo $control_uid; ?>" type="number" data-setting="<?php echo esc_attr( $property_dimension_key_size ); ?>"
+									       placeholder="<#
+									   if ( _.isObject( data.placeholder ) ) {
+										if ( ! _.isUndefined( data.placeholder.<?php echo $property_dimension_key_size; ?> ) ) {
+											print( data.placeholder.<?php echo $property_dimension_key_size; ?> );
+										}
+									   } else {
+										print( data.placeholder );
+									   } #>"
+									<# if ( -1 === _.indexOf( allowed_dimensions, '<?php echo $dimension_key; ?>' ) ) { #>
+									disabled
+									<# } #>
+									/>
+									<label for="<?php echo esc_attr( $control_uid ); ?>" class="elementor-control-dimension-label"><?php echo $property_title . ' ' . $dimension_title; ?></label>
+								</li>
+							<?php endforeach; ?>
+							<li>
+								<button class="elementor-link-dimensions tooltip-target" data-tooltip="<?php echo esc_attr__( 'Link values together', 'elementor' ); ?>">
+									<span class="elementor-linked">
+										<i class="fa fa-link" aria-hidden="true"></i>
+										<span class="elementor-screen-only"><?php echo __( 'Link values together', 'elementor' ); ?></span>
+									</span>
+									<span class="elementor-unlinked">
+										<i class="fa fa-chain-broken" aria-hidden="true"></i>
+										<span class="elementor-screen-only"><?php echo __( 'Unlinked values', 'elementor' ); ?></span>
+									</span>
+								</button>
 							</li>
-						<?php endforeach; ?>
-						<li>
-							<button class="elementor-link-dimensions tooltip-target" data-tooltip="<?php echo esc_attr__( 'Link values together', 'elementor' ); ?>">
-								<span class="elementor-linked">
-									<i class="fa fa-link" aria-hidden="true"></i>
-									<span class="elementor-screen-only"><?php echo __( 'Link values together', 'elementor' ); ?></span>
-								</span>
-								<span class="elementor-unlinked">
-									<i class="fa fa-chain-broken" aria-hidden="true"></i>
-									<span class="elementor-screen-only"><?php echo __( 'Unlinked values', 'elementor' ); ?></span>
-								</span>
-							</button>
-						</li>
-					</ul>
+						</ul>
+					</div>
 				</div>
+				<?php endforeach; ?>
 			</div>
-			<?php endforeach; ?>
 		<# if ( data.description ) { #>
 		<div class="elementor-control-field-description">{{{ data.description }}}</div>
 		<# } #>
