@@ -205,7 +205,7 @@ module.exports = elementorModules.ViewModule.extend( {
 			classes = this.getSettings( 'classes' ),
 			$linkList = $( '<div>', { class: classes.slideshow.shareLinks } ),
 			$activeSlide = this.getSlide( 'active' ),
-			$image = $activeSlide.find( '.elementor-lightbox-image' ),
+			$image = $activeSlide.find( '.' + classes.image ),
 			videoUrl = $activeSlide.data( 'elementor-slideshow-video' );
 
 		let itemUrl;
@@ -311,7 +311,7 @@ module.exports = elementorModules.ViewModule.extend( {
 				.append( $shareLinks );
 			elements.$iconShare
 				.add( elements.$shareMenu )
-				.on( 'click', this.toggleShareMenu )
+				.on( 'click', this.toggleShareMenu );
 			elements.$header.append( elements.$iconShare, elements.$shareMenu );
 			elements.$iconShare.after( '<span class="' + classes.screenReaderText + '">Share Links</span>' );
 
