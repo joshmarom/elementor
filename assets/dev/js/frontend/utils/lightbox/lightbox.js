@@ -275,12 +275,28 @@ module.exports = elementorModules.ViewModule.extend( {
 		if ( showFullscreen ) {
 			elements.$iconExpand = $( '<i>', { class: slideshowClasses.iconExpand, tabIndex: 0, 'aria-label': i18n.fullscreen } ).append( $( '<span>' ), $( '<span>' ) );
 			elements.$iconExpand.on( 'click', this.toggleFullscreen );
+			elements.$iconExpand.on( 'keypress', ( key ) => {
+				// Check if the Enter key is pressed
+				if ( 13 === key.which ) {
+					key.preventDefault();
+
+					this.toggleFullscreen();
+				}
+			} );
 			elements.$header.append( elements.$iconExpand );
 		}
 
 		if ( showZoom ) {
 			elements.$iconZoom = $( '<i>', { class: slideshowClasses.iconZoomIn, tabIndex: 0, 'aria-label': i18n.zoom } );
 			elements.$iconZoom.on( 'click', this.toggleZoomMode );
+			elements.$iconZoom.on( 'keypress', ( key ) => {
+				// Check if the Enter key is pressed
+				if ( 13 === key.which ) {
+					key.preventDefault();
+
+					this.toggleZoomMode();
+				}
+			} );
 			elements.$header.append( elements.$iconZoom );
 		}
 
@@ -442,12 +458,22 @@ module.exports = elementorModules.ViewModule.extend( {
 			} else {
 				const $zoomContainer = $( '<div>', { class: 'swiper-zoom-container' } ),
 					$slidePlaceholder = $( '<div class="swiper-lazy-preloader"></div>' ),
-					$slideImage = $( '<img>', {
-						class: classes.image + ' ' + classes.preventClose + ' swiper-lazy',
+					imageAttributes = {
 						'data-src': slide.image,
-						'data-title': slide.title,
-						'data-description': slide.description,
-					} );
+						class: classes.image + ' ' + classes.preventClose + ' swiper-lazy',
+					};
+
+					if ( slide.title ) {
+						imageAttributes[ 'data-title' ] = slide.title;
+						imageAttributes.alt = slide.title;
+					}
+
+					if ( slide.description ) {
+						imageAttributes[ 'data-description' ] = slide.description;
+						imageAttributes.alt += ' ' + slide.description;
+					}
+
+				const $slideImage = $( '<img>', imageAttributes );
 
 				$zoomContainer.append( [ $slideImage, $slidePlaceholder ] );
 				$slide.append( $zoomContainer );
