@@ -115,7 +115,7 @@
 
 	.elementor-swiper-button {
 		&:focus {
-			outline: none;
+			outline-width: 1px;
 		}
 
 		&-prev, &-next {
