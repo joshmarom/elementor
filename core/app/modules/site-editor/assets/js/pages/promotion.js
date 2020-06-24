@@ -12,7 +12,7 @@ export default function Promotion() {
 				<CardOverlay className="promotion-overlay">
 					<a className="promotion-overlay__link" target="_blank" rel="noopener noreferrer" href={ promotionUrlWithType }>
 						<i className="promotion-overlay__icon eicon-lock" />
-						<span className="promotion-overlay__button eps-button">{__( 'Get Pro', 'elementor' )}</span>
+						<span className="promotion-overlay__button eps-button eps-button--sm eps-button--cta">{__( 'Get Pro', 'elementor' )}</span>
 					</a>
 				</CardOverlay>
 			);
