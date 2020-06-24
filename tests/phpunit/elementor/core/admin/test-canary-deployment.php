@@ -159,7 +159,7 @@ class Test_Canary_Deployment extends Elementor_Test_Base {
 			'version' => '',
 			'operator' => '=',
 		] );
-		$this->assertNotEmpty( $filtered_transient->response );
+		$this->assertNotEmpty( $filtered_transient->response, 'Not active' );
 
 		// On tests, the plugin base (for `is_plugin_active`) is 'elementor/elementor.php', but the real file (for `get_plugin_data`) is static::PLUGIN_BASE.
 		$condition = [
@@ -172,23 +172,23 @@ class Test_Canary_Deployment extends Elementor_Test_Base {
 		// Active.
 		$condition['version'] = '0';
 		$filtered_transient = $this->check_condition( $condition );
-		$this->assertNotEmpty( $filtered_transient->response );
+		$this->assertNotEmpty( $filtered_transient->response, 'Active' );
 
 		// Bigger than.
 		$condition['version'] = $this->increase_version( static::CURRENT_VERSION );
 		$filtered_transient = $this->check_condition( $condition );
-		$this->assertEmpty( $filtered_transient->response );
+		$this->assertEmpty( $filtered_transient->response, 'Bigger than' );
 
 		// Equal.
 		$condition['version'] = static::CURRENT_VERSION;
 		$filtered_transient = $this->check_condition( $condition );
-		$this->assertEmpty( $filtered_transient->response );
+		$this->assertEmpty( $filtered_transient->response, 'Equal' );
 
 		// Lower than.
-		$condition['version'] = $this->decrease_version( static::CURRENT_VERSION );
+		$condition['version'] = '0.0.1';
 		$filtered_transient = $this->check_condition( $condition );
 
-		$this->assertNotEmpty( $filtered_transient->response );
+		$this->assertNotEmpty( $filtered_transient->response, 'Lower than' );
 	}
 
 	public function test_condition_type_theme() {

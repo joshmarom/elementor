@@ -71,6 +71,13 @@ export default class Container extends ArgsObject {
 	dynamic;
 
 	/**
+	 * Container globals.
+	 *
+	 * @type {Backbone.Model}
+	 */
+	globals;
+
+	/**
 	 * Container label.
 	 *
 	 * @type {string}
@@ -141,6 +148,7 @@ export default class Container extends ArgsObject {
 		}
 
 		this.dynamic = new Backbone.Model( this.settings.get( '__dynamic__' ) );
+		this.globals = new Backbone.Model( this.settings.get( '__globals__' ) );
 		this.panel = new Panel( this );
 
 		this.handleRepeaterChildren();
@@ -152,6 +160,33 @@ export default class Container extends ArgsObject {
 
 		this.requireArgumentInstance( 'settings', Backbone.Model, args );
 		this.requireArgumentInstance( 'model', Backbone.Model, args );
+	}
+
+	/**
+	 * Function getRelatedControls().
+	 *
+	 * @param {{}} settings
+	 *
+	 * @return {{}}
+	 */
+	getRelatedControls( settings ) {
+		const result = {};
+
+		Object.keys( settings ).forEach( ( settingKey ) => {
+			Object.values( this.controls ).forEach( ( control ) => {
+				if ( settingKey === control.name ) {
+					result[ control.name ] = control;
+				} else if ( this.controls[ settingKey ]?.groupPrefix ) {
+					const { groupPrefix } = this.controls[ settingKey ];
+
+					if ( control.name.toString().startsWith( groupPrefix ) ) {
+						result[ control.name ] = control;
+					}
+				}
+			} );
+		} );
+
+		return result;
 	}
 
 	handleRepeaterChildren() {
@@ -182,13 +217,15 @@ export default class Container extends ArgsObject {
 			} );
 		} );
 
-		// Backwards Compatibility: if there is only one repeater, set it's children as current children.
-		const repeaterNames = Object.keys( this.repeaters );
-		if ( 1 === repeaterNames.length ) {
+		// Backwards Compatibility: if there is only one repeater (type=repeater), set it's children as current children.
+		// Since 3.0.0.
+		const repeaters = Object.values( this.controls ).filter( ( control ) => 'repeater' === control.type );
+
+		if ( 1 === repeaters.length ) {
 			Object.defineProperty( this, 'children', {
 				get() {
 					elementorCommon.helpers.softDeprecated( 'children', '3.0.0', 'container.repeaters[ repeaterName ].children' );
-					return this.repeaters[ repeaterNames[ 0 ] ].children;
+					return this.repeaters[ repeaters[ 0 ].name ].children;
 				},
 			} );
 		}
