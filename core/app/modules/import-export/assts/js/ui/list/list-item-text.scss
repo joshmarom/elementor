@@ -1,0 +1,15 @@
+@import "../../../../../../assets/styles/common";
+
+.import-export__list-item {
+	&-primary {
+		color: tints(800);
+		font-size: type( text, md );
+		line-height: 1;
+	}
+
+	&-secondary {
+		margin-top: spacing(8);
+		color: tints(600);
+		font-size: 13px;
+	}
+}

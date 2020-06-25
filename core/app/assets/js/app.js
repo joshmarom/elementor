@@ -1,7 +1,7 @@
 /**
  * Elementor App
  */
-import router from '@elementor/router';
+import router from './router';
 import { Router, LocationProvider, createHistory } from '@reach/router';
 import { createHashSource } from 'reach-router-hash-history';
 import NotFound from 'elementor-app/pages/not-found';

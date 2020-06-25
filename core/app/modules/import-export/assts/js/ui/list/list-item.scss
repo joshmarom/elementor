@@ -1,0 +1,10 @@
+@import "../../../../../../assets/styles/common";
+
+.import-export__list-item {
+	padding: spacing(20);
+	background: theme-colors(light);
+
+	&:not(:last-child) {
+		margin-bottom: 1px;
+	}
+}

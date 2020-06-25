@@ -1,5 +1,5 @@
 import { Link, LocationProvider } from '@reach/router';
-import router from '@elementor/router';
+import router from '../../router';
 import Icon from 'elementor-app/ui/atoms/icon';
 import Typography from 'elementor-app/ui/atoms/typography';
 

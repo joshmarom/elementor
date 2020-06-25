@@ -1,4 +1,4 @@
-import router from '@elementor/router';
+import router from '../../../../assets/js/router';
 import SiteEditorPromotion from './pages/promotion';
 
 export default class SiteEditor {
