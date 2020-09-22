@@ -56,7 +56,7 @@
 				&:before, &:after {
 					display: block;
 					content: '';
-					border-bottom: 50;
+					border-bottom: 50px;
 					flex-grow: 1;
 					border-top: var(--divider-border-width) var(--divider-border-style) var(--divider-color);
 				}
