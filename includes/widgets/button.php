@@ -17,7 +17,7 @@ use Elementor\Core\Kits\Documents\Tabs\Global_Typography;
  * @since 1.0.0
  */
 class Widget_Button extends Widget_Base {
-
+	public $html = '';
 	/**
 	 * Get widget name.
 	 *
@@ -508,6 +508,9 @@ class Widget_Button extends Widget_Base {
 		return $template_data;
 	}
 
+	public $template = '';
+	public $raw_template = '';
+
 	/**
 	 * Render button widget output on the frontend.
 	 *
@@ -519,20 +522,11 @@ class Widget_Button extends Widget_Base {
 	protected function render() {
 		$data = $this->get_template_data();
 
-		if ( $data ) { ?>
-		<div <?php echo $data['wrapper_att'] ?>>
-			<a <?php echo $data['button_att'] ?>>
-				<span <?php echo $data['content_wrapper_att'] ?>>
-					<?php if ( $data['has_icon'] ) { ?>
-						<span <?php echo $data['icon_wrapper_att'] ?>><?php echo $data['icon_element'] ?></span>
-					<?php } ?>
-					<?php if ( $data['text'] ) { ?>
-						<span <?php echo $data['text_render_att'] ?>><?php echo $data['text'] ?></span>
-					<?php } ?>
-				</span>
-			</a>
-		</div>
-		<?php }
+		echo $this->template->render( [] );
+
+		$html = $this->template->render( $data );
+
+		echo $html;
 	}
 
 	/**
@@ -618,28 +612,50 @@ class Widget_Button extends Widget_Base {
 
 				return data;
 			}
+
+		// Render Twig Template
 		const data = get_template_data();
+		console.log( 'data', data );
 
-		if ( data ) { #>
+		if ( data ) {
+			const _twig = twig( { data: `<?php echo $this->raw_template; ?>` } );
 
-		<div {{{ data.wrapper_att }}}>
-			<a {{{ data.button_att }}}>
-				<span {{{ data.content_wrapper_att }}}>
-					<# if ( data.has_icon ) { #>
-						<span {{{ data.icon_wrapper_att }}}>{{{ data.icon_element }}}</span>
-					<# } #>
-					<# if ( data.text ) { #>
-						<span {{{ data.text_render_att }}}>{{{ data.text }}}</span>
-					<# } #>
-				</span>
-			</a>
-		</div>
-
-		<# } #>
+			print( _twig.render( data ) );
+		} #>
 		<?php
 	}
 
 	public function on_import( $element ) {
 		return Icons_Manager::on_import_migration( $element, 'icon', 'selected_icon' );
+	}
+
+	function __construct( $data = [], $args = null ) {
+		parent::__construct( $data, $args );
+
+		/* TWIG START */
+		// TODO: Move to external - START
+		$elementor_path = str_replace( '\\', '/', ELEMENTOR_PATH );
+		$full_path = $elementor_path . 'includes/libraries/Twig/Autoloader.php';
+		require_once( $full_path );
+
+		\Twig_Autoloader::register();
+
+		$templates_folder = 'includes/widgets';
+		$loader = new \Twig_Loader_Filesystem( $elementor_path . $templates_folder );
+		$twig = new \Twig_Environment( $loader, [
+			//'cache' => $elementor_path . 'includes/widgets',
+		] );
+
+		$this->twig = $twig;
+		// TODO: Move to external - END
+
+		$template_name = 'button.twig';
+
+		$this->template = $this->twig->loadTemplate( $template_name );
+
+		// Getting the raw template content for JS rendering.
+		$this->raw_template = file_get_contents($elementor_path . $templates_folder . '/' . $template_name, true);
+		/* TWIG END */
+
 	}
 }

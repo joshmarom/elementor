@@ -24,6 +24,7 @@ module.exports = function( config ) {
 
 			// Base Libraries.
 			'tests/qunit/vendor/wp-includes/jquery.js',
+			'assets/lib/twig/twig.js',
 			'tests/qunit/vendor/wp-includes/underscore.min.js',
 			'tests/qunit/vendor/wp-includes/backbone.min.js',
 			'tests/qunit/vendor/wp-includes/react.min.js',
@@ -49,6 +50,7 @@ module.exports = function( config ) {
 
 			// Editor Dependencies.
 			'tests/qunit/vendor/wp-includes/jquery-ui.min.js',
+			'assets/lib/twig/twig.js',
 			'assets/lib/tipsy/tipsy.min.js',
 			'assets/lib/perfect-scrollbar/js/perfect-scrollbar.min.js',
 			'assets/lib/nouislider/nouislider.min.js',

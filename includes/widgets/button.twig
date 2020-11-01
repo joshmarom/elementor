@@ -1,0 +1,12 @@
+<div>
+	<a {{ button_att|raw }}>
+		<span {{ content_wrapper_att|raw }}>
+			{% if has_icon %}
+				<span {{ icon_wrapper_att|raw }}>{{ icon_element }}</span>
+			{% endif %}
+			{% if text %}
+				<span {{ text_render_att|raw }}>{{ text }}</span>
+			{% endif %}
+		</span>
+	</a>
+</div>

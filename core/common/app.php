@@ -124,6 +124,14 @@ class App extends BaseApp {
 			true
 		);
 
+		wp_register_script(
+			'twig',
+			$this->get_js_assets_url( 'twig', 'assets/lib/twig/' ),
+			[],
+			ELEMENTOR_VERSION,
+			true
+		);
+
 		wp_enqueue_script(
 			'elementor-common',
 			$this->get_js_assets_url( 'common' ),
@@ -135,6 +143,7 @@ class App extends BaseApp {
 				'elementor-common-modules',
 				'elementor-dialog',
 				'wp-api-request',
+				'twig',
 			],
 			ELEMENTOR_VERSION,
 			true
