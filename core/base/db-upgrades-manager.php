@@ -83,12 +83,11 @@ abstract class DB_Upgrades_Manager extends Background_Task_Manager {
 		/**
 		 * @var Admin_Notices $admin_notices
 		 */
-		$admin_notices = Plugin::$instance->common->get_component( 'admin-notices' );
+		$admin_notices = Plugin::$instance->admin->get_component( 'admin-notices' );
 
 		$options = [
 			'description' => $message,
 			'type' => 'error',
-			'dismissible' => true,
 			'button' => [
 				'text' => __( 'Update Now', 'elementor' ),
 				'url' => $upgrade_link,
@@ -112,7 +111,7 @@ abstract class DB_Upgrades_Manager extends Background_Task_Manager {
 		$options = [
 			'description' => $message,
 			'type' => 'warning',
-			'dismissible' => true,
+
 			'button' => [
 				'text' => __( 'Taking a while?', 'elementor' ) . ' ' . __( 'Click here to run it now', 'elementor' ),
 				'url' => $upgrade_link,
@@ -131,12 +130,11 @@ abstract class DB_Upgrades_Manager extends Background_Task_Manager {
 		/**
 		 * @var Admin_Notices $admin_notices
 		 */
-		$admin_notices = Plugin::$instance->common->get_component( 'admin-notices' );
+		$admin_notices = Plugin::$instance->admin->get_component( 'admin-notices' );
 
 		$options = [
 			'description' => $message,
 			'type' => 'success',
-			'dismissible' => true,
 		];
 
 		$admin_notices->print_admin_notice( $options );
@@ -212,19 +210,19 @@ abstract class DB_Upgrades_Manager extends Background_Task_Manager {
 	public function __construct() {
 		// If upgrade is completed - show the notice only for admins.
 		// Note: in this case `should_upgrade` returns false, because it's already upgraded.
-		if ( is_admin() && current_user_can( 'update_plugins' ) && $this->get_flag( 'completed' ) ) {
+		if ( is_admin() && true || current_user_can( 'update_plugins' ) && $this->get_flag( 'completed' ) ) {
 			add_action( 'admin_notices', [ $this, 'admin_notice_upgrade_is_completed' ] );
 		}
 
 		if ( ! $this->should_upgrade() ) {
-			return;
+//			return;
 		}
 
 		$updater = $this->get_task_runner();
 
 		$this->start_run();
 
-		if ( $updater->is_running() && current_user_can( 'update_plugins' ) ) {
+		if ( true || $updater->is_running() && current_user_can( 'update_plugins' ) ) {
 			add_action( 'admin_notices', [ $this, 'admin_notice_upgrade_is_running' ] );
 		}
 
