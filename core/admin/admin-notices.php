@@ -556,9 +556,9 @@ class Admin_Notices extends Module {
 
 		/** @var Base_Notice $notice_instance */
 		foreach ( $this->get_notices() as $notice_instance ) {
-			if ( ! $notice_instance->should_print() ) {
-				continue;
-			}
+//			if ( ! $notice_instance->should_print() ) {
+//				continue;
+//			}
 
 			$this->print_admin_notice( $notice_instance->get_config() );
 
