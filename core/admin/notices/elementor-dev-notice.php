@@ -57,7 +57,8 @@ class Elementor_Dev_Notice extends Base_Notice {
 	 * @inheritDoc
 	 */
 	public function should_print() {
-		return current_user_can( 'install_plugins' ) &&
+		return true;
+/*		return current_user_can( 'install_plugins' ) &&
 			! User::is_user_notice_viewed( static::ID ) &&
 			! $this->is_elementor_dev_installed() &&
 			! $this->is_install_screen() &&
@@ -65,7 +66,7 @@ class Elementor_Dev_Notice extends Base_Notice {
 				$this->has_at_least_one_active_experiment() ||
 				$this->is_promotion_plugins_installed() ||
 				$this->is_promotion_options_enabled()
-			);
+			);*/
 	}
 
 	/**

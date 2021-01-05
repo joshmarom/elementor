@@ -106,12 +106,12 @@ class Admin_Notices extends Module {
 
 		// Check if have upgrade notices to show.
 		if ( version_compare( ELEMENTOR_VERSION, $upgrade_notice['version'], '>=' ) ) {
-			return false;
+		//	return false;
 		}
 
 		$notice_id = 'upgrade_notice_' . $upgrade_notice['version'];
 		if ( User::is_user_notice_viewed( $notice_id ) ) {
-			return false;
+		//	return false;
 		}
 		?>
 		<div class="notice updated is-dismissible elementor-message elementor-message-dismissed" data-notice_id="<?php echo esc_attr( $notice_id ); ?>">
@@ -157,20 +157,20 @@ class Admin_Notices extends Module {
 	private function notice_api_notice() {
 		$admin_notice = Api::get_admin_notice();
 		if ( empty( $admin_notice ) ) {
-			return false;
+		//	return false;
 		}
 
 		if ( ! current_user_can( 'manage_options' ) ) {
-			return false;
+		//	return false;
 		}
 
 		if ( ! in_array( $this->current_screen_id, [ 'toplevel_page_elementor', 'edit-elementor_library', 'elementor_page_elementor-system-info', 'dashboard' ], true ) ) {
-			return false;
+		//	return false;
 		}
 
 		$notice_id = 'admin_notice_api_' . $admin_notice['notice_id'];
 		if ( User::is_user_notice_viewed( $notice_id ) ) {
-			return false;
+		//	return false;
 		}
 		?>
 		<div class="notice is-dismissible updated elementor-message-dismissed elementor-message-announcement" data-notice_id="<?php echo esc_attr( $notice_id ); ?>">
@@ -286,23 +286,23 @@ class Admin_Notices extends Module {
 		$notice_id = 'woocommerce_promote';
 
 		if ( Utils::has_pro() || ! function_exists( 'WC' ) ) {
-			return false;
+		//	return false;
 		}
 
 		if ( ! current_user_can( 'install_plugins' ) ) {
-			return false;
+		//	return false;
 		}
 
 		if ( ! in_array( $this->current_screen_id, [ 'edit-product', 'woocommerce_page_wc-settings' ], true ) || User::is_user_notice_viewed( $notice_id ) ) {
-			return false;
+		//	return false;
 		}
 
 		if ( strtotime( '2019-08-01' ) > $this->get_install_time() ) {
-			return false;
+		//	return false;
 		}
 
 		if ( strtotime( '+24 hours', $this->get_install_time() ) > time() ) {
-			return false;
+		//	return false;
 		}
 
 		?>
@@ -330,23 +330,23 @@ class Admin_Notices extends Module {
 		$notice_id = 'cf7_promote';
 
 		if ( Utils::has_pro() || ! defined( 'WPCF7_VERSION' ) ) {
-			return false;
+		//	return false;
 		}
 
 		if ( ! current_user_can( 'install_plugins' ) ) {
-			return false;
+		//	return false;
 		}
 
 		if ( ! in_array( $this->current_screen_id, [ 'toplevel_page_wpcf7', 'contact_page_wpcf7-integration' ], true ) || User::is_user_notice_viewed( $notice_id ) ) {
-			return false;
+		//	return false;
 		}
 
 		if ( strtotime( '2019-08-01' ) > $this->get_install_time() ) {
-			return false;
+		//	return false;
 		}
 
 		if ( strtotime( '+24 hours', $this->get_install_time() ) > time() ) {
-			return false;
+		//	return false;
 		}
 
 		?>
@@ -374,23 +374,23 @@ class Admin_Notices extends Module {
 		$notice_id = 'mc4wp_promote';
 
 		if ( Utils::has_pro() || ! defined( 'MC4WP_VERSION' ) ) {
-			return false;
+		//	return false;
 		}
 
 		if ( ! current_user_can( 'install_plugins' ) ) {
-			return false;
+		//	return false;
 		}
 
 		if ( ! in_array( $this->current_screen_id, [ 'toplevel_page_mailchimp-for-wp', 'mc4wp_page_mailchimp-for-wp-forms', 'mc4wp_page_mailchimp-for-wp-integrations', 'mc4wp_page_mailchimp-for-wp-other', 'mc4wp_page_mailchimp-for-wp-extensions' ], true ) || User::is_user_notice_viewed( $notice_id ) ) {
-			return false;
+		//	return false;
 		}
 
 		if ( strtotime( '2019-08-01' ) > $this->get_install_time() ) {
-			return false;
+		//	return false;
 		}
 
 		if ( strtotime( '+24 hours', $this->get_install_time() ) > time() ) {
-			return false;
+		//	return false;
 		}
 
 		?>
@@ -418,23 +418,23 @@ class Admin_Notices extends Module {
 		$notice_id = 'popup_maker_promote';
 
 		if ( Utils::has_pro() || ! class_exists( 'Popup_Maker' ) ) {
-			return false;
+		//	return false;
 		}
 
 		if ( ! current_user_can( 'install_plugins' ) ) {
-			return false;
+		//	return false;
 		}
 
 		if ( ! in_array( $this->current_screen_id, [ 'edit-popup', 'popup_page_pum-settings' ], true ) || User::is_user_notice_viewed( $notice_id ) ) {
-			return false;
+		//	return false;
 		}
 
 		if ( strtotime( '2019-08-01' ) > $this->get_install_time() ) {
-			return false;
+		//	return false;
 		}
 
 		if ( strtotime( '+24 hours', $this->get_install_time() ) > time() ) {
-			return false;
+		//	return false;
 		}
 
 		?>
@@ -479,7 +479,7 @@ class Admin_Notices extends Module {
 		] );
 
 		if ( 5 > $users->get_total() ) {
-			return false;
+		//	return false;
 		}
 
 		?>
@@ -566,9 +566,7 @@ class Admin_Notices extends Module {
 
 		foreach ( $this->plain_notices as $notice ) {
 			$method_callback = "notice_{$notice}";
-			if ( $this->$method_callback() ) {
-				return;
-			}
+			$this->$method_callback();
 		}
 
 		/** @var Base_Notice $notice_instance */
