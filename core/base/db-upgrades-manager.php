@@ -84,6 +84,7 @@ abstract class DB_Upgrades_Manager extends Background_Task_Manager {
 	}
 
 	public function admin_notice_upgrade_is_running() {
+		$this->admin_notice_start_upgrade();
 		$upgrade_link = $this->get_continue_action_url();
 		$message = '<p>' . sprintf( __( '%s Database update process is running in the background.', 'elementor' ), $this->get_updater_label() ) . '</p>';
 		$message .= '<p>' . __( 'Taking a while?', 'elementor' ) . ' <a href="' . $upgrade_link . '" class="button-primary">' . __( 'Click here to run it now', 'elementor' ) . '</a></p>';
