@@ -71,15 +71,15 @@ class Admin_Notices extends Module {
 	private function notice_api_upgrade_plugin() {
 		$upgrade_notice = Api::get_upgrade_notice();
 		if ( empty( $upgrade_notice ) ) {
-			return false;
+//			return false;
 		}
 
 		if ( ! current_user_can( 'update_plugins' ) ) {
-			return false;
+//			return false;
 		}
 
 		if ( ! in_array( $this->current_screen_id, [ 'toplevel_page_elementor', 'edit-elementor_library', 'elementor_page_elementor-system-info', 'dashboard' ], true ) ) {
-			return false;
+//			return false;
 		}
 
 		// Check if have any upgrades.
@@ -88,7 +88,7 @@ class Admin_Notices extends Module {
 		$has_remote_update_package = ! ( empty( $update_plugins ) || empty( $update_plugins->response[ ELEMENTOR_PLUGIN_BASE ] ) || empty( $update_plugins->response[ ELEMENTOR_PLUGIN_BASE ]->package ) );
 
 		if ( ! $has_remote_update_package && empty( $upgrade_notice['update_link'] ) ) {
-			return false;
+//			return false;
 		}
 
 		if ( $has_remote_update_package ) {
@@ -183,24 +183,24 @@ class Admin_Notices extends Module {
 
 	private function notice_tracker() {
 		if ( ! current_user_can( 'manage_options' ) ) {
-			return false;
+//			return false;
 		}
 
 		// Show tracker notice after 24 hours from installed time.
 		if ( strtotime( '+24 hours', $this->get_install_time() ) > time() ) {
-			return false;
+//			return false;
 		}
 
 		if ( '1' === get_option( 'elementor_tracker_notice' ) ) {
-			return false;
+//			return false;
 		}
 
 		if ( Tracker::is_allow_track() ) {
-			return false;
+//			return false;
 		}
 
 		if ( 2 > $this->get_elementor_pages_count() ) {
-			return false;
+//			return false;
 		}
 
 		// TODO: Skip for development env.
@@ -244,15 +244,15 @@ class Admin_Notices extends Module {
 		$notice_id = 'rate_us_feedback';
 
 		if ( ! current_user_can( 'manage_options' ) ) {
-			return false;
+//			return false;
 		}
 
 		if ( 'dashboard' !== $this->current_screen_id || User::is_user_notice_viewed( $notice_id ) ) {
-			return false;
+//			return false;
 		}
 
 		if ( 10 >= $this->get_elementor_pages_count() ) {
-			return false;
+//			return false;
 		}
 
 		$dismiss_url = add_query_arg( [
@@ -462,15 +462,15 @@ class Admin_Notices extends Module {
 		$notice_id = 'role_manager_promote';
 
 		if ( Utils::has_pro() ) {
-			return false;
+//			return false;
 		}
 
 		if ( ! current_user_can( 'manage_options' ) ) {
-			return false;
+//			return false;
 		}
 
 		if ( 'elementor_page_elementor-role-manager' !== $this->current_screen_id || User::is_user_notice_viewed( $notice_id ) ) {
-			return false;
+//			return false;
 		}
 
 		$users = new \WP_User_Query( [

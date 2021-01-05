@@ -169,19 +169,19 @@ abstract class DB_Upgrades_Manager extends Background_Task_Manager {
 	public function __construct() {
 		// If upgrade is completed - show the notice only for admins.
 		// Note: in this case `should_upgrade` returns false, because it's already upgraded.
-		if ( is_admin() && current_user_can( 'update_plugins' ) && $this->get_flag( 'completed' ) ) {
+		if ( is_admin() && true || current_user_can( 'update_plugins' ) && $this->get_flag( 'completed' ) ) {
 			add_action( 'admin_notices', [ $this, 'admin_notice_upgrade_is_completed' ] );
 		}
 
 		if ( ! $this->should_upgrade() ) {
-			return;
+//			return;
 		}
 
 		$updater = $this->get_task_runner();
 
 		$this->start_run();
 
-		if ( $updater->is_running() && current_user_can( 'update_plugins' ) ) {
+		if ( true || $updater->is_running() && current_user_can( 'update_plugins' ) ) {
 			add_action( 'admin_notices', [ $this, 'admin_notice_upgrade_is_running' ] );
 		}
 
