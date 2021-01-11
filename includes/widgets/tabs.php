@@ -327,12 +327,43 @@ class Widget_Tabs extends Widget_Base {
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .elementor-tab-title.elementor-active,
+					 {{WRAPPER}} .elementor-tab-title:not(.elementor-active):focus-visible,
+					 {{WRAPPER}} .elementor-tab-title:not(.elementor-active) a:focus-visible,
+					 {{WRAPPER}} .elementor-tab-title:not(.elementor-active):hover,
+					 {{WRAPPER}} .elementor-tab-title:not(.elementor-active):hover a,
 					 {{WRAPPER}} .elementor-tab-title.elementor-active a' => 'color: {{VALUE}}',
 				],
 				'global' => [
 					'default' => Global_Colors::COLOR_ACCENT,
 				],
 			]
+		);
+
+		$this->add_control(
+				'tab_focus_color',
+				[
+						'label' => __( 'Hover/Focus Color', 'elementor' ),
+						'type' => Controls_Manager::COLOR,
+						'selectors' => [
+								'{{WRAPPER}} .elementor-tab-title:not(.elementor-active):hover,
+					 			 {{WRAPPER}} .elementor-tab-title:not(.elementor-active):hover a,
+								 {{WRAPPER}} .elementor-tab-title:not(.elementor-active):focus-visible,
+					 			 {{WRAPPER}} .elementor-tab-title:not(.elementor-active) a:focus-visible' => 'color: {{VALUE}}',
+						],
+				]
+		);
+
+		$this->add_control(
+				'tab_focus_bg_color',
+				[
+						'label' => __( 'Hover/Focus Background Color', 'elementor' ),
+						'type' => Controls_Manager::COLOR,
+						'selectors' => [
+								'{{WRAPPER}} .elementor-tab-title:not(.elementor-active):focus-visible,
+								 {{WRAPPER}} .elementor-tab-title:not(.elementor-active):hover,
+					 			 {{WRAPPER}} .elementor-tab-title:not(.elementor-active):focus-visible a' => 'background-color: {{VALUE}}',
+						],
+				]
 		);
 
 		$this->add_group_control(
