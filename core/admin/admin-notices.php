@@ -432,7 +432,6 @@ class Admin_Notices extends Module {
 		$options = [
 			'title' => __( 'Using popups on your site?', 'elementor' ),
 			'description' => __( 'Build outstanding popups using Elementor Pro and get more leads, sales and subscribers.', 'elementor' ),
-			'dismissible' => true,
 			'id' => $notice_id,
 
 			'button' => [
@@ -514,8 +513,9 @@ class Admin_Notices extends Module {
 		}
 
 		if ( $options['dismissible'] ) {
+			$label = __( 'Dismiss', 'elementor' );
 			$notice_classes[] = 'e-notice--dismissible';
-			$dismiss_button = '<i class="e-notice__dismiss" role="button" aria-label="Dismiss" tabindex="0"></i>';
+			$dismiss_button = '<i class="e-notice__dismiss" role="button" aria-label="' . __( $label ) . '" tabindex="0"></i>';
 		}
 
 		if ( $options['icon'] ) {
