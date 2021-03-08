@@ -298,6 +298,7 @@ class Widget_Heading extends Widget_Base {
 		}
 
 		$this->add_render_attribute( 'title', 'class', 'elementor-heading-title' );
+		$this->add_render_attribute( 'title', 'slot', 'heading' );
 
 		if ( ! empty( $settings['size'] ) ) {
 			$this->add_render_attribute( 'title', 'class', 'elementor-size-' . $settings['size'] );
@@ -315,7 +316,7 @@ class Widget_Heading extends Widget_Base {
 
 		$title_html = sprintf( '<%1$s %2$s>%3$s</%1$s>', Utils::validate_html_tag( $settings['header_size'] ), $this->get_render_attribute_string( 'title' ), $title );
 
-		echo $title_html;
+		echo '<e-heading>' . $title_html . '</e-heading>';
 	}
 
 	/**
