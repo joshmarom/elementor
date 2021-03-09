@@ -144,7 +144,7 @@ class Widget_Heading extends Widget_Base {
 				'type' => Controls_Manager::SELECT,
 				'default' => 'default',
 				'options' => [
-					'' => __( 'Default', 'elementor' ),
+					'default' => __( 'Default', 'elementor' ),
 					'small' => __( 'Small', 'elementor' ),
 					'medium' => __( 'Medium', 'elementor' ),
 					'large' => __( 'Large', 'elementor' ),
@@ -234,6 +234,7 @@ class Widget_Heading extends Widget_Base {
 				],
 				'selectors' => [
 					'{{WRAPPER}} .elementor-heading-title' => 'color: {{VALUE}};',
+					'{{WRAPPER}}' => '--heading-color: {{VALUE}};',
 				],
 			]
 		);
@@ -321,7 +322,7 @@ class Widget_Heading extends Widget_Base {
 
 		$title_html = sprintf( '<%1$s %2$s>%3$s</%1$s>', Utils::validate_html_tag( $settings['header_size'] ), $this->get_render_attribute_string( 'title' ), $title );
 
-		echo '<e-heading>' . $title_html . '</e-heading>';
+		echo $title_html;
 	}
 
 	/**
