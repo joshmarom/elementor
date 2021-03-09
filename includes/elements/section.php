@@ -266,6 +266,7 @@ class Element_Section extends Element_Base {
 				],
 				'selectors' => [
 					'{{WRAPPER}} > .elementor-container' => 'max-width: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}}' => '--container-max-width: {{SIZE}}{{UNIT}}',
 				],
 				'condition' => [
 					'layout' => [ 'boxed' ],
@@ -281,6 +282,7 @@ class Element_Section extends Element_Base {
 				'label' => __( 'Columns Gap', 'elementor' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'default',
+				'attribute' => 'col-gap',
 				'options' => [
 					'default' => __( 'Default', 'elementor' ),
 					'no' => __( 'No Gap', 'elementor' ),
@@ -319,6 +321,7 @@ class Element_Section extends Element_Base {
 				'size_units' => [ 'px', '%', 'vh', 'vw' ],
 				'selectors' => [
 					'{{WRAPPER}} .elementor-column-gap-custom .elementor-column > .elementor-element-populated' => 'padding: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}}' => '--col-gap-custom: {{SIZE}}{{UNIT}}',
 				],
 				'condition' => [
 					'gap' => 'custom',
@@ -337,6 +340,7 @@ class Element_Section extends Element_Base {
 					'full' => __( 'Fit To Screen', 'elementor' ),
 					'min-height' => __( 'Min Height', 'elementor' ),
 				],
+				'attribute' => 'section-height',
 				'prefix_class' => 'elementor-section-height-',
 				'hide_in_inner' => true,
 			]
@@ -367,6 +371,7 @@ class Element_Section extends Element_Base {
 				'size_units' => [ 'px', 'vh', 'vw' ],
 				'selectors' => [
 					'{{WRAPPER}} > .elementor-container' => 'min-height: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}}' => '--container-min-height: {{SIZE}}{{UNIT}}',
 				],
 				'condition' => [
 					'height' => [ 'min-height' ],
@@ -385,6 +390,7 @@ class Element_Section extends Element_Base {
 					'default' => __( 'Default', 'elementor' ),
 					'min-height' => __( 'Min Height', 'elementor' ),
 				],
+				'attribute' => 'section-height',
 				'prefix_class' => 'elementor-section-height-',
 				'hide_in_top' => true,
 			]
@@ -406,6 +412,7 @@ class Element_Section extends Element_Base {
 				],
 				'selectors' => [
 					'{{WRAPPER}} > .elementor-container' => 'min-height: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}}' => '--container-min-height: {{SIZE}}{{UNIT}}',
 				],
 				'condition' => [
 					'height_inner' => [ 'min-height' ],
@@ -518,6 +525,20 @@ class Element_Section extends Element_Base {
 				'type' => Controls_Manager::SELECT,
 				'options' => $options,
 				'separator' => 'before',
+			]
+		);
+
+		$this->add_control(
+			'custom_element',
+			[
+				'label' => __( 'Custom Element', 'elementor' ) . ' <pre>e-section</pre>',
+				'type' => Controls_Manager::SWITCHER,
+				'options' => $options,
+				'separator' => 'before',
+				'default' => '',
+				'label_on' => __( 'Yes', 'elementor' ),
+				'label_off' => __( 'No', 'elementor' ),
+				'return_value' => 'e-section',
 			]
 		);
 
@@ -1491,11 +1512,14 @@ class Element_Section extends Element_Base {
 			if ( $settings['shape_divider_bottom'] ) {
 				$this->print_shape_divider( 'bottom' );
 			}
-			?>
+
+			if ( empty( $settings['custom_element'] ) ) { ?>
 			<div class="elementor-container elementor-column-gap-<?php echo esc_attr( $settings['gap'] ); ?>">
-			<?php if ( ! Plugin::$instance->experiments->is_feature_active( 'e_dom_optimization' ) ) { ?>
-				<div class="elementor-row">
+				<?php if ( ! Plugin::$instance->experiments->is_feature_active( 'e_dom_optimization' ) ) { ?>
+					<div class="elementor-row">
+				<?php } ?>
 			<?php }
+
 	}
 
 	/**
@@ -1507,11 +1531,12 @@ class Element_Section extends Element_Base {
 	 * @access public
 	 */
 	public function after_render() {
-		?>
-		<?php if ( ! Plugin::$instance->experiments->is_feature_active( 'e_dom_optimization' ) ) { ?>
-				</div>
-		<?php } ?>
+		if ( empty( $settings['custom_element'] ) ) { ?>
+			<?php if ( ! Plugin::$instance->experiments->is_feature_active( 'e_dom_optimization' ) ) { ?>
+					</div>
+			<?php } ?>
 			</div>
+		<?php } ?>
 		</<?php echo $this->get_html_tag(); ?>>
 		<?php
 	}
@@ -1565,6 +1590,12 @@ class Element_Section extends Element_Base {
 	 * @return string Section HTML tag.
 	 */
 	private function get_html_tag() {
+		$html_tag = $this->get_settings_for_display( 'custom_element' );
+
+		if ( ! empty( $html_tag ) ) {
+			return $html_tag;
+		}
+
 		$html_tag = $this->get_settings( 'html_tag' );
 
 		if ( empty( $html_tag ) ) {
