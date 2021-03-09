@@ -815,10 +815,14 @@ abstract class Element_Base extends Controls_Stack {
 		] );
 
 		$class_settings = [];
+		$attributes = [];
 
 		foreach ( $settings as $setting_key => $setting ) {
 			if ( isset( $controls[ $setting_key ]['prefix_class'] ) ) {
 				$class_settings[ $setting_key ] = $setting;
+			}
+			if ( isset( $controls[ $setting_key ]['attribute'] ) && ! empty( $controls[ $setting_key ]['attribute'] ) ) {
+				$attributes[ $setting_key ] = $setting;
 			}
 		}
 
@@ -828,6 +832,14 @@ abstract class Element_Base extends Controls_Stack {
 			}
 
 			$this->add_render_attribute( '_wrapper', 'class', $controls[ $setting_key ]['prefix_class'] . $setting );
+		}
+
+		foreach ( $attributes as $setting_key => $setting ) {
+			if ( empty( $setting ) ) {
+				continue;
+			}
+
+			$this->add_render_attribute( '_wrapper', $controls[ $setting_key ]['attribute'], $setting );
 		}
 
 		$_animation = ! empty( $settings['_animation'] );
