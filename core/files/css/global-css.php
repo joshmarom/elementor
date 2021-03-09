@@ -152,7 +152,10 @@ class Global_CSS extends Base {
 			}
 
 			foreach ( $global_controls as $control ) {
-				$this->add_control_rules( $control, $controls, function( $control ) {}, [ '{{WRAPPER}}' ], [ '.elementor-widget-' . $widget->get_name() ], $global_values );
+				$widget_selector = empty( $widget->get_custom_element_tag() )
+					? '.elementor-widget-' . $widget->get_name()
+					: $widget->get_custom_element_tag();
+				$this->add_control_rules( $control, $controls, function( $control ) {}, [ '{{WRAPPER}}' ], [ $widget_selector ], $global_values );
 			}
 		}
 	}
