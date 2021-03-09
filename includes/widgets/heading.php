@@ -144,13 +144,14 @@ class Widget_Heading extends Widget_Base {
 				'type' => Controls_Manager::SELECT,
 				'default' => 'default',
 				'options' => [
-					'default' => __( 'Default', 'elementor' ),
+					'' => __( 'Default', 'elementor' ),
 					'small' => __( 'Small', 'elementor' ),
 					'medium' => __( 'Medium', 'elementor' ),
 					'large' => __( 'Large', 'elementor' ),
 					'xl' => __( 'XL', 'elementor' ),
 					'xxl' => __( 'XXL', 'elementor' ),
 				],
+				'attribute' => 'size',
 			]
 		);
 
