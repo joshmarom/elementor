@@ -303,13 +303,6 @@ class Widget_Heading extends Widget_Base {
 			return;
 		}
 
-		$this->add_render_attribute( 'title', 'class', 'elementor-heading-title' );
-		$this->add_render_attribute( 'title', 'slot', 'heading' );
-
-		if ( ! empty( $settings['size'] ) ) {
-			$this->add_render_attribute( 'title', 'class', 'elementor-size-' . $settings['size'] );
-		}
-
 		$this->add_inline_editing_attributes( 'title' );
 
 		$title = $settings['title'];
