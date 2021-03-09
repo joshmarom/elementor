@@ -76,6 +76,20 @@ abstract class Widget_Base extends Element_Base {
 	}
 
 	/**
+	 * Get Custom Element Tag.
+	 *
+	 * Retrieve the widget custom element (web component) tag name.
+	 *
+	 * @since 3.2.0
+	 * @access public
+	 *
+	 * @return string Widget custom-element tag.
+	 */
+	public function get_custom_element_tag() {
+		return 'div';
+	}
+
+	/**
 	 * Get widget categories.
 	 *
 	 * Retrieve the widget categories.
@@ -554,9 +568,10 @@ abstract class Widget_Base extends Element_Base {
 		if ( empty( $widget_content ) ) {
 			return;
 		}
-		?>
-		<div class="elementor-widget-container">
-			<?php
+
+		$is_not_custom_element = empty( $this->get_custom_element_tag() );
+
+		echo $is_not_custom_element ? '<div class="elementor-widget-container">' : '';
 
 			/**
 			 * Render widget content.
@@ -571,9 +586,8 @@ abstract class Widget_Base extends Element_Base {
 			$widget_content = apply_filters( 'elementor/widget/render_content', $widget_content, $this );
 
 			echo $widget_content; // XSS ok.
-			?>
-		</div>
-		<?php
+
+		echo $is_not_custom_element ? '</div>' : '';
 	}
 
 	/**
@@ -612,7 +626,7 @@ abstract class Widget_Base extends Element_Base {
 	 */
 	public function before_render() {
 		?>
-		<div <?php $this->print_render_attribute_string( '_wrapper' ); ?>>
+		<<?php echo $this->get_custom_element_tag(); ?> <?php $this->print_render_attribute_string( '_wrapper' ); ?>>
 		<?php
 	}
 
@@ -626,7 +640,7 @@ abstract class Widget_Base extends Element_Base {
 	 */
 	public function after_render() {
 		?>
-		</div>
+		</<?php echo $this->get_custom_element_tag(); ?>>
 		<?php
 	}
 
