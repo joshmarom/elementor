@@ -31,6 +31,10 @@ class Widget_Heading extends Widget_Base {
 		return 'heading';
 	}
 
+	public function get_custom_element_tag() {
+		return 'e-' . $this->get_name();
+	}
+
 	/**
 	 * Get widget title.
 	 *
