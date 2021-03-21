@@ -237,6 +237,15 @@ class Manager extends Base_Object {
 		] );
 
 		$this->add_feature( [
+			'name' => 'e_web_components',
+			'title' => __( 'Web Components', 'elementor' ),
+			'description' => __( 'Create clean performant pages using elements powered by modern web components.', 'elementor' )
+				. ' <a href="https://go.elementor.com/web-components/" target="_blank">'
+				. __( 'Learn More', 'elementor' ) . '</a>',
+			'release_status' => self::RELEASE_STATUS_ALPHA,
+		] );
+
+		$this->add_feature( [
 			'name' => 'a11y_improvements',
 			'title' => __( 'Accessibility Improvements', 'elementor' ),
 			'description' => __( 'An array of accessibility enhancements in Elementor pages.', 'elementor' )
