@@ -1,6 +1,7 @@
 import Accordion from './handlers/accordion';
 import Alert from './handlers/alert';
 import Counter from './handlers/counter';
+import Heading from './handlers/heading';
 import Progress from './handlers/progress';
 import Tabs from './handlers/tabs';
 import Toggle from './handlers/toggle';
@@ -15,6 +16,7 @@ elementorFrontend.elements.$window.on( 'elementor/frontend/init', () => {
 		'accordion.default': Accordion,
 		'alert.default': Alert,
 		'counter.default': Counter,
+		'heading.default': Heading,
 		'progress.default': Progress,
 		'tabs.default': Tabs,
 		'toggle.default': Toggle,

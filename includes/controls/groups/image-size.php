@@ -186,7 +186,7 @@ class Group_Control_Image_Size extends Group_Control_Base {
 	 *
 	 * @return string Attachment image source URL.
 	 */
-	public static function get_attachment_image_src( $attachment_id, $image_size_key, array $settings ) {
+	public static function get_attachment_image_src( $attachment_id, $image_size_key, array $settings, $data_array = false ) {
 		if ( empty( $attachment_id ) ) {
 			return false;
 		}
@@ -231,6 +231,10 @@ class Group_Control_Image_Size extends Group_Control_Base {
 
 		if ( empty( $image_src[0] ) && 'thumbnail' !== $attachment_size ) {
 			$image_src = wp_get_attachment_image_src( $attachment_id );
+		}
+
+		if ( $data_array && ! empty( $image_src[0] ) ) {
+			return $image_src;
 		}
 
 		return ! empty( $image_src[0] ) ? $image_src[0] : '';

@@ -1,6 +1,9 @@
 <?php
 namespace Elementor;
 
+use Elementor\Core\Settings\Base\CSS_Model;
+use Elementor\Core\Files\CSS\Inline_CSS as Inline_CSS;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
@@ -220,6 +223,100 @@ abstract class Element_Base extends Controls_Stack {
 	 */
 	abstract protected function _get_default_child_type( array $element_data );
 
+	public function parse_style_array( $value ) {
+		if ( ! is_array( $value ) ) return;
+
+		if ( isset( $value['isLinked'] ) ) { // Is Dimensions Control
+			if ( $value['isLinked'] ) {
+				return $value['top'] . $value['unit'];
+			} else {
+				$unit = $value['unit'];
+				return
+					$value['top'] . $unit . ' ' .
+					$value['right'] . $unit . ' ' .
+					$value['bottom'] . $unit . ' ' .
+					$value['left'] . $unit;
+			}
+		} elseif ( isset( $value['size'] ) ) { // Is Slider Control
+			return ! empty( $value['size'] ) ? $value['size'] . $value['unit'] : null;
+		} elseif ( isset( $value['url'] ) && isset( $value['id'] ) ) { // Is Image Control
+			return ! empty( $value['url'] ) ? 'url("' . $value['url'] . '")' : null;
+		} else return $value;
+	}
+
+	/**
+	 * Get Element Inline CSS properties.
+	 *
+	 * Used to add custom style settings to the element.
+	 *
+	 * @since 3.2.0
+	 * @access public
+	 *
+	 * @return string Inline CSS props
+	 */
+	public function getElementCssProps( $css_file ) {
+
+		$settings = array_filter( $this->get_settings_for_display(), function( $value ) {
+			$is_empty_dimensions_control = function( $value ) {
+				if ( ! is_array( $value ) || ! isset( $value['isLinked'] ) ) return false;
+
+				return empty( $value['top'] ) && empty( $value['right'] ) && empty( $value['bottom'] ) && empty( $value['left'] );
+			};
+			return $value !== '' && ! $is_empty_dimensions_control( $value );
+		} );
+
+		$css_props = [];
+
+		foreach ( $settings as $key => $value ) {
+			$css_key = str_replace( '_', '-', $key );
+			if ( is_array( $value ) ) {
+				$css_props[ $css_key ] = $this->parse_style_array( $value );
+			} else {
+				$css_props[ $css_key ] = $value;
+			}
+		}
+
+		$clean_css_props = array_filter( $css_props, function( $value ) {
+			return ! is_null( $value ) && ! ( is_array( $value ) && empty( $value ) );
+		} );
+		$style_controls = $css_file->get_style_controls( $this );
+		$css = '';
+		$rules = [];
+		foreach ( $clean_css_props as $prop =>  $value ) {
+			$key = str_replace( '-', '_', $prop );
+
+			$non_style_controls = [
+				'title',
+				'title_text', 		// FlipBox
+				'description_text', // FlipBox
+				'_css_classes',
+				'custom_css',
+				'editor'
+			];
+
+			if (  isset( $style_controls[$key] ) &&
+				! in_array( $key, $non_style_controls ) &&
+				( ! ( is_array( $value ) && 0 < count( $value ) ) || ! is_array( $value ) ) ) {
+				if ( is_array( $value ) ) {
+					foreach ( $value as $inner_prop => $innet_value ) {
+						if ( ! empty( $inner_prop ) && ! 'title' !== $inner_prop && '-css-classes' !== $inner_prop ) {
+							$rules[$inner_prop] = $innet_value;
+						}
+					}
+				}
+				$rules[$key] = $value;
+			}
+		}
+
+		foreach ( $rules as $key => $value ) {
+			$css.= '--'. str_replace( '_', '-', $key ) . ': ' . $value . "; ";
+		}
+
+		// var_dump( $css );
+
+		return $css;
+	}
+
 	/**
 	 * Before element rendering.
 	 *
@@ -228,7 +325,14 @@ abstract class Element_Base extends Controls_Stack {
 	 * @since 1.0.0
 	 * @access public
 	 */
-	public function before_render() {}
+	public function before_render() {
+
+		$stylesheet = new Inline_CSS( $this );
+
+		$css = $this->getElementCssProps( $stylesheet );
+
+		$this->add_render_attribute( '_wrapper', 'style', $css );
+	}
 
 	/**
 	 * After element rendering.
@@ -287,6 +391,9 @@ abstract class Element_Base extends Controls_Stack {
 	 * @return bool Whether the reload preview is required.
 	 */
 	public function is_reload_preview_required() {
+		if ( $this->is_web_component() ) {
+			return true;
+		}
 		return false;
 	}
 
@@ -800,7 +907,6 @@ abstract class Element_Base extends Controls_Stack {
 	 */
 	protected function add_render_attributes() {
 		$id = $this->get_id();
-
 		$settings = $this->get_settings_for_display();
 		$frontend_settings = $this->get_frontend_settings();
 		$controls = $this->get_controls();
@@ -816,11 +922,17 @@ abstract class Element_Base extends Controls_Stack {
 
 		$class_settings = [];
 		$attributes = [];
+		$excluded_attributes = [
+			'_css-classes',
+		];
 
 		foreach ( $settings as $setting_key => $setting ) {
-			if ( isset( $controls[ $setting_key ]['prefix_class'] ) ) {
+			// Automatically add an attribute to the element for each setting that has a 'prefix_class' parameter but no explicit 'attribute' parameter.
+			if ( isset( $controls[ $setting_key ]['prefix_class'] ) &&
+				1 >= in_array( $setting_key, $excluded_attributes ) ) {
 				$class_settings[ $setting_key ] = $setting;
 			}
+			// Add an attribute to the element for each setting that has an explicit 'attribute' parameter.
 			if ( isset( $controls[ $setting_key ]['attribute'] ) && ! empty( $controls[ $setting_key ]['attribute'] ) ) {
 				$attributes[ $setting_key ] = $setting;
 			}
@@ -832,6 +944,8 @@ abstract class Element_Base extends Controls_Stack {
 			}
 
 			$this->add_render_attribute( '_wrapper', 'class', $controls[ $setting_key ]['prefix_class'] . $setting );
+
+			$this->add_render_attribute( '_wrapper', str_replace( '_', '-', $setting_key ), $setting );
 		}
 
 		foreach ( $attributes as $setting_key => $setting ) {
@@ -925,6 +1039,39 @@ abstract class Element_Base extends Controls_Stack {
 	}
 
 	/**
+	 * Get Custom Element Tag.
+	 *
+	 * Retrieve the widget custom element (web component) tag name.
+	 *
+	 * @since 3.2.0
+	 * @access public
+	 *
+	 * @return string Widget custom-element tag.
+	 */
+	public function get_custom_element_tag() {
+		return null;
+	}
+
+	/**
+	 * Is Web Component.
+	 *
+	 * Flags element as Web Component.
+	 *
+	 * @since 3.2.0
+	 * @access public
+	 *
+	 * @return Bool Widget is Web Component.
+	 */
+	public function is_web_component() {
+		$custom_element_tag = $this->get_custom_element_tag();
+		$web_components_experiment_active = Plugin::$instance->experiments->is_feature_active( 'e_web_components' );
+		// TODO: Probably deserves a dedicated validation method
+		$has_valid_web_component_tag = isset( $custom_element_tag ) && false !== strpos( $custom_element_tag, '-' );
+
+		return $web_components_experiment_active && $has_valid_web_component_tag;
+	}
+
+	/**
 	 * Get initial config.
 	 *
 	 * Retrieve the current element initial configuration.
@@ -943,6 +1090,7 @@ abstract class Element_Base extends Controls_Stack {
 			'elType' => $this->get_type(),
 			'title' => $this->get_title(),
 			'icon' => $this->get_icon(),
+			'isWebComponent' => $this->is_web_component(),
 			'reload_preview' => $this->is_reload_preview_required(),
 		];
 

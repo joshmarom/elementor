@@ -923,6 +923,7 @@ html.elementor-html {
 		}
 	}
 
+	// TODO: Figure out how to do that without widget-conteiner
 	> .elementor-widget-container, > .elementor-widget-wrap {
 		filter: alpha(0.4) saturate(0);
 	}

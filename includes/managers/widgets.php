@@ -71,6 +71,7 @@ class Widgets_Manager {
 			'menu-anchor',
 			'sidebar',
 			'read-more',
+			'amp-img',
 		];
 
 		$this->_widget_types = [];

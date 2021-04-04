@@ -452,12 +452,16 @@ class Widget_Image extends Widget_Base {
 			[
 				'label' => __( 'Transition Duration', 'elementor' ),
 				'type' => Controls_Manager::SLIDER,
+				'default' => [
+					'unit' => 's',
+				],
 				'range' => [
-					'px' => [
+					's' => [
 						'max' => 3,
 						'step' => 0.1,
 					],
 				],
+				'size_units' => [ 's' ],
 				'selectors' => [
 					'{{WRAPPER}} img' => 'transition-duration: {{SIZE}}s',
 				],

@@ -1,4 +1,9 @@
 import { LitElement, css, html } from 'lit-element';
+export default class Heading extends elementorModules.frontend.handlers.Base {
+	onInit() {
+		super.onInit();
+	}
+}
 
 export class ElementorHeading extends LitElement {
 	static get properties() {
@@ -16,21 +21,37 @@ export class ElementorHeading extends LitElement {
 		return css`
 		:host {
 			color: var(--heading-color, inherit) !important;
-			--heading-font-size: inherit;
+			--heading-font-size: var(--typography-font-size);
+			text-align: var(--align, inherit) !important;
 		}
 
-		:is(.default, .small, .medium, .large, .xl, .xxl) ::slotted(*:is(h1, h2, h3, h4, h5, h6)) {
-			font-size: var(--heading-font-size) !important;
+		@media screen and ( max-width: 750px ) {
+			:host {
+				--heading-font-size: var(--typography-font-size-mobile);
+			}
 		}
 
-		.elementor-widget-container ::slotted(h1, h2, h3, h4, h5, h6) {
-			color: var(--heading-color, inherit) !important;
+		@media screen and ( max-width: 1024x ) {
+			:host {
+				--heading-font-size: var(--typography-font-size-tablet);
+			}
+		}
+
+		:is(.default, .small, .medium, .large, .xl, .xxl) ::slotted(:is(h1, h2, h3, h4, h5, h6, p, span)) {
+			font-size: var(--heading-font-size, inherit) !important;
+		}
+
+		::slotted(:is(h1, h2, h3, h4, h5, h6, p, span)) {
+			color: var(--title-color, inherit) !important;
+			font-weight: var(--typography-font-weight, inherit) !important;
+			font-size: var(--heading-font-size, inherit) !important;
+			font-family: var(--typography-font-family, inherit) !important;
+			line-height: var(--typography-line-height, inherit) !important;
 			padding: 0 !important;
 			margin: 0 !important;
-			line-height: 1;
 		}
 
-		:is(.elementor-widget-container) ::slotted(*:is(h1, h2, h3, h4, h5, h6)) a {
+		::slotted(*:is(h1, h2, h3, h4, h5, h6, p, span)) a {
 			color: inherit !important;
 			font-size: inherit !important;
 			line-height: inherit  !important;
@@ -61,4 +82,5 @@ export class ElementorHeading extends LitElement {
 		`;
 	}
 }
+
 customElements.define( 'e-heading', ElementorHeading );

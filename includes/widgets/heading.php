@@ -110,6 +110,14 @@ class Widget_Heading extends Widget_Base {
 		);
 
 		$this->add_control(
+			'custom_element_tag',
+			[
+				'type' => Controls_Manager::HIDDEN,
+				'default' => $this->get_custom_element_tag(),
+			]
+		);
+
+		$this->add_control(
 			'title',
 			[
 				'label' => __( 'Title', 'elementor' ),
@@ -307,6 +315,10 @@ class Widget_Heading extends Widget_Base {
 
 		$title = $settings['title'];
 
+		if ( ! empty( $settings['size'] ) && ! $this->is_web_component() ) {
+			$this->add_render_attribute( 'title', 'class', [ 'elementor-size-' . $settings['size'], 'elementor-heading-title' ] );
+		}
+
 		if ( ! empty( $settings['link']['url'] ) ) {
 			$this->add_link_attributes( 'url', $settings['link'] );
 
@@ -316,34 +328,5 @@ class Widget_Heading extends Widget_Base {
 		$title_html = sprintf( '<%1$s %2$s>%3$s</%1$s>', Utils::validate_html_tag( $settings['header_size'] ), $this->get_render_attribute_string( 'title' ), $title );
 
 		echo $title_html;
-	}
-
-	/**
-	 * Render heading widget output in the editor.
-	 *
-	 * Written as a Backbone JavaScript template and used to generate the live preview.
-	 *
-	 * @since 2.9.0
-	 * @access protected
-	 */
-	protected function content_template() {
-		?>
-		<#
-		var title = settings.title;
-
-		if ( '' !== settings.link.url ) {
-			title = '<a href="' + settings.link.url + '">' + title + '</a>';
-		}
-
-		view.addRenderAttribute( 'title', 'class', [ 'elementor-heading-title', 'elementor-size-' + settings.size ] );
-
-		view.addInlineEditingAttributes( 'title' );
-
-		var headerSizeTag = elementor.helpers.validateHTMLTag( settings.header_size ),
-			title_html = '<' + headerSizeTag  + ' ' + view.getRenderAttributeString( 'title' ) + '>' + title + '</' + headerSizeTag + '>';
-
-		print( title_html );
-		#>
-		<?php
 	}
 }

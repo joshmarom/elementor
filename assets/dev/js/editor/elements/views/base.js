@@ -7,7 +7,12 @@ var ControlsCSSParser = require( 'elementor-editor-utils/controls-css-parser' ),
 	BaseElementView;
 
 BaseElementView = BaseContainer.extend( {
-	tagName: 'div',
+	tagName: function() {
+		if ( elementorFrontend.config.experimentalFeatures[ 'e_web_components' ] ) {
+			return this.model.getSetting( 'custom_element_tag' ) || 'div';
+		}
+		return 'div';
+	},
 
 	controlsCSSParser: null,
 
@@ -211,6 +216,12 @@ BaseElementView = BaseContainer.extend( {
 		BaseContainer.prototype.initialize.apply( this, arguments );
 
 		const editModel = this.getEditModel();
+		const settings = editModel.get( 'settings' );
+
+		if ( settings.attributes[ 'custom_element_tag' ] ) {
+			console.log( settings.attributes[ 'custom_element_tag' ] );
+			this.tagName = settings.attributes[ 'custom_element_tag' ];
+		}
 
 		if ( this.collection && this.onCollectionChanged ) {
 			elementorCommon.helpers.softDeprecated( 'onCollectionChanged', '2.8.0', '$e.hooks' );

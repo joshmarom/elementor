@@ -204,6 +204,11 @@ ControlsCSSParser = elementorModules.ViewModule.extend( {
 					delete query.max;
 				}
 			}
+			if ( elementorFrontend.config.experimentalFeatures[ 'e_web_components' ] && controls[ 'custom_element_tag' ] ) {
+				const cssProp = '--' + control.name.replace( '_', '-' ).replace( /^\-+/, '' );
+				outputCssProperty = outputCssProperty.replace( /[^:]*/, cssProp );
+				selector = '[data-id="' + replacements[ 0 ] + '"]';
+			}
 
 			this.stylesheet.addRules( selector, outputCssProperty, query );
 		} );

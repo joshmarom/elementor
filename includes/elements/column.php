@@ -300,14 +300,16 @@ class Element_Column extends Element_Base {
 				'label' => __( 'Transition Duration', 'elementor' ),
 				'type' => Controls_Manager::SLIDER,
 				'default' => [
+					'unit' => 's',
 					'size' => 0.3,
 				],
 				'range' => [
-					'px' => [
+					's' => [
 						'max' => 3,
 						'step' => 0.1,
 					],
 				],
+				'size_units' => [ 's' ],
 				'render_type' => 'ui',
 				'separator' => 'before',
 			]
@@ -425,14 +427,16 @@ class Element_Column extends Element_Base {
 				'label' => __( 'Opacity', 'elementor' ),
 				'type' => Controls_Manager::SLIDER,
 				'default' => [
+					'unit' => '',
 					'size' => .5,
 				],
 				'range' => [
-					'px' => [
+					'' => [
 						'max' => 1,
 						'step' => 0.01,
 					],
 				],
+				'size_units' => [ '' ],
 				'selectors' => [
 					'{{WRAPPER}}:hover > .elementor-element-populated >  .elementor-background-overlay' => 'opacity: {{SIZE}};',
 				],
@@ -456,14 +460,16 @@ class Element_Column extends Element_Base {
 				'label' => __( 'Transition Duration', 'elementor' ),
 				'type' => Controls_Manager::SLIDER,
 				'default' => [
+					'unit' => 's',
 					'size' => 0.3,
 				],
 				'range' => [
-					'px' => [
+					's' => [
 						'max' => 3,
 						'step' => 0.1,
 					],
 				],
+				'size_units' => [ 's' ],
 				'render_type' => 'ui',
 				'separator' => 'before',
 			]
@@ -564,10 +570,11 @@ class Element_Column extends Element_Base {
 				'type' => Controls_Manager::SLIDER,
 				'separator' => 'before',
 				'default' => [
+					'unit' => 's',
 					'size' => 0.3,
 				],
 				'range' => [
-					'px' => [
+					's' => [
 						'max' => 3,
 						'step' => 0.1,
 					],
@@ -587,6 +594,7 @@ class Element_Column extends Element_Base {
 						],
 					],
 				],
+				'size_units' => [ 's' ],
 				'selectors' => [
 					'{{WRAPPER}} > .elementor-element-populated' => 'transition: background {{background_hover_transition.SIZE}}s, border {{SIZE}}s, border-radius {{SIZE}}s, box-shadow {{SIZE}}s',
 					'{{WRAPPER}} > .elementor-element-populated > .elementor-background-overlay' => 'transition: background {{background_overlay_hover_transition.SIZE}}s, border-radius {{SIZE}}s, opacity {{background_overlay_hover_transition.SIZE}}s',
@@ -931,6 +939,7 @@ class Element_Column extends Element_Base {
 	 * @access public
 	 */
 	public function before_render() {
+		parent::before_render();
 		$settings = $this->get_settings_for_display();
 
 		$has_background_overlay = in_array( $settings['background_overlay_background'], [ 'classic', 'gradient' ], true ) ||

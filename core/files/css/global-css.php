@@ -152,9 +152,15 @@ class Global_CSS extends Base {
 			}
 
 			foreach ( $global_controls as $control ) {
-				$widget_selector = empty( $widget->get_custom_element_tag() )
-					? '.elementor-widget-' . $widget->get_name()
-					: $widget->get_custom_element_tag();
+				$custom_element_tag = $widget->get_custom_element_tag();
+				$web_components_experiment_active = Plugin::$instance->experiments->is_feature_active( 'e_web_components' );
+
+				$widget_selector = '.elementor-widget-' . $widget->get_name();
+
+				if ( isset( $custom_element_tag ) && $web_components_experiment_active ) {
+					$widget_selector = $custom_element_tag;
+				}
+
 				$this->add_control_rules( $control, $controls, function( $control ) {}, [ '{{WRAPPER}}' ], [ $widget_selector ], $global_values );
 			}
 		}

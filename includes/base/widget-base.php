@@ -76,20 +76,6 @@ abstract class Widget_Base extends Element_Base {
 	}
 
 	/**
-	 * Get Custom Element Tag.
-	 *
-	 * Retrieve the widget custom element (web component) tag name.
-	 *
-	 * @since 3.2.0
-	 * @access public
-	 *
-	 * @return string Widget custom-element tag.
-	 */
-	public function get_custom_element_tag() {
-		return 'div';
-	}
-
-	/**
 	 * Get widget categories.
 	 *
 	 * Retrieve the widget categories.
@@ -569,9 +555,7 @@ abstract class Widget_Base extends Element_Base {
 			return;
 		}
 
-		$is_not_custom_element = empty( $this->get_custom_element_tag() );
-
-		echo $is_not_custom_element ? '<div class="elementor-widget-container">' : '';
+		if ( ! $this->is_web_component() ) echo '<div class="elementor-widget-container">';
 
 			/**
 			 * Render widget content.
@@ -587,7 +571,7 @@ abstract class Widget_Base extends Element_Base {
 
 			echo $widget_content; // XSS ok.
 
-		echo $is_not_custom_element ? '</div>' : '';
+		if ( ! $this->is_web_component() ) echo '</div>';
 	}
 
 	/**
@@ -625,8 +609,28 @@ abstract class Widget_Base extends Element_Base {
 	 * @access public
 	 */
 	public function before_render() {
+		parent::before_render();
+		$custom_element_tag = $this->get_custom_element_tag();
+		$element_tag = isset( $custom_element_tag ) ? $custom_element_tag : 'div';
+
+		if ( isset( $custom_element_tag ) && 'amp-img' === $custom_element_tag ) {
+			?>
+			<script async src = "https://cdn.ampproject.org/v0.js"></script>
+			<?php
+			$settings = $this->get_settings_for_display();
+			$img_src = Group_Control_Image_Size::get_attachment_image_src( $settings['image']['id'], 'image', $settings, true );
+			$this->add_render_attribute( '_wrapper',
+				[
+					'src' => $img_src[0],
+					'width' => $img_src[1],
+					'height' => $img_src[2] ,
+					'alt' =>
+						trim( strip_tags( get_post_meta( $settings['image']['id'], '_wp_attachment_image_alt', true ) ) ),
+				]
+			);
+		}
 		?>
-		<<?php echo $this->get_custom_element_tag(); ?> <?php $this->print_render_attribute_string( '_wrapper' ); ?>>
+		<<?php echo $element_tag; ?> <?php $this->print_render_attribute_string( '_wrapper' ); ?>>
 		<?php
 	}
 
@@ -639,8 +643,9 @@ abstract class Widget_Base extends Element_Base {
 	 * @access public
 	 */
 	public function after_render() {
+		$element_tag = $this->is_web_component() ? $this->get_custom_element_tag() : 'div';
 		?>
-		</<?php echo $this->get_custom_element_tag(); ?>>
+		</<?php echo $element_tag; ?>>
 		<?php
 	}
 

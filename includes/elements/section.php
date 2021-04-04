@@ -63,6 +63,10 @@ class Element_Section extends Element_Base {
 	public function get_name() {
 		return 'section';
 	}
+/*
+	public function get_custom_element_tag() {
+		return 'e-' . $this->get_name();
+	}*/
 
 	/**
 	 * Get section title.
@@ -266,7 +270,9 @@ class Element_Section extends Element_Base {
 				],
 				'selectors' => [
 					'{{WRAPPER}} > .elementor-container' => 'max-width: {{SIZE}}{{UNIT}};',
-					'{{WRAPPER}}' => '--container-max-width: {{SIZE}}{{UNIT}}',
+				],
+				'inline_style' => [
+					'--content-max-width: {{SIZE}}{{UNIT}}',
 				],
 				'condition' => [
 					'layout' => [ 'boxed' ],
@@ -321,7 +327,9 @@ class Element_Section extends Element_Base {
 				'size_units' => [ 'px', '%', 'vh', 'vw' ],
 				'selectors' => [
 					'{{WRAPPER}} .elementor-column-gap-custom .elementor-column > .elementor-element-populated' => 'padding: {{SIZE}}{{UNIT}};',
-					'{{WRAPPER}}' => '--col-gap-custom: {{SIZE}}{{UNIT}}',
+				],
+				'inline_style' => [
+					'--col-gap-custom: {{SIZE}}{{UNIT}}',
 				],
 				'condition' => [
 					'gap' => 'custom',
@@ -528,20 +536,6 @@ class Element_Section extends Element_Base {
 			]
 		);
 
-		$this->add_control(
-			'custom_element',
-			[
-				'label' => __( 'Custom Element', 'elementor' ) . ' <pre>e-section</pre>',
-				'type' => Controls_Manager::SWITCHER,
-				'options' => $options,
-				'separator' => 'before',
-				'default' => '',
-				'label_on' => __( 'Yes', 'elementor' ),
-				'label_off' => __( 'No', 'elementor' ),
-				'return_value' => 'e-section',
-			]
-		);
-
 		$this->end_controls_section();
 
 		// Section Structure
@@ -620,14 +614,16 @@ class Element_Section extends Element_Base {
 				'label' => __( 'Transition Duration', 'elementor' ),
 				'type' => Controls_Manager::SLIDER,
 				'default' => [
+					'unit' => 's',
 					'size' => 0.3,
 				],
 				'range' => [
-					'px' => [
+					's' => [
 						'max' => 3,
 						'step' => 0.1,
 					],
 				],
+				'size_units' => [ 's' ],
 				'render_type' => 'ui',
 				'separator' => 'before',
 			]
@@ -803,14 +799,16 @@ class Element_Section extends Element_Base {
 				'label' => __( 'Transition Duration', 'elementor' ),
 				'type' => Controls_Manager::SLIDER,
 				'default' => [
+					'unit' => 's',
 					'size' => 0.3,
 				],
 				'range' => [
-					'px' => [
+					's' => [
 						'max' => 3,
 						'step' => 0.1,
 					],
 				],
+				'size_units' => [ 's' ],
 				'render_type' => 'ui',
 				'separator' => 'before',
 			]
@@ -910,14 +908,16 @@ class Element_Section extends Element_Base {
 				'type' => Controls_Manager::SLIDER,
 				'separator' => 'before',
 				'default' => [
+					'unit' => 's',
 					'size' => 0.3,
 				],
 				'range' => [
-					'px' => [
+					's' => [
 						'max' => 3,
 						'step' => 0.1,
 					],
 				],
+				'size_units' => [ 's' ],
 				'conditions' => [
 					'relation' => 'or',
 					'terms' => [
@@ -1465,9 +1465,12 @@ class Element_Section extends Element_Base {
 	 * @access public
 	 */
 	public function before_render() {
+		parent::before_render();
+
 		$settings = $this->get_settings_for_display();
+		$element_tag = $this->is_web_component() ? $this->get_custom_element_tag() : $this->get_html_tag();
 		?>
-		<<?php echo $this->get_html_tag(); ?> <?php $this->print_render_attribute_string( '_wrapper' ); ?>>
+		<<?php echo $element_tag; ?> <?php $this->print_render_attribute_string( '_wrapper' ); ?>>
 			<?php
 			if ( 'video' === $settings['background_background'] ) :
 				if ( $settings['background_video_link'] ) :
@@ -1531,13 +1534,14 @@ class Element_Section extends Element_Base {
 	 * @access public
 	 */
 	public function after_render() {
+		$element_tag = $this->is_web_component() ? $this->get_custom_element_tag() : $this->get_html_tag();
 		if ( empty( $settings['custom_element'] ) ) { ?>
 			<?php if ( ! Plugin::$instance->experiments->is_feature_active( 'e_dom_optimization' ) ) { ?>
 					</div>
 			<?php } ?>
 			</div>
 		<?php } ?>
-		</<?php echo $this->get_html_tag(); ?>>
+		</<?php echo $element_tag; ?>>
 		<?php
 	}
 
